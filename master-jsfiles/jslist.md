@@ -143,9 +143,10 @@
 - [x] src/core/ChunkProcessor.js ✅ **修正完了** JavaScript版から完全に再作成（processStream、processObjectメソッドを含む）
 - [x] src/core/CloudStorageAdapter.js ✅ **修正完了** JavaScript版から完全に再作成（processStream、processObjectメソッドを含む）
 - [x] src/core/ColorBlindnessSupport.js ✅ **修正完了** JavaScript版から完全に再作成（すべての機能を保持）
-- [] src/core/ConfigurationDebugger.js
-- [] src/core/ConfigurationErrorHandler.js
-- [] src/core/ConfigurationManager.js
+- [x] src/core/ConfigurationDebugger.js ✅ **修正完了** JavaScript版から完全に再作成（trackAccess/trackErrorメソッドを保持）
+- [x] src/core/ConfigurationErrorHandler.js ✅ **修正完了** JavaScript版から完全に再作成（recoveryAttemptsプロパティ定義、正しいインポート）
+- [x] src/core/ConfigurationManager.js ✅ **修正完了** JavaScript版から完全に再作成（get(category, key, defaultValue)メソッド保持）
+=== ユーザーここまで確認 ===
 - [] src/core/ContextualHelpManager.js
 - [] src/core/ContrastManager.js
 - [] src/core/CoreComparisonEngine.js

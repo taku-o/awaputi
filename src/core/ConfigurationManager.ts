@@ -6,21 +6,18 @@
  */
 
 import { getErrorHandler } from '../utils/ErrorHandler';
-import { getCacheSystem } from './CacheSystem';
+import { getCacheSystem, CacheSystem } from './CacheSystem';
 
-// Type definitions
-type ConfigurationValue = string | number | boolean | object | null | undefined;
-
-interface ValidationRule {
-    validate: (value: ConfigurationValue) => boolean;
-    errorMessage?: string;
-    transform?: (value: ConfigurationValue) => ConfigurationValue;
-    type?: string;
-    pattern?: RegExp;
+interface WatchCallback {
+    (newValue: any, oldValue: any, category: string, key: string): void;
 }
 
-interface WatcherCallback {
-    (key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue): void;
+interface ValidationRule {
+    type?: string;
+    min?: number;
+    max?: number;
+    allowedValues?: string[];
+    validator?: (value: any) => boolean;
 }
 
 interface AccessStats {
@@ -31,60 +28,57 @@ interface AccessStats {
     lastOptimization: number;
 }
 
-interface ChangeHistoryEntry {
-    key: string;
-    oldValue: ConfigurationValue;
-    newValue: ConfigurationValue;
+interface ChangeRecord {
     timestamp: number;
-    source?: string;
+    category: string;
+    key: string;
+    oldValue: any;
+    newValue: any;
 }
 
-interface BubbleTypeConfig {
-    name: string;
-    baseScore: number;
-    maxAge: number;
-    speed: number;
-    size: number;
+interface PerformanceStats {
+    totalAccesses: number;
+    cacheHits: number;
+    cacheMisses: number;
+    hitRate: string;
+    cachedKeys: number;
+    preloadKeys: number;
+    lazyLoaders: number;
+    topAccessedKeys: Array<{ key: string; count: number }>;
+    cacheStats: any;
 }
-
-type ConfigurationCategory = 'game' | 'audio' | 'effects' | 'performance' | 'ui' | 'accessibility' | 'controls';
 
 export class ConfigurationManager {
-    private configurations: Map<string, Map<string, ConfigurationValue>>;
-    private watchers: Map<string, Set<WatcherCallback>>;
+    private configurations: Map<string, Map<string, any>>;
+    private watchers: Map<string, Map<string, WatchCallback>>;
     private validationRules: Map<string, ValidationRule>;
-    private defaultValues: Map<string, Map<string, ConfigurationValue>>;
-    private changeHistory: ChangeHistoryEntry[];
+    private defaultValues: Map<string, any>;
+    private changeHistory: ChangeRecord[];
     private warningCache: Map<string, number>;
     private warningRateLimit: number;
-    private cache: any; // CacheSystem type would be defined elsewhere
+    private cache: CacheSystem;
     private accessStats: AccessStats;
-    
-    // 将来の拡張機能用 - 現在は未使用
-    // @ts-ignore - 将来の実装で使用予定
-    private __lazyLoaders!: Map<string, () => ConfigurationValue>;
-    // @ts-ignore - 将来の実装で使用予定
-    private __preloadKeys!: Set<string>;
-    private errorHandler: any;
+    private lazyLoaders: Map<string, () => any>;
+    private preloadKeys: Set<string>;
 
     constructor() {
         // 設定データストレージ
-        this.configurations = new Map<string, Map<string, ConfigurationValue>>();
+        this.configurations = new Map();
         
         // 設定監視用のコールバック
-        this.watchers = new Map<string, Set<WatcherCallback>>();
+        this.watchers = new Map();
         
         // 検証ルール
-        this.validationRules = new Map<string, ValidationRule>();
+        this.validationRules = new Map();
         
         // デフォルト値
-        this.defaultValues = new Map<string, Map<string, ConfigurationValue>>();
+        this.defaultValues = new Map();
         
         // 変更履歴（デバッグ用）
         this.changeHistory = [];
         
         // 警告ログレート制限（同じキーの警告は1秒以内は1回のみ）
-        this.warningCache = new Map<string, number>();
+        this.warningCache = new Map();
         this.warningRateLimit = 1000; // 1秒
         
         // 高速アクセス用キャッシュシステム
@@ -99,15 +93,15 @@ export class ConfigurationManager {
             totalAccesses: 0,
             cacheHits: 0,
             cacheMisses: 0,
-            frequentKeys: new Map<string, number>(),
+            frequentKeys: new Map(), // キー別アクセス回数
             lastOptimization: Date.now()
         };
         
-        // 遅延読み込み用の設定ローダー（将来の拡張機能用）
-        this.__lazyLoaders = new Map<string, () => ConfigurationValue>();
+        // 遅延読み込み用の設定ローダー
+        this.lazyLoaders = new Map();
         
-        // 頻繁にアクセスされるキーのプリロード設定（将来の拡張機能用）
-        this.__preloadKeys = new Set([
+        // 頻繁にアクセスされるキーのプリロード設定
+        this.preloadKeys = new Set([
             'game.scoring.baseScores',
             'game.bubbles.maxAge',
             'performance.optimization.maxBubbles',
@@ -116,21 +110,22 @@ export class ConfigurationManager {
         ]);
         
         // 初期化
-        this.initialize();
+        this._initialize();
     }
     
     /**
      * 初期化処理
+     * @private
      */
-    private initialize(): void {
-        const categories: ConfigurationCategory[] = [
-            'game', 'audio', 'effects', 'performance', 'ui', 'accessibility', 'controls'
-        ];
-        
-        categories.forEach(category => {
-            this.configurations.set(category, new Map<string, ConfigurationValue>());
-            this.defaultValues.set(category, new Map<string, ConfigurationValue>());
-        });
+    private _initialize(): void {
+        // デフォルト設定カテゴリを初期化
+        this.configurations.set('game', new Map());
+        this.configurations.set('audio', new Map());
+        this.configurations.set('effects', new Map());
+        this.configurations.set('performance', new Map());
+        this.configurations.set('ui', new Map());
+        this.configurations.set('accessibility', new Map());
+        this.configurations.set('controls', new Map());
         
         // 基本パフォーマンス設定のデフォルト値を設定
         this.setDefaultValue('performance', 'targetFPS', 60);
@@ -201,554 +196,1017 @@ export class ConfigurationManager {
         this.setDefaultValue('game', 'difficulty', 'normal');
         
         // ゲームバブル詳細設定のデフォルト値を設定
-        this.setupBubbleDefaults();
+        this._setupBubbleDefaults();
         
         // 検証ルールを設定
-        this.setupValidationRules();
+        this._setupValidationRules();
         
-        // エラーハンドラを取得
-        try {
-            this.errorHandler = getErrorHandler();
-        } catch (error) {
-            console.warn('[ConfigurationManager] ErrorHandler not available:', error);
+        // 非同期でキャッシュウォームアップを実行
+        setTimeout(() => {
+            this.warmupCache();
+        }, 100);
+        
+        // デバッグログ
+        if (this._isDebugMode()) {
+            console.log('[ConfigurationManager] 初期化完了');
         }
-        
-        console.log('[ConfigurationManager] Configuration system initialized');
     }
     
     /**
-     * バブル設定のデフォルト値を設定
+     * 設定値を取得（最適化版）
      */
-    private setupBubbleDefaults(): void {
-        const bubbleTypes: BubbleTypeConfig[] = [
-            { name: 'normal', baseScore: 10, maxAge: 30000, speed: 1.0, size: 1.0 },
-            { name: 'fast', baseScore: 15, maxAge: 20000, speed: 1.5, size: 0.8 },
-            { name: 'large', baseScore: 20, maxAge: 40000, speed: 0.7, size: 1.5 },
-            { name: 'bonus', baseScore: 50, maxAge: 15000, speed: 1.0, size: 1.0 }
-        ];
-
-        bubbleTypes.forEach(type => {
-            this.setDefaultValue('game', `bubbles.types.${type.name}.baseScore`, type.baseScore);
-            this.setDefaultValue('game', `bubbles.types.${type.name}.maxAge`, type.maxAge);
-            this.setDefaultValue('game', `bubbles.types.${type.name}.speed`, type.speed);
-            this.setDefaultValue('game', `bubbles.types.${type.name}.size`, type.size);
-        });
-    }
-    
-    /**
-     * 検証ルールを設定
-     */
-    private setupValidationRules(): void {
-        // パフォーマンス設定検証
-        this.addValidationRule('performance.targetFPS', {
-            validate: (value: ConfigurationValue) =>
-                typeof value === 'number' && value >= 30 && value <= 120,
-            errorMessage: 'Target FPS must be between 30 and 120'
-        });
-        
-        // オーディオボリューム検証
-        this.addValidationRule('audio.volumes.*', {
-            validate: (value: ConfigurationValue) =>
-                typeof value === 'number' && value >= 0 && value <= 1,
-            errorMessage: 'Volume must be between 0 and 1'
-        });
-        
-        // UI設定検証
-        this.addValidationRule('ui.language', {
-            validate: (value: ConfigurationValue) =>
-                typeof value === 'string' && ['en', 'ja', 'ko', 'zh-CN', 'zh-TW'].includes(value),
-            errorMessage: 'Language must be one of: en, ja, ko, zh-CN, zh-TW'
-        });
-    }
-
-    /**
-     * 設定値を取得
-     */
-    get<T = ConfigurationValue>(key: string): T | null;
-    get<T = ConfigurationValue>(namespace: string, key: string): T | null;
-    get<T = ConfigurationValue>(keyOrNamespace: string, key?: string): T | null {
+    public get(category: string, key: string, defaultValue: any = null): any {
         try {
-            // 引数の処理
-            const finalKey = key ? `${keyOrNamespace}.${key}` : keyOrNamespace;
+            // 引数の検証：undefinedキーを防ぐ
+            if (!category || category === 'undefined' || typeof category !== 'string') {
+                this._logWarning(`無効なカテゴリ: ${category}`);
+                return defaultValue;
+            }
+            if (key === undefined || key === 'undefined' || typeof key !== 'string') {
+                this._logWarning(`無効なキー: ${key} (カテゴリ: ${category})`);
+                return defaultValue;
+            }
             
-            this.accessStats.totalAccesses++;
-            this.trackKeyAccess(finalKey);
+            const fullKey = `${category}.${key}`;
             
-            // キャッシュから確認
-            const cacheKey = `config:${finalKey}`;
-            const cachedValue = this.cache.get(cacheKey);
-            if (cachedValue !== undefined) {
+            // アクセス統計を更新
+            this._updateAccessStats(fullKey);
+            
+            // キャッシュから取得を試行
+            const cachedValue = this.cache.get(fullKey);
+            if (cachedValue !== null) {
                 this.accessStats.cacheHits++;
+                this._logDebug(`キャッシュから取得: ${fullKey} = ${cachedValue}`);
                 return cachedValue;
             }
             
             this.accessStats.cacheMisses++;
             
-            // 遅延読み込みローダーをチェック
-            const lazyLoader = this.__lazyLoaders.get(finalKey);
-            if (lazyLoader) {
-                const lazyValue = lazyLoader();
-                const [category, ...pathParts] = finalKey.split('.');
-                const path = pathParts.join('.');
-                this.setValueInternal(category, path, lazyValue);
-                this.cache.set(cacheKey, lazyValue);
-                // ローダーを削除（一度だけ実行）
-                this.__lazyLoaders.delete(finalKey);
-                return lazyValue as T;
+            // 遅延読み込みの確認
+            if (this.lazyLoaders.has(fullKey)) {
+                const loader = this.lazyLoaders.get(fullKey)!;
+                const value = loader();
+                
+                // 読み込んだ値をキャッシュに保存
+                this._cacheValue(fullKey, value);
+                this._logDebug(`遅延読み込み: ${fullKey} = ${value}`);
+                return value;
             }
             
-            // キーを解析
-            const [category, ...pathParts] = finalKey.split('.');
-            const path = pathParts.join('.');
+            // 通常の設定値取得
+            const value = this._getDirectValue(category, key, defaultValue);
             
-            const categoryMap = this.configurations.get(category);
-            if (!categoryMap) {
-                return this._getDefaultValue<T>(category, path);
+            // 頻繁にアクセスされるキーはキャッシュに保存
+            if (this._shouldCache(fullKey)) {
+                this._cacheValue(fullKey, value);
             }
             
-            let value = categoryMap.get(path);
-            if (value === undefined) {
-                value = this._getDefaultValue<T>(category, path) as ConfigurationValue;
-            }
+            return value;
             
-            // キャッシュに保存
-            this.cache.set(cacheKey, value as ConfigurationValue);
-            
-            return value as T;
-
         } catch (error) {
-            const keyForError = key ? `${keyOrNamespace}.${key}` : keyOrNamespace;
-            this.handleError(error, 'get', { key: keyForError });
-            return null as any;
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.get',
+                category,
+                key,
+                defaultValue
+            });
+            return defaultValue;
         }
     }
     
     /**
-     * 設定値を設定
+     * 直接的な設定値取得（キャッシュなし）
+     * @private
      */
-    set<T extends ConfigurationValue = ConfigurationValue>(key: string, value: T): boolean;
-    set<T extends ConfigurationValue = ConfigurationValue>(namespace: string, key: string, value: T): boolean;
-    set<T extends ConfigurationValue = ConfigurationValue>(keyOrNamespace: string, keyOrValue: string | T, value?: T): boolean {
+    private _getDirectValue(category: string, key: string, defaultValue: any = null): any {
+        // まずデフォルト値を確認（バブル設定などで使用）
+        const defaultKey = `${category}.${key}`;
+        if (this.defaultValues.has(defaultKey)) {
+            const value = this.defaultValues.get(defaultKey);
+            this._logDebug(`デフォルト値を使用: ${category}.${key} = ${value}`);
+            return value;
+        }
+        
+        // カテゴリの存在確認
+        if (!this.configurations.has(category)) {
+            this._logWarning(`カテゴリが存在しません: ${category}`);
+            return defaultValue;
+        }
+        
+        const categoryConfig = this.configurations.get(category)!;
+        
+        // 設定されたカスタム値を確認
+        if (categoryConfig.has(key)) {
+            const value = categoryConfig.get(key);
+            this._logDebug(`設定値取得: ${category}.${key} = ${value}`);
+            return value;
+        }
+        
+        // どちらにも存在しない場合は警告
+        if (category === 'game' && key.startsWith('bubbles.')) {
+            const bubbleType = key.split('.')[1];
+            this._logWarning(`バブル設定が見つかりません: ${category}.${key} (バブル種類: ${bubbleType})`);
+        } else {
+            this._logWarning(`設定キーが存在しません: ${category}.${key}`);
+        }
+        return defaultValue;
+    }
+    
+    /**
+     * 設定値を設定（最適化版）
+     */
+    public set(category: string, key: string | any, value?: any): boolean {
         try {
-            // 引数の処理
-            const finalKey = value !== undefined ? `${keyOrNamespace}.${keyOrValue}` : keyOrNamespace;
-            const finalValue = value !== undefined ? value : keyOrValue as T;
+            // ドット記法のサポート（valueが未定義の場合）
+            if (value === undefined && typeof category === 'string' && category.includes('.')) {
+                const parts = category.split('.');
+                const actualCategory = parts.slice(0, -1).join('.');
+                const actualKey = parts[parts.length - 1];
+                const actualValue = key; // この場合、keyが実際のvalueになる
+                return this.set(actualCategory, actualKey, actualValue);
+            }
             
-            // 検証
-            if (!this.validateValue(finalKey, finalValue)) {
+            // 型チェック
+            if (typeof key !== 'string') {
+                this._logWarning(`無効なキー型: ${typeof key}`);
                 return false;
             }
             
-            // キーを解析
-            const [category, ...pathParts] = finalKey.split('.');
-            const path = pathParts.join('.');
-            
-            // カテゴリマップを取得または作成
-            let categoryMap = this.configurations.get(category);
-            if (!categoryMap) {
-                categoryMap = new Map<string, ConfigurationValue>();
-                this.configurations.set(category, categoryMap);
+            // 検証実行
+            if (!this.validate(category, key, value)) {
+                this._logWarning(`設定値の検証に失敗: ${category}.${key} = ${value}`);
+                return false;
             }
             
-            // 古い値を取得
-            const oldValue = categoryMap.get(path);
+            // カテゴリが存在しない場合は作成
+            if (!this.configurations.has(category)) {
+                this.configurations.set(category, new Map());
+                this._logDebug(`新しいカテゴリを作成: ${category}`);
+            }
+            
+            const categoryConfig = this.configurations.get(category)!;
+            const oldValue = categoryConfig.get(key);
             
             // 値を設定
-            categoryMap.set(path, finalValue as ConfigurationValue);
+            categoryConfig.set(key, value);
             
             // キャッシュを無効化
-            const cacheKey = `config:${finalKey}`;
-            this.cache.delete(cacheKey);
+            const fullKey = `${category}.${key}`;
+            this.cache.delete(fullKey);
+            
+            // 新しい値をキャッシュに保存（頻繁にアクセスされる場合）
+            if (this._shouldCache(fullKey)) {
+                this._cacheValue(fullKey, value);
+            }
             
             // 変更履歴を記録
-            this.recordChange(finalKey, oldValue, finalValue as ConfigurationValue);
+            this._recordChange(category, key, oldValue, value);
             
-            // ウォッチャーに通知
-            this.notifyWatchers(finalKey, finalValue as ConfigurationValue, oldValue);
+            // 監視者に通知
+            this._notifyWatchers(category, key, value, oldValue);
             
+            this._logDebug(`設定値更新: ${category}.${key} = ${value}`);
             return true;
-
+            
         } catch (error) {
-            const keyForError = value !== undefined ? `${keyOrNamespace}.${keyOrValue}` : keyOrNamespace;
-            const valueForError = value !== undefined ? value : keyOrValue;
-            this.handleError(error, 'set', { key: keyForError, value: valueForError });
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.set',
+                category,
+                key,
+                value
+            });
             return false;
         }
     }
     
     /**
-     * 設定キーが存在するかチェック
+     * 設定値を検証
      */
-    has(key: string): boolean {
-        const [category, ...pathParts] = key.split('.');
-        const path = pathParts.join('.');
-        
-        const categoryMap = this.configurations.get(category);
-        if (!categoryMap) {
-            return this.hasDefaultValue(category, path);
-        }
-        
-        return categoryMap.has(path) || this.hasDefaultValue(category, path);
-    }
-    
-    /**
-     * 設定値を削除
-     */
-    remove(key: string): boolean {
+    public validate(category: string, key: string, value: any): boolean {
         try {
-            const [category, ...pathParts] = key.split('.');
-            const path = pathParts.join('.');
+            const ruleKey = `${category}.${key}`;
             
-            const categoryMap = this.configurations.get(category);
-            if (!categoryMap) {
+            // 検証ルールが存在しない場合は通す
+            if (!this.validationRules.has(ruleKey)) {
+                return true;
+            }
+            
+            const rule = this.validationRules.get(ruleKey)!;
+            
+            // 型チェック
+            if (rule.type && typeof value !== rule.type) {
+                this._logWarning(`型が不正: ${ruleKey} - 期待値: ${rule.type}, 実際: ${typeof value}`);
                 return false;
             }
             
-            const oldValue = categoryMap.get(path);
-            const result = categoryMap.delete(path);
-            
-            if (result) {
-                // キャッシュから削除
-                const cacheKey = `config:${key}`;
-                this.cache.delete(cacheKey);
-                
-                // 変更履歴を記録
-                this.recordChange(key, oldValue, undefined);
-                
-                // ウォッチャーに通知
-                this.notifyWatchers(key, undefined, oldValue);
+            // 範囲チェック（数値の場合）
+            if (typeof value === 'number') {
+                if (rule.min !== undefined && value < rule.min) {
+                    this._logWarning(`値が最小値を下回る: ${ruleKey} - 最小値: ${rule.min}, 実際: ${value}`);
+                    return false;
+                }
+                if (rule.max !== undefined && value > rule.max) {
+                    this._logWarning(`値が最大値を上回る: ${ruleKey} - 最大値: ${rule.max}, 実際: ${value}`);
+                    return false;
+                }
             }
             
-            return result;
-
+            // 選択肢制限チェック（文字列の場合）
+            if (rule.allowedValues && Array.isArray(rule.allowedValues)) {
+                if (!rule.allowedValues.includes(value)) {
+                    this._logWarning(`許可されていない値: ${ruleKey} - 許可値: [${rule.allowedValues.join(', ')}], 実際: ${value}`);
+                    return false;
+                }
+            }
+            
+            // カスタム検証関数
+            if (rule.validator && typeof rule.validator === 'function') {
+                if (!rule.validator(value)) {
+                    this._logWarning(`カスタム検証に失敗: ${ruleKey}`);
+                    return false;
+                }
+            }
+            
+            return true;
+            
         } catch (error) {
-            this.handleError(error, 'remove', { key });
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.validate',
+                category,
+                key,
+                value
+            });
             return false;
         }
     }
     
     /**
-     * すべての設定をクリア
+     * 設定変更を監視
      */
-    clear(): void {
-        this.configurations.clear();
-        this.cache.clear();
-        console.log('[ConfigurationManager] All configurations cleared');
+    public watch(category: string, key: string, callback: WatchCallback): string {
+        try {
+            const watchKey = `${category}.${key}`;
+            const watchId = `${watchKey}_${Date.now()}_${Math.random()}`;
+            
+            if (!this.watchers.has(watchKey)) {
+                this.watchers.set(watchKey, new Map());
+            }
+            
+            this.watchers.get(watchKey)!.set(watchId, callback);
+            
+            this._logDebug(`監視を開始: ${watchKey} (ID: ${watchId})`);
+            return watchId;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.watch',
+                category,
+                key
+            });
+            return '';
+        }
+    }
+    
+    /**
+     * 監視を解除
+     */
+    public unwatch(watchId: string): boolean {
+        try {
+            for (const [watchKey, callbacks] of this.watchers) {
+                if (callbacks.has(watchId)) {
+                    callbacks.delete(watchId);
+                    this._logDebug(`監視を解除: ${watchKey} (ID: ${watchId})`);
+                    
+                    // コールバックが空になったら削除
+                    if (callbacks.size === 0) {
+                        this.watchers.delete(watchKey);
+                    }
+                    
+                    return true;
+                }
+            }
+            
+            this._logWarning(`監視IDが見つかりません: ${watchId}`);
+            return false;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.unwatch',
+                watchId
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * 設定をリセット
+     */
+    public reset(category: string | null = null): boolean {
+        try {
+            if (category) {
+                // 特定カテゴリのリセット
+                if (this.configurations.has(category)) {
+                    this.configurations.get(category)!.clear();
+                    this._logDebug(`カテゴリをリセット: ${category}`);
+                }
+            } else {
+                // 全カテゴリのリセット
+                for (const categoryConfig of this.configurations.values()) {
+                    categoryConfig.clear();
+                }
+                this._logDebug('全設定をリセット');
+            }
+            
+            return true;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.reset',
+                category
+            });
+            return false;
+        }
+    }
+    
+    /**
+     * 検証ルールを設定
+     */
+    public setValidationRule(category: string, key: string, rule: ValidationRule): void {
+        const ruleKey = `${category}.${key}`;
+        this.validationRules.set(ruleKey, rule);
+        this._logDebug(`検証ルールを設定: ${ruleKey}`);
     }
     
     /**
      * デフォルト値を設定
      */
-    setDefaultValue(category: string, path: string, value: ConfigurationValue): void {
-        let defaultMap = this.defaultValues.get(category);
-        if (!defaultMap) {
-            defaultMap = new Map<string, ConfigurationValue>();
-            this.defaultValues.set(category, defaultMap);
-        }
-        
-        defaultMap.set(path, value);
+    public setDefaultValue(category: string, key: string, value: any): void {
+        const defaultKey = `${category}.${key}`;
+        this.defaultValues.set(defaultKey, value);
+        this._logDebug(`デフォルト値を設定: ${defaultKey} = ${value}`);
     }
     
     /**
-     * ウォッチャーを追加
+     * 設定の存在確認
      */
-    addWatcher(key: string, callback: WatcherCallback): void {
-        let watchers = this.watchers.get(key);
-        if (!watchers) {
-            watchers = new Set<WatcherCallback>();
-            this.watchers.set(key, watchers);
+    public has(category: string, key?: string): boolean {
+        // ドット記法のサポート（keyが未定義の場合）
+        if (key === undefined && typeof category === 'string' && category.includes('.')) {
+            const parts = category.split('.');
+            const actualCategory = parts.slice(0, -1).join('.');
+            const actualKey = parts[parts.length - 1];
+            return this.configurations.has(actualCategory) && 
+                   this.configurations.get(actualCategory)!.has(actualKey);
         }
         
-        watchers.add(callback);
+        // 従来の形式
+        return this.configurations.has(category) && 
+               key !== undefined &&
+               this.configurations.get(category)!.has(key);
     }
     
     /**
-     * ウォッチャーを削除
+     * カテゴリ内の全設定を取得
      */
-    removeWatcher(key: string, callback: WatcherCallback): boolean {
-        const watchers = this.watchers.get(key);
-        if (!watchers) {
-            return false;
+    public getCategory(category: string): Record<string, any> {
+        if (!this.configurations.has(category)) {
+            return {};
         }
         
-        return watchers.delete(callback);
-    }
-    
-    /**
-     * 検証ルールを追加
-     */
-    addValidationRule(key: string, rule: ValidationRule): void {
-        this.validationRules.set(key, rule);
-    }
-    
-    // Private helper methods
-    
-    private _getDefaultValue<T>(category: string, path: string): T | null {
-        const defaultMap = this.defaultValues.get(category);
-        if (!defaultMap) {
-            return null as any;
-        }
+        const categoryConfig = this.configurations.get(category)!;
+        const result: Record<string, any> = {};
         
-        return (defaultMap.get(path) as T) || null;
-    }
-    
-    private hasDefaultValue(category: string, path: string): boolean {
-        const defaultMap = this.defaultValues.get(category);
-        return defaultMap ? defaultMap.has(path) : false;
-    }
-    
-    private validateValue(key: string, value: ConfigurationValue): boolean {
-        for (const ruleEntry of Array.from(this.validationRules.entries())) {
-            const [ruleKey, rule] = ruleEntry;
-            if (this.matchesPattern(key, ruleKey)) {
-                if (!rule.validate(value)) {
-                    this.logWarning(`Validation failed for ${key}: ${rule.errorMessage || 'Invalid value'}`, key);
-                    return false;
-                }
-                
-                // Transform value if transformer exists
-                if (rule.transform) {
-                    value = rule.transform(value);
-                }
-            }
-        }
-        
-        return true;
-    }
-
-    private matchesPattern(key: string, pattern: string): boolean {
-        // Simple pattern matching with wildcards
-        const regex = new RegExp(pattern.replace(/\*/g, '.*'));
-        return regex.test(key);
-    }
-    
-    /**
-     * 内部的に値を設定（遅延読み込み用）
-     */
-    private setValueInternal(category: string, path: string, value: ConfigurationValue): void {
-        const categoryMap = this.configurations.get(category);
-        if (!categoryMap) {
-            const newMap = new Map<string, ConfigurationValue>();
-            newMap.set(path, value);
-            this.configurations.set(category, newMap);
-        } else {
-            categoryMap.set(path, value);
-        }
-    }
-    
-    private recordChange(key: string, oldValue: ConfigurationValue, newValue: ConfigurationValue): void {
-        const change: ChangeHistoryEntry = {
-            key,
-            oldValue,
-            newValue,
-            timestamp: Date.now()
-        };
-        
-        this.changeHistory.push(change);
-        
-        // Keep only last 100 changes
-        if (this.changeHistory.length > 100) {
-            this.changeHistory.shift();
-        }
-    }
-    
-    private notifyWatchers(key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue): void {
-        const watchers = this.watchers.get(key);
-        if (!watchers) {
-            return;
-        }
-
-        watchers.forEach(callback => {
-            try {
-                callback(key, newValue, oldValue);
-            } catch (error) {
-                this.handleError(error, 'watcher', { key, callback });
-            }
-        });
-    }
-    
-    private trackKeyAccess(key: string): void {
-        const count = this.accessStats.frequentKeys.get(key) || 0;
-        this.accessStats.frequentKeys.set(key, count + 1);
-    }
-    
-    private logWarning(message: string, key: string): void {
-        const now = Date.now();
-        const lastWarning = this.warningCache.get(key);
-        if (!lastWarning || now - lastWarning > this.warningRateLimit) {
-            console.warn(`[ConfigurationManager] ${message}`);
-            this.warningCache.set(key, now);
-        }
-    }
-
-    private handleError(error: any, operation: string, context: any): void {
-        if (this.errorHandler && this.errorHandler.handleError) {
-            this.errorHandler.handleError(error, {
-                context: 'ConfigurationManager',
-                operation,
-                ...context
-            });
-        } else {
-            console.error(`[ConfigurationManager] Error in ${operation}:`, error, context);
-        }
-    }
-    
-    /**
-     * テスト用: configurationsプロパティへのアクセス
-     */
-    get _configurations(): Map<string, Map<string, ConfigurationValue>> {
-        return this.configurations;
-    }
-    
-    /**
-     * バリデーション機能（テスト用）
-     */
-    validate(namespace: string, key: string, value: ConfigurationValue): boolean {
-        const ruleKey = `${namespace}.${key}`;
-        const rule = this.validationRules.get(ruleKey);
-        
-        if (!rule) return true;
-        
-        // 基本的なバリデーション
-        if (rule.type && typeof value !== rule.type) {
-            return false;
-        }
-
-        if (rule.pattern && typeof value === 'string' && !rule.pattern.test(value)) {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    /**
-     * バリデーションルールを設定（テスト用）
-     */
-    setValidationRule(key: string, rule: ValidationRule): void {
-        this.validationRules.set(key, rule);
-    }
-
-    /**
-     * カテゴリ別の設定値を取得
-     * @param {string} category - カテゴリ名
-     * @returns {Record<string, ConfigurationValue>} カテゴリの設定値
-     */
-    getCategory(category: string): Record<string, ConfigurationValue> {
-        const result: Record<string, ConfigurationValue> = {};
-        const categoryMap = this.configurations.get(category);
-        
-        if (categoryMap) {
-            categoryMap.forEach((value, key) => {
-                result[key] = value;
-            });
+        for (const [key, value] of categoryConfig) {
+            result[key] = value;
         }
         
         return result;
     }
-
+    
     /**
-     * 設定変更履歴を取得
-     * @returns {Array} 変更履歴
+     * 全ての設定データをエクスポート
      */
-    getChangeHistory(): Array<{
-        key: string;
-        timestamp: number;
-        oldValue: ConfigurationValue;
-        newValue: ConfigurationValue;
-    }> {
-        return [...this.changeHistory];
-    }
-
-    /**
-     * 設定値の変更を監視（エイリアス）
-     * @param {string} pattern - 監視パターン
-     * @param {function} callback - コールバック関数
-     * @returns {function} 登録したコールバック関数
-     */
-    watch(pattern: string, callback: (key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue) => void): WatcherCallback {
-        this.addWatcher(pattern, callback);
-        return callback;
-    }
-
-    /**
-     * 監視を解除（エイリアス）
-     * @param {string} key - 監視キー
-     * @param {function} callback - コールバック関数
-     */
-    unwatch(key: string, callback: WatcherCallback): void {
-        this.removeWatcher(key, callback);
-    }
-
-    /**
-     * 設定をリセット（テスト用）
-     */
-    reset(): void {
-        this.clear();
-    }
-
-    /**
-     * アクセス統計を取得（テスト用）
-     */
-    getAccessStats(): AccessStats {
-        return this.accessStats;
-    }
-
-    /**
-     * 設定データを取得（テスト用）
-     */
-    getConfigurations(): Map<string, Map<string, ConfigurationValue>> {
-        return this.configurations;
+    public exportConfig(): Record<string, Record<string, any>> {
+        try {
+            const result: Record<string, Record<string, any>> = {};
+            
+            // 全カテゴリの設定をエクスポート
+            for (const [category, categoryConfig] of this.configurations) {
+                result[category] = {};
+                for (const [key, value] of categoryConfig) {
+                    result[category][key] = value;
+                }
+            }
+            
+            // デフォルト値も含める（設定されていないキーの場合）
+            for (const [defaultKey, defaultValue] of this.defaultValues) {
+                const [category, key] = defaultKey.split('.');
+                
+                // カテゴリが存在しない場合は作成
+                if (!result[category]) {
+                    result[category] = {};
+                }
+                
+                // 設定されていない場合のみデフォルト値を追加
+                if (result[category][key] === undefined) {
+                    result[category][key] = defaultValue;
+                }
+            }
+            
+            this._logDebug(`設定データをエクスポート: ${Object.keys(result).length}カテゴリ`);
+            return result;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.exportConfig'
+            });
+            return {};
+        }
     }
     
     /**
-     * 遅延読み込みローダーを登録
-     * @param {string} key - 設定キー
-     * @param {function} loader - 値を返すローダー関数
+     * 変更履歴を取得
      */
-    registerLazyLoader(key: string, loader: () => ConfigurationValue): void {
-        this.__lazyLoaders.set(key, loader);
+    public getChangeHistory(): ChangeRecord[] {
+        return [...this.changeHistory];
+    }
+    
+    /**
+     * 監視者に通知
+     * @private
+     */
+    private _notifyWatchers(category: string, key: string, newValue: any, oldValue: any): void {
+        const watchKey = `${category}.${key}`;
+        
+        if (this.watchers.has(watchKey)) {
+            const callbacks = this.watchers.get(watchKey)!;
+            
+            for (const callback of callbacks.values()) {
+                try {
+                    callback(newValue, oldValue, category, key);
+                } catch (error) {
+                    getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                        context: 'ConfigurationManager._notifyWatchers',
+                        watchKey
+                    });
+                }
+            }
+        }
+    }
+    
+    /**
+     * 変更履歴を記録
+     * @private
+     */
+    private _recordChange(category: string, key: string, oldValue: any, newValue: any): void {
+        this.changeHistory.push({
+            timestamp: Date.now(),
+            category,
+            key,
+            oldValue,
+            newValue
+        });
+        
+        // 履歴が長くなりすぎないよう制限
+        if (this.changeHistory.length > 1000) {
+            this.changeHistory.splice(0, 100);
+        }
+    }
+    
+    /**
+     * デバッグモード判定
+     * @private
+     */
+    private _isDebugMode(): boolean {
+        try {
+            if (typeof window !== 'undefined' && window.location) {
+                return new URLSearchParams(window.location.search).has('debug') ||
+                       (typeof localStorage !== 'undefined' && localStorage.getItem('debugMode') === 'true');
+            }
+            return false;
+        } catch (error) {
+            return false;
+        }
+    }
+    
+    /**
+     * デバッグログ出力
+     * @private
+     */
+    private _logDebug(message: string): void {
+        if (this._isDebugMode()) {
+            console.log(`[ConfigurationManager] ${message}`);
+        }
+    }
+    
+    /**
+     * 警告ログ出力（レート制限付き）
+     * @private
+     */
+    private _logWarning(message: string): void {
+        // 毎フレームの大量ログを防ぐため、同じメッセージの警告は制限
+        const now = Date.now();
+        const lastWarningTime = this.warningCache.get(message);
+        
+        if (!lastWarningTime || (now - lastWarningTime) >= this.warningRateLimit) {
+            console.warn(`[ConfigurationManager] ${message}`);
+            this.warningCache.set(message, now);
+            
+            // キャッシュサイズ制限（メモリリーク防止）
+            if (this.warningCache.size > 100) {
+                // 古い警告記録を削除
+                const sortedEntries = Array.from(this.warningCache.entries())
+                    .sort((a, b) => b[1] - a[1]) // 時刻で降順ソート
+                    .slice(0, 50); // 最新50件のみ保持
+                
+                this.warningCache.clear();
+                sortedEntries.forEach(([msg, time]) => {
+                    this.warningCache.set(msg, time);
+                });
+            }
+        }
+    }
+    
+    /**
+     * アクセス統計を更新
+     * @private
+     */
+    private _updateAccessStats(fullKey: string): void {
+        this.accessStats.totalAccesses++;
+        
+        // キー別アクセス回数を更新
+        const currentCount = this.accessStats.frequentKeys.get(fullKey) || 0;
+        this.accessStats.frequentKeys.set(fullKey, currentCount + 1);
+        
+        // 定期的に最適化を実行
+        const now = Date.now();
+        if (now - this.accessStats.lastOptimization > 60000) { // 1分間隔
+            this._optimizeCache();
+            this.accessStats.lastOptimization = now;
+        }
+    }
+    
+    /**
+     * キャッシュすべきかどうかを判定
+     * @private
+     */
+    private _shouldCache(fullKey: string): boolean {
+        // プリロードキーは常にキャッシュ
+        if (this.preloadKeys.has(fullKey)) {
+            return true;
+        }
+        
+        // アクセス回数が閾値を超えた場合はキャッシュ
+        const accessCount = this.accessStats.frequentKeys.get(fullKey) || 0;
+        return accessCount >= 3; // 3回以上アクセスされたらキャッシュ
+    }
+    
+    /**
+     * 値をキャッシュに保存
+     * @private
+     */
+    private _cacheValue(fullKey: string, value: any): void {
+        // 頻繁にアクセスされるキーは長時間キャッシュ
+        const accessCount = this.accessStats.frequentKeys.get(fullKey) || 0;
+        const ttl = this.preloadKeys.has(fullKey) ? 600000 : // プリロードキー: 10分
+                   accessCount >= 10 ? 300000 : // 頻繁アクセス: 5分
+                   60000; // 通常: 1分
+        
+        const priority = this.preloadKeys.has(fullKey) ? 100 : // プリロードキー: 最高優先度
+                        accessCount >= 10 ? 50 : // 頻繁アクセス: 高優先度
+                        10; // 通常: 低優先度
+        
+        this.cache.set(fullKey, value, { ttl, priority });
+    }
+    
+    /**
+     * 遅延読み込み関数を登録
+     */
+    public registerLazyLoader(category: string, key: string, loader: () => any): void {
+        const fullKey = `${category}.${key}`;
+        this.lazyLoaders.set(fullKey, loader);
+        this._logDebug(`遅延読み込み関数を登録: ${fullKey}`);
     }
     
     /**
      * プリロードキーを追加
-     * @param {string} key - プリロードする設定キー
      */
-    addPreloadKey(key: string): void {
-        this.__preloadKeys.add(key);
+    public addPreloadKey(category: string, key: string): void {
+        const fullKey = `${category}.${key}`;
+        this.preloadKeys.add(fullKey);
+        
+        // 既に値が存在する場合はプリロード
+        if (this.has(category, key)) {
+            const value = this._getDirectValue(category, key);
+            this._cacheValue(fullKey, value);
+        }
+        
+        this._logDebug(`プリロードキーを追加: ${fullKey}`);
     }
     
     /**
-     * プリロード設定を実行
+     * キャッシュを最適化
+     * @private
      */
-    async preloadConfigurations(): Promise<void> {
-        const preloadPromises: Promise<void>[] = [];
+    private _optimizeCache(): void {
+        try {
+            // 頻繁にアクセスされるキーを特定
+            const sortedKeys = Array.from(this.accessStats.frequentKeys.entries())
+                .sort((a, b) => b[1] - a[1]) // アクセス回数の降順
+                .slice(0, 20); // 上位20キー
+            
+            // 頻繁にアクセスされるキーをプリロード
+            for (const [fullKey, count] of sortedKeys) {
+                if (count >= 5 && !this.cache.has(fullKey)) {
+                    const [category, key] = fullKey.split('.');
+                    if (this.has(category, key)) {
+                        const value = this._getDirectValue(category, key);
+                        this._cacheValue(fullKey, value);
+                    }
+                }
+            }
+            
+            // 古いアクセス統計をクリーンアップ
+            if (this.accessStats.frequentKeys.size > 100) {
+                // アクセス回数の少ないキーを削除
+                const keysToDelete = Array.from(this.accessStats.frequentKeys.entries())
+                    .filter(([, count]) => count < 2)
+                    .map(([key]) => key);
+                
+                for (const key of keysToDelete) {
+                    this.accessStats.frequentKeys.delete(key);
+                }
+            }
+            
+            this._logDebug(`キャッシュ最適化完了: ${sortedKeys.length}キーを処理`);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager._optimizeCache'
+            });
+        }
+    }
+    
+    /**
+     * パフォーマンス統計を取得
+     */
+    public getPerformanceStats(): PerformanceStats {
+        const hitRate = this.accessStats.totalAccesses > 0 
+            ? (this.accessStats.cacheHits / this.accessStats.totalAccesses) * 100 
+            : 0;
         
-        this.__preloadKeys.forEach((key) => {
-            preloadPromises.push(
-                new Promise<void>((resolve) => {
-                    // 非同期で値を取得してキャッシュに保存
-                    setTimeout(() => {
-                        this.get(key);
-                        resolve();
-                    }, 0);
-                })
-            );
+        const topKeys = Array.from(this.accessStats.frequentKeys.entries())
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10)
+            .map(([key, count]) => ({ key, count }));
+        
+        return {
+            totalAccesses: this.accessStats.totalAccesses,
+            cacheHits: this.accessStats.cacheHits,
+            cacheMisses: this.accessStats.cacheMisses,
+            hitRate: `${hitRate.toFixed(2)}%`,
+            cachedKeys: this.cache.getStats().size,
+            preloadKeys: this.preloadKeys.size,
+            lazyLoaders: this.lazyLoaders.size,
+            topAccessedKeys: topKeys,
+            cacheStats: this.cache.getStats()
+        };
+    }
+    
+    /**
+     * キャッシュをウォームアップ（プリロード）
+     */
+    public warmupCache(): void {
+        try {
+            let warmedCount = 0;
+            
+            // プリロードキーをキャッシュに読み込み
+            for (const fullKey of this.preloadKeys) {
+                const [category, key] = fullKey.split('.');
+                if (this.has(category, key)) {
+                    const value = this._getDirectValue(category, key);
+                    this._cacheValue(fullKey, value);
+                    warmedCount++;
+                }
+            }
+            
+            this._logDebug(`キャッシュウォームアップ完了: ${warmedCount}キーを読み込み`);
+            
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.warmupCache'
+            });
+        }
+    }
+    
+    /**
+     * キャッシュをクリア
+     */
+    public clearCache(prefix: string | null = null): number {
+        const clearedCount = this.cache.clear(prefix);
+        this._logDebug(`キャッシュクリア: ${clearedCount}エントリを削除`);
+        return clearedCount;
+    }
+    
+    /**
+     * バブルのデフォルト値を設定
+     * @private
+     */
+    private _setupBubbleDefaults(): void {
+        // Bubble.jsの_getHardcodedConfig()と同じ設定値を使用
+        const bubbleConfigs: Record<string, Record<string, any>> = {
+            normal: {
+                health: 1,
+                size: 50,
+                maxAge: 12000,
+                color: '#87CEEB',
+                score: 15
+            },
+            stone: {
+                health: 2,
+                size: 55,
+                maxAge: 16000,
+                color: '#696969',
+                score: 25
+            },
+            iron: {
+                health: 3,
+                size: 60,
+                maxAge: 20000,
+                color: '#708090',
+                score: 40
+            },
+            diamond: {
+                health: 4,
+                size: 65,
+                maxAge: 22000,
+                color: '#B0E0E6',
+                score: 60
+            },
+            pink: {
+                health: 1,
+                size: 45,
+                maxAge: 10000,
+                color: '#FFB6C1',
+                score: 20,
+                healAmount: 25
+            },
+            poison: {
+                health: 1,
+                size: 48,
+                maxAge: 14000,
+                color: '#9370DB',
+                score: 30,
+                damageAmount: 8
+            },
+            spiky: {
+                health: 1,
+                size: 52,
+                maxAge: 13000,
+                color: '#FF6347',
+                score: 35,
+                chainRadius: 120
+            },
+            rainbow: {
+                health: 1,
+                size: 55,
+                maxAge: 16000,
+                color: '#FF69B4',
+                score: 400,
+                bonusTimeMs: 8000
+            },
+            clock: {
+                health: 1,
+                size: 50,
+                maxAge: 20000,
+                color: '#FFD700',
+                score: 180,
+                timeStopMs: 2500
+            },
+            score: {
+                health: 1,
+                size: 48,
+                maxAge: 9000,
+                color: '#32CD32',
+                score: 250,
+                bonusScore: 80
+            },
+            electric: {
+                health: 1,
+                size: 50,
+                maxAge: 13000,
+                color: '#FFFF00',
+                score: 20,
+                shakeIntensity: 15,
+                disableDuration: 1500
+            },
+            escaping: {
+                health: 1,
+                size: 45,
+                maxAge: 16000,
+                color: '#FF8C00',
+                score: 50,
+                escapeSpeed: 180,
+                escapeRadius: 90
+            },
+            cracked: {
+                health: 1,
+                size: 52,
+                maxAge: 6000,
+                color: '#8B4513',
+                score: 30
+            },
+            boss: {
+                health: 8,
+                size: 90,
+                maxAge: 35000,
+                color: '#8B0000',
+                score: 100
+            },
+            golden: {
+                health: 1,
+                size: 55,
+                maxAge: 8000,
+                color: '#FFD700',
+                score: 500,
+                multiplier: 2.0
+            },
+            frozen: {
+                health: 2,
+                size: 50,
+                maxAge: 25000,
+                color: '#87CEEB',
+                score: 100,
+                slowEffect: 0.5
+            },
+            magnetic: {
+                health: 1,
+                size: 48,
+                maxAge: 15000,
+                color: '#FF1493',
+                score: 150,
+                magnetRadius: 100
+            },
+            explosive: {
+                health: 1,
+                size: 52,
+                maxAge: 10000,
+                color: '#FF4500',
+                score: 200,
+                explosionRadius: 150
+            },
+            phantom: {
+                health: 1,
+                size: 45,
+                maxAge: 12000,
+                color: '#9370DB',
+                score: 300,
+                phaseChance: 0.3
+            },
+            multiplier: {
+                health: 1,
+                size: 50,
+                maxAge: 18000,
+                color: '#32CD32',
+                score: 100,
+                scoreMultiplier: 3.0
+            }
+        };
+
+        // 全バブル種類のデフォルト値を設定
+        for (const [bubbleType, config] of Object.entries(bubbleConfigs)) {
+            for (const [property, value] of Object.entries(config)) {
+                this.setDefaultValue('game', `bubbles.${bubbleType}.${property}`, value);
+            }
+        }
+        
+        this._logDebug(`バブルデフォルト値設定完了: ${Object.keys(bubbleConfigs).length}種類`);
+    }
+
+    /**
+     * 検証ルールを追加
+     */
+    public addValidationRule(category: string, key: string, rule: ValidationRule): void {
+        try {
+            const ruleKey = `${category}.${key}`;
+            this.validationRules.set(ruleKey, rule);
+            this._logDebug(`検証ルール追加: ${ruleKey}`);
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'CONFIGURATION_ERROR', {
+                context: 'ConfigurationManager.addValidationRule',
+                category,
+                key,
+                rule
+            });
+        }
+    }
+    
+    /**
+     * 検証ルールを設定
+     * @private
+     */
+    private _setupValidationRules(): void {
+        // boolean型の設定項目
+        this.addValidationRule('effects', 'quality.autoAdjust', { type: 'boolean' });
+        this.addValidationRule('effects', 'seasonal.enabled', { type: 'boolean' });
+        this.addValidationRule('effects', 'seasonal.autoDetection', { type: 'boolean' });
+        this.addValidationRule('effects', 'audio.enabled', { type: 'boolean' });
+        this.addValidationRule('effects', 'audio.volumeSync', { type: 'boolean' });
+        this.addValidationRule('performance', 'adaptiveMode', { type: 'boolean' });
+        this.addValidationRule('performance', 'optimization.adaptiveMode', { type: 'boolean' });
+        this.addValidationRule('performance', 'optimization.workloadDistribution', { type: 'boolean' });
+        this.addValidationRule('audio', 'enabled', { type: 'boolean' });
+        
+        // number型の設定項目（範囲チェック付き）
+        this.addValidationRule('performance', 'targetFPS', { type: 'number', min: 15, max: 144 });
+        this.addValidationRule('performance', 'optimization.targetFPS', { type: 'number', min: 15, max: 144 });
+        this.addValidationRule('performance', 'optimization.optimizationInterval', { type: 'number', min: 100, max: 10000 });
+        this.addValidationRule('performance', 'optimization.maxHistorySize', { type: 'number', min: 10, max: 1000 });
+        this.addValidationRule('performance', 'optimization.maxBubbles', { type: 'number', min: 1, max: 100 });
+        this.addValidationRule('performance', 'optimization.maxParticles', { type: 'number', min: 10, max: 10000 });
+        this.addValidationRule('performance', 'optimization.maxTimePerFrame', { type: 'number', min: 1, max: 50 });
+        this.addValidationRule('effects', 'particles.maxCount', { type: 'number', min: 10, max: 10000 });
+        this.addValidationRule('audio', 'volumes.master', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'volumes.effects', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'volumes.music', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('game', 'bubbles.maxAge', { type: 'number', min: 1000, max: 300000 });
+        
+        // string型の設定項目（選択肢制限付き）
+        this.addValidationRule('effects', 'quality.level', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high', 'ultra'] 
+        });
+        this.addValidationRule('effects', 'seasonal.currentSeason', { 
+            type: 'string', 
+            allowedValues: ['spring', 'summer', 'autumn', 'winter'] 
+        });
+        this.addValidationRule('effects', 'particles.quality', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high'] 
+        });
+        this.addValidationRule('performance', 'performanceLevel', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high'] 
+        });
+        this.addValidationRule('performance', 'optimization.performanceLevel', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high'] 
+        });
+        this.addValidationRule('game', 'difficulty', { 
+            type: 'string', 
+            allowedValues: ['easy', 'normal', 'hard'] 
         });
         
-        await Promise.all(preloadPromises);
-        console.log(`[ConfigurationManager] Preloaded ${this.__preloadKeys.size} configuration keys`);
+        // SettingsManager互換性のためのオーディオ設定検証ルール
+        this.addValidationRule('audio', 'masterVolume', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'sfxVolume', { type: 'number', min: 0, max: 1 });
+        this.addValidationRule('audio', 'bgmVolume', { type: 'number', min: 0, max: 1 });
+        
+        // UI設定の検証ルール
+        this.addValidationRule('ui', 'language', { 
+            type: 'string', 
+            allowedValues: ['en', 'ja', 'es', 'fr', 'de', 'zh', 'ko'] 
+        });
+        this.addValidationRule('ui', 'quality', { 
+            type: 'string', 
+            allowedValues: ['low', 'medium', 'high', 'auto'] 
+        });
+        this.addValidationRule('ui', 'theme', { 
+            type: 'string', 
+            allowedValues: ['default', 'dark', 'light', 'high-contrast'] 
+        });
+        this.addValidationRule('ui', 'reducedMotion', { type: 'boolean' });
+        this.addValidationRule('ui', 'highContrast', { type: 'boolean' });
+        this.addValidationRule('ui', 'showFPS', { type: 'boolean' });
+        this.addValidationRule('ui', 'showDebugInfo', { type: 'boolean' });
+        this.addValidationRule('ui', 'animationSpeed', { type: 'number', min: 0.1, max: 3.0 });
+        this.addValidationRule('ui', 'uiScale', { type: 'number', min: 0.5, max: 2.0 });
+        
+        // アクセシビリティ設定の検証ルール
+        this.addValidationRule('accessibility', 'highContrast', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'reducedMotion', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'largeText', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'screenReader', { type: 'boolean' });
+        this.addValidationRule('accessibility', 'colorBlindSupport', { type: 'boolean' });
+        
+        // 操作設定の検証ルール
+        this.addValidationRule('controls', 'keyboardEnabled', { type: 'boolean' });
+        this.addValidationRule('controls', 'mouseEnabled', { type: 'boolean' });
+        this.addValidationRule('controls', 'touchEnabled', { type: 'boolean' });
+        
+        this._logDebug('検証ルール設定完了');
     }
 }
 
-// Singleton instance
-let configurationManagerInstance: ConfigurationManager | null = null;
+// シングルトンインスタンス
+let instance: ConfigurationManager | null = null;
 
 /**
- * Get ConfigurationManager singleton
+ * ConfigurationManagerのシングルトンインスタンスを取得
  */
 export function getConfigurationManager(): ConfigurationManager {
-    if (!configurationManagerInstance) {
-        configurationManagerInstance = new ConfigurationManager();
+    if (!instance) {
+        instance = new ConfigurationManager();
     }
-    return configurationManagerInstance;
+    return instance;
 }
