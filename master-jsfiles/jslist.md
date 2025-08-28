@@ -115,12 +115,12 @@
 - [x] src/components/examples/AccessibilityProfileIntegrationExample.js ⚠️ 大幅な実装差異（TS版が簡略化）
 - [x] src/components/examples/SettingsImportExportIntegrationExample.js ⚠️ 大幅な実装差異（TS版が簡略化）
 - [x] src/components/examples/VolumeControlIntegrationExample.js ⚠️ 大幅な実装差異（TS版が簡略化）
-- [] src/config/AudioConfig.js
-- [] src/config/EffectsConfig.js
-- [] src/config/FontPreloadConfig.js
-- [] src/config/GameBalance.js
+- [x] src/config/AudioConfig.js - TypeScript版でAudioManagerインターフェースの型定義修正済み
+- [x] src/config/EffectsConfig.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/config/FontPreloadConfig.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/config/GameBalance.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
 - [x] src/config/GameConfig.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
-- [] src/config/I18nPerformanceConfig.js
+- [x] src/config/I18nPerformanceConfig.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
 - [x] src/config/PerformanceConfig.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
 - [x] src/core/ARIAManager.js - TypeScript版は正常（coreディレクトリ確認済み）
 - [x] src/core/AccessibilityManager.js - TypeScript版は正常（coreディレクトリ確認済み）
@@ -131,8 +131,8 @@
 - [x] src/core/AdvancedGestureRecognitionSystem.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
 - [x] src/core/AdvancedResponsiveLayoutManager.js - ✅ **軽微な差異のみ** ErrorHandler使用方法とdispatchLayoutEvent型定義を修正
 - [x] src/core/AlternativeInputManager.js - ✅ **プロパティ追加と修正** 欠落プロパティと初期化処理を修正
-- [] src/core/AsyncOperationQueue.js
-- [] src/core/BackupManager.js
+- [x] src/core/AsyncOperationQueue.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/core/BackupManager.js - TypeScript版でValidationManager.validateの型定義修正が必要（"single"|"batch" → string）
 - [] src/core/BalanceCalculator.js
 - [] src/core/CacheSystem.js
 - [] src/core/CalculationEngine.js

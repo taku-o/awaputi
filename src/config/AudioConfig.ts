@@ -561,7 +561,10 @@ export class AudioConfig {
             if (volumeConfig.muted !== audioManager.isMuted) {
                 audioManager.toggleMute();
             }
-
+            
+            // 音響効果設定の適用は、AudioManagerの実装に依存するため
+            // 必要に応じて拡張する
+            
             console.log('[AudioConfig] AudioManagerに設定を適用しました');
         } catch (error) {
             getErrorHandler().handleError(error as Error, {
@@ -613,5 +616,6 @@ export function getAudioConfig(): AudioConfig {
 }
 
 export {
-    AudioConfig
+    AudioConfig,
+    getAudioConfig
 };
