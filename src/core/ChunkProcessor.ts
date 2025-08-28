@@ -11,6 +11,46 @@ export interface ChunkProcessorOptions {
 }
 
 /**
+ * 処理関数型
+ */
+export type ProcessFunction<T, R> = (chunk: T[], chunkIndex: number, context: ProcessContext) => R | Promise<R>;
+
+/**
+ * ストリームデータプロバイダー型
+ */
+export type DataProvider<T> = () => Promise<T | null | undefined>;
+
+/**
+ * マージ戦略型
+ */
+export type MergeStrategy = 'object' | 'array';
+
+/**
+ * カスタムマージ関数型
+ */
+export type CustomMerger = (results: any[]) => any;
+
+/**
+ * プロセスコンテキスト
+ */
+interface ProcessContext {
+    processId: string;
+    totalItems?: number;
+    processedItems?: number;
+}
+
+/**
+ * プロセスオプション
+ */
+export interface ProcessOptions {
+    chunkSize?: number;
+    collectResults?: boolean;
+    mergeStrategy?: MergeStrategy;
+    customMerger?: CustomMerger;
+    batchSize?: number;
+}
+
+/**
  * プロセス情報
  */
 interface ProcessInfo {
@@ -25,78 +65,66 @@ interface ProcessInfo {
 }
 
 /**
- * プロセスオプション
- */
-export interface ProcessOptions {
-    chunkSize?: number;
-    collectResults?: boolean;
-    mergeResults?: boolean;
-    mergeStrategy?: 'object' | 'array';
-    customMerger?: (results: any[]) => any;
-    batchSize?: number;
-}
-
-/**
- * 統計情報
- */
-interface ProcessorStats {
-    totalProcessed: number;
-    totalChunks: number;
-    averageChunkTime: number;
-    memoryPeakUsage: number;
-    totalProcessingTime: number;
-}
-
-/**
- * イベントデータ型
+ * イベントデータ
  */
 export interface ProcessEventData {
     id: string;
     totalItems?: number;
     totalChunks?: number;
     processedItems?: number;
+    processedCount?: number;
     progress?: number;
-    result?: any;
-    error?: Error;
     chunkIndex?: number;
-    timestamp?: number;
+    error?: string;
+    duration?: number;
+    results?: any;
+    totalProcessed?: number;
 }
-
-/**
- * 処理関数型
- */
-export type ProcessFunction<T, R> = (item: T, index: number, chunk: T[]) => R | Promise<R>;
-
-/**
- * チャンク処理関数型
- */
-export type ChunkProcessFunction<T, R> = (chunk: T[], chunkIndex: number, totalChunks: number) => R | Promise<R>;
 
 /**
  * イベントリスナー型
  */
-export type ProcessEventListener = (data: ProcessEventData) => void;
+export type EventListener = (data: ProcessEventData) => void;
 
 /**
- * 大量データの効率的なチャンク処理を行うクラス
- * メモリ使用量を制御しながら非同期処理でパフォーマンスを最適化
+ * チャンク処理クラス - 大量データの分割処理とメモリ効率化
+ * 
+ * 責任:
+ * - 大量データの分割処理
+ * - プログレッシブ処理の実装
+ * - メモリ効率的なデータ処理
+ * - 処理進捗の監視
  */
 export class ChunkProcessor {
-    private options: Required<ChunkProcessorOptions>;
-    private processes: Map<string, ProcessInfo> = new Map();
-    private stats: ProcessorStats;
-    private eventListeners: Map<string, ProcessEventListener[]> = new Map();
-    private memoryMonitor: NodeJS.Timeout | null = null;
-    private isProcessing = false;
+    private defaultChunkSize: number;
+    private maxMemoryUsage: number;
+    private progressInterval: number;
+    private yieldInterval: number;
+    private activeProcesses: Map<string, ProcessInfo>;
+    private memoryUsage: number;
+    private processCounter: number;
+    private stats: {
+        totalProcessed: number;
+        totalChunks: number;
+        averageChunkTime: number;
+        memoryPeakUsage: number;
+        totalProcessingTime: number;
+    };
+    private listeners: Map<string, EventListener[]>;
 
     constructor(options: ChunkProcessorOptions = {}) {
-        this.options = {
-            chunkSize: options.chunkSize || 1000,
-            maxMemoryUsage: options.maxMemoryUsage || 100 * 1024 * 1024, // 100MB
-            progressInterval: options.progressInterval || 1000, // 1秒
-            yieldInterval: options.yieldInterval || 10 // 10チャンクごと
-        };
-
+        // 設定
+        this.defaultChunkSize = options.chunkSize || 1000; // デフォルトチャンクサイズ
+        this.maxMemoryUsage = options.maxMemoryUsage || 50 * 1024 * 1024; // 50MB
+        this.progressInterval = options.progressInterval || 100; // プログレス更新間隔
+        this.yieldInterval = options.yieldInterval || 10; // イベントループに制御を戻す間隔
+        
+        // 状態管理
+        this.activeProcesses = new Map();
+        this.memoryUsage = 0;
+        this.processCounter = 0;
+        
+        // 統計情報
         this.stats = {
             totalProcessed: 0,
             totalChunks: 0,
@@ -104,416 +132,493 @@ export class ChunkProcessor {
             memoryPeakUsage: 0,
             totalProcessingTime: 0
         };
-
-        this.startMemoryMonitoring();
-        console.log('[ChunkProcessor] 初期化完了');
+        
+        // イベントリスナー
+        this.listeners = new Map();
+        
+        console.log('ChunkProcessor initialized');
     }
-
+    
     /**
-     * メモリ監視の開始
+     * 配列データをチャンクに分割して処理
+     * 
+     * @param data - 処理対象データ
+     * @param processor - 各チャンクを処理する関数
+     * @param options - オプション
+     * @returns 処理結果の配列
      */
-    private startMemoryMonitoring(): void {
-        this.memoryMonitor = setInterval(() => {
-            const memUsage = this.getMemoryUsage();
-            if (memUsage > this.stats.memoryPeakUsage) {
-                this.stats.memoryPeakUsage = memUsage;
-            }
-
-            // メモリ使用量が制限を超えた場合の警告
-            if (memUsage > this.options.maxMemoryUsage) {
-                console.warn(`[ChunkProcessor] メモリ使用量が制限を超過: ${memUsage}B / ${this.options.maxMemoryUsage}B`);
-                this.emit('memoryWarning', {
-                    id: 'memory-monitor',
-                    error: new Error(`Memory usage exceeded limit: ${memUsage}B`)
-                });
-            }
-        }, 1000);
-    }
-
-    /**
-     * 配列データをチャンクに分けて処理
-     */
-    async processArray<T, R>(
-        items: T[],
-        processFunction: ProcessFunction<T, R>,
-        options: ProcessOptions = {}
-    ): Promise<R[]> {
+    async processArray<T, R>(data: T[], processor: ProcessFunction<T, R>, options: ProcessOptions = {}): Promise<R[]> {
+        if (!Array.isArray(data)) {
+            throw new Error('Data must be an array');
+        }
+        
         const processId = this.generateProcessId();
-        const chunkSize = options.chunkSize || this.options.chunkSize;
-        const collectResults = options.collectResults !== false;
-
+        const chunkSize = options.chunkSize || this.defaultChunkSize;
+        const startTime = Date.now();
+        
         try {
-            // プロセス情報を初期化
+            // プロセス情報を登録
             const processInfo: ProcessInfo = {
                 id: processId,
-                totalItems: items.length,
+                totalItems: data.length,
                 processedItems: 0,
-                totalChunks: Math.ceil(items.length / chunkSize),
+                totalChunks: Math.ceil(data.length / chunkSize),
                 processedChunks: 0,
-                startTime: Date.now(),
+                startTime,
                 results: [],
                 options
             };
             
-            this.processes.set(processId, processInfo);
-            this.isProcessing = true;
-
-            this.emit('processStart', {
+            this.activeProcesses.set(processId, processInfo);
+            
+            this.emit('processStarted', {
                 id: processId,
-                totalItems: processInfo.totalItems,
+                totalItems: data.length,
                 totalChunks: processInfo.totalChunks
             });
-
-            const results: R[] = [];
             
-            // チャンクごとの処理
-            for (let i = 0; i < items.length; i += chunkSize) {
-                const chunk = items.slice(i, i + chunkSize);
+            // チャンクに分割して処理
+            for (let i = 0; i < data.length; i += chunkSize) {
+                const chunk = data.slice(i, i + chunkSize);
                 const chunkIndex = Math.floor(i / chunkSize);
-
-                const chunkResults = await this.processChunk(
-                    chunk,
-                    processFunction,
-                    chunkIndex,
-                    processInfo
+                
+                // メモリ使用量チェック
+                await this.checkMemoryUsage();
+                
+                // チャンク処理
+                const chunkStartTime = Date.now();
+                const chunkResult = await this.processChunk(
+                    chunk, 
+                    processor, 
+                    chunkIndex, 
+                    processInfo,
+                    options
                 );
-
-                if (collectResults) {
-                    results.push(...chunkResults);
+                
+                const chunkDuration = Date.now() - chunkStartTime;
+                this.updateChunkStats(chunkDuration);
+                
+                // 結果を保存
+                if (options.collectResults !== false) {
+                    if (Array.isArray(chunkResult)) {
+                        processInfo.results.push(...chunkResult);
+                    } else {
+                        processInfo.results.push(chunkResult);
+                    }
                 }
-
+                
+                // 進捗更新
                 processInfo.processedChunks++;
-                processInfo.processedItems = Math.min(i + chunkSize, items.length);
-
-                // 進捗イベント
-                this.emit('progress', {
-                    id: processId,
-                    processedItems: processInfo.processedItems,
-                    progress: processInfo.processedItems / processInfo.totalItems,
-                    chunkIndex
-                });
-
-                // 定期的にyield（UIブロッキング防止）
-                if (chunkIndex % this.options.yieldInterval === 0) {
-                    await this.yield();
-                }
-            }
-
-            // 結果のマージ処理
-            let finalResults = results;
-            if (options.mergeResults && results.length > 0) {
-                finalResults = await this.mergeResults(results, options);
-            }
-
-            const processingTime = Date.now() - processInfo.startTime;
-            this.updateStats(processInfo, processingTime);
-
-            this.emit('processComplete', {
-                id: processId,
-                result: finalResults,
-                timestamp: Date.now()
-            });
-
-            this.processes.delete(processId);
-            return finalResults;
-
-        } catch (error) {
-            this.emit('processError', {
-                id: processId,
-                error: error as Error
-            });
-
-            getErrorHandler().handleError(error as Error, 'ChunkProcessor.processArray');
-
-            this.processes.delete(processId);
-            throw error;
-        } finally {
-            this.isProcessing = false;
-        }
-    }
-
-    /**
-     * チャンク単位での処理
-     */
-    async processChunks<T, R>(
-        items: T[],
-        chunkProcessor: ChunkProcessFunction<T, R>,
-        options: ProcessOptions = {}
-    ): Promise<R[]> {
-        const processId = this.generateProcessId();
-        const chunkSize = options.chunkSize || this.options.chunkSize;
-
-        try {
-            const totalChunks = Math.ceil(items.length / chunkSize);
-            const results: R[] = [];
-
-            this.emit('processStart', {
-                id: processId,
-                totalItems: items.length,
-                totalChunks
-            });
-
-            for (let i = 0; i < items.length; i += chunkSize) {
-                const chunk = items.slice(i, i + chunkSize);
-                const chunkIndex = Math.floor(i / chunkSize);
-
-                const startTime = performance.now();
-                const result = await chunkProcessor(chunk, chunkIndex, totalChunks);
-                const endTime = performance.now();
-
-                results.push(result);
-
-                this.emit('chunkComplete', {
+                processInfo.processedItems = Math.min(i + chunkSize, data.length);
+                
+                this.emit('chunkProcessed', {
                     id: processId,
                     chunkIndex,
-                    result,
-                    timestamp: Date.now()
+                    processedItems: processInfo.processedItems,
+                    totalItems: processInfo.totalItems,
+                    progress: (processInfo.processedItems / processInfo.totalItems) * 100
                 });
-
-                // チャンク処理時間の記録
-                const chunkTime = endTime - startTime;
-                this.updateChunkStats(chunkTime);
-
-                // 定期的にyield
-                if (chunkIndex % this.options.yieldInterval === 0) {
-                    await this.yield();
+                
+                // 定期的にイベントループに制御を戻す
+                if (chunkIndex % this.yieldInterval === 0) {
+                    await this.yieldControl();
                 }
             }
-
-            this.emit('processComplete', {
+            
+            const totalDuration = Date.now() - startTime;
+            this.updateProcessStats(totalDuration, processInfo.totalChunks);
+            
+            this.emit('processCompleted', {
                 id: processId,
-                result: results,
-                timestamp: Date.now()
+                totalItems: processInfo.totalItems,
+                duration: totalDuration,
+                results: options.collectResults !== false ? processInfo.results : undefined
             });
-
+            
+            const results = options.collectResults !== false ? processInfo.results : [];
+            this.activeProcesses.delete(processId);
+            
             return results;
-
+            
         } catch (error) {
+            this.activeProcesses.delete(processId);
+            
             this.emit('processError', {
                 id: processId,
-                error: error as Error
+                error: (error as Error).message,
+                processedItems: this.activeProcesses.get(processId)?.processedItems || 0
             });
-
-            getErrorHandler().handleError(error as Error, 'ChunkProcessor.processChunks');
-
+            
+            getErrorHandler().handleError(error as Error, 'CHUNK_PROCESSING_ERROR', {
+                processId,
+                dataLength: data.length,
+                chunkSize,
+                options
+            });
+            
             throw error;
         }
     }
-
+    
     /**
-     * 単一チャンクの処理
+     * オブジェクトデータをチャンクに分割して処理
+     * 
+     * @param data - 処理対象オブジェクト
+     * @param processor - 各チャンクを処理する関数
+     * @param options - オプション
+     * @returns 処理結果のオブジェクト
      */
-    private async processChunk<T, R>(
-        chunk: T[],
-        processFunction: ProcessFunction<T, R>,
-        chunkIndex: number,
-        processInfo: ProcessInfo
-    ): Promise<R[]> {
+    async processObject(data: Record<string, any>, processor: (chunk: Record<string, any>) => any | Promise<any>, options: ProcessOptions = {}): Promise<any> {
+        if (typeof data !== 'object' || data === null) {
+            throw new Error('Data must be an object');
+        }
+        
+        const entries = Object.entries(data);
+        const processId = this.generateProcessId();
+        const chunkSize = options.chunkSize || this.defaultChunkSize;
+        
+        try {
+            const results = await this.processArray(
+                entries,
+                async (entryChunk) => {
+                    const chunkObject = Object.fromEntries(entryChunk);
+                    return await processor(chunkObject);
+                },
+                {
+                    ...options,
+                    collectResults: true
+                }
+            );
+            
+            // 結果をオブジェクトに再構成
+            if (options.mergeResults !== false) {
+                return this.mergeChunkResults(results, options);
+            }
+            
+            return results;
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    /**
+     * ストリーミング処理
+     * 
+     * @param dataProvider - データを提供する関数
+     * @param processor - データを処理する関数
+     * @param options - オプション
+     * @returns 処理結果
+     */
+    async processStream<T, R>(dataProvider: DataProvider<T>, processor: ProcessFunction<T, R>, options: ProcessOptions = {}): Promise<R[]> {
+        const processId = this.generateProcessId();
+        const batchSize = options.batchSize || 100;
         const results: R[] = [];
         
-        for (let i = 0; i < chunk.length; i++) {
-            const item = chunk[i];
-            const globalIndex = chunkIndex * this.options.chunkSize + i;
+        try {
+            this.emit('streamStarted', { id: processId });
             
-            try {
-                const result = await processFunction(item, globalIndex, chunk);
-                results.push(result);
-            } catch (error) {
-                this.emit('itemError', {
-                    id: processInfo.id,
-                    chunkIndex,
-                    error: error as Error
-                });
-
-                // エラー処理戦略に応じて継続するかどうか決める
-                // デフォルトでは継続
-                console.warn(`[ChunkProcessor] アイテム処理エラー (chunk: ${chunkIndex}, item: ${i}):`, error);
+            let batch: T[] = [];
+            let hasMore = true;
+            let processedCount = 0;
+            
+            while (hasMore) {
+                // データを取得
+                const item = await dataProvider();
+                
+                if (item === null || item === undefined) {
+                    hasMore = false;
+                    // 残りのバッチを処理
+                    if (batch.length > 0) {
+                        const batchResult = await this.processChunk(
+                            batch,
+                            processor,
+                            Math.floor(processedCount / batchSize),
+                            { id: processId } as ProcessInfo,
+                            options
+                        );
+                        results.push(...(Array.isArray(batchResult) ? batchResult : [batchResult]));
+                    }
+                    break;
+                }
+                
+                batch.push(item);
+                
+                // バッチサイズに達したら処理
+                if (batch.length >= batchSize) {
+                    const batchResult = await this.processChunk(
+                        batch,
+                        processor,
+                        Math.floor(processedCount / batchSize),
+                        { id: processId } as ProcessInfo,
+                        options
+                    );
+                    
+                    results.push(...(Array.isArray(batchResult) ? batchResult : [batchResult]));
+                    processedCount += batch.length;
+                    batch = [];
+                    
+                    this.emit('streamProgress', {
+                        id: processId,
+                        processedCount
+                    });
+                    
+                    // メモリチェックと制御移譲
+                    await this.checkMemoryUsage();
+                    await this.yieldControl();
+                }
             }
+            
+            this.emit('streamCompleted', {
+                id: processId,
+                totalProcessed: processedCount,
+                results: options.collectResults !== false ? results : undefined
+            });
+            
+            return options.collectResults !== false ? results : [];
+            
+        } catch (error) {
+            this.emit('streamError', {
+                id: processId,
+                error: (error as Error).message
+            });
+            
+            throw error;
         }
-
-        return results;
     }
-
+    
     /**
-     * 結果のマージ
+     * 個別チャンクの処理
      */
-    private async mergeResults<R>(results: R[], options: ProcessOptions): Promise<R[]> {
-        if (options.customMerger) {
-            return options.customMerger(results);
-        }
-
-        switch (options.mergeStrategy) {
-            case 'object':
-                return [Object.assign({}, ...results)] as unknown as R[];
-            case 'array':
-            default:
-                return results.flat() as R[];
+    private async processChunk<T, R>(chunk: T[], processor: ProcessFunction<T, R>, chunkIndex: number, processInfo: ProcessInfo, options: ProcessOptions): Promise<R> {
+        try {
+            // メモリ使用量の推定更新
+            this.updateMemoryUsage(chunk);
+            
+            // チャンク処理実行
+            const result = await processor(chunk, chunkIndex, {
+                processId: processInfo.id,
+                totalItems: processInfo.totalItems,
+                processedItems: processInfo.processedItems
+            });
+            
+            return result;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'CHUNK_PROCESS_ERROR', {
+                chunkIndex,
+                chunkSize: chunk.length,
+                processId: processInfo.id
+            });
+            throw error;
         }
     }
-
+    
     /**
-     * 処理の一時停止（UIブロッキング防止）
+     * メモリ使用量チェック
      */
-    private yield(): Promise<void> {
-        return new Promise(resolve => {
-            setTimeout(resolve, 0);
-        });
-    }
-
-    /**
-     * 統計情報の更新
-     */
-    private updateStats(processInfo: ProcessInfo, processingTime: number): void {
-        this.stats.totalProcessed += processInfo.processedItems;
-        this.stats.totalChunks += processInfo.processedChunks;
-        this.stats.totalProcessingTime += processingTime;
-        
-        if (processInfo.processedChunks > 0) {
-            this.stats.averageChunkTime = processingTime / processInfo.processedChunks;
+    private async checkMemoryUsage(): Promise<void> {
+        if (this.memoryUsage > this.maxMemoryUsage) {
+            // メモリ使用量が上限を超えた場合、ガベージコレクションを実行
+            if ((global as any).gc) {
+                (global as any).gc();
+            }
+            
+            // 少し待機してメモリを解放
+            await new Promise(resolve => setTimeout(resolve, 10));
+            
+            // メモリ使用量をリセット
+            this.memoryUsage = Math.max(0, this.memoryUsage * 0.7);
         }
     }
-
+    
+    /**
+     * メモリ使用量の更新
+     */
+    private updateMemoryUsage(data: any): void {
+        try {
+            // データサイズの推定
+            const dataSize = JSON.stringify(data).length * 2; // Unicode文字を考慮
+            this.memoryUsage += dataSize;
+            
+            if (this.memoryUsage > this.stats.memoryPeakUsage) {
+                this.stats.memoryPeakUsage = this.memoryUsage;
+            }
+        } catch (error) {
+            // JSON.stringifyが失敗した場合は推定値を使用
+            this.memoryUsage += Array.isArray(data) ? data.length * 100 : 1000;
+        }
+    }
+    
+    /**
+     * イベントループに制御を戻す
+     */
+    private async yieldControl(): Promise<void> {
+        return new Promise(resolve => setImmediate(resolve));
+    }
+    
     /**
      * チャンク統計の更新
      */
-    private updateChunkStats(chunkTime: number): void {
-        // 移動平均でチャンク時間を更新
-        const alpha = 0.1;
-        this.stats.averageChunkTime = this.stats.averageChunkTime * (1 - alpha) + chunkTime * alpha;
+    private updateChunkStats(duration: number): void {
+        this.stats.totalChunks++;
+        const currentAvg = this.stats.averageChunkTime;
+        this.stats.averageChunkTime = 
+            (currentAvg * (this.stats.totalChunks - 1) + duration) / this.stats.totalChunks;
     }
-
+    
+    /**
+     * プロセス統計の更新
+     */
+    private updateProcessStats(duration: number, chunksProcessed: number): void {
+        this.stats.totalProcessed++;
+        this.stats.totalProcessingTime += duration;
+    }
+    
+    /**
+     * チャンク結果のマージ
+     */
+    private mergeChunkResults(results: any[], options: ProcessOptions): any {
+        try {
+            if (options.mergeStrategy === 'object') {
+                return results.reduce((merged, result) => {
+                    return { ...merged, ...result };
+                }, {});
+            } else if (options.mergeStrategy === 'array') {
+                return results.flat();
+            } else if (typeof options.customMerger === 'function') {
+                return options.customMerger(results);
+            }
+            
+            // デフォルト: 配列として返す
+            return results;
+            
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'CHUNK_RESULT_MERGE_ERROR', {
+                resultsCount: results.length,
+                mergeStrategy: options.mergeStrategy
+            });
+            return results; // フォールバック
+        }
+    }
+    
     /**
      * プロセスIDの生成
      */
     private generateProcessId(): string {
-        return `process_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        return `chunk_${Date.now()}_${++this.processCounter}`;
     }
-
+    
     /**
-     * メモリ使用量の取得
+     * アクティブプロセスの状態を取得
      */
-    private getMemoryUsage(): number {
-        if (typeof process !== 'undefined' && process.memoryUsage) {
-            return process.memoryUsage().heapUsed;
-        }
-        
-        // ブラウザ環境では概算値
-        if ('performance' in globalThis && (performance as any).memory) {
-            return (performance as any).memory.usedJSHeapSize || 0;
-        }
-        
-        return 0;
+    getActiveProcesses(): Array<{
+        id: string;
+        totalItems: number;
+        processedItems: number;
+        progress: number;
+        duration: number;
+    }> {
+        return Array.from(this.activeProcesses.values()).map(process => ({
+            id: process.id,
+            totalItems: process.totalItems,
+            processedItems: process.processedItems,
+            progress: (process.processedItems / process.totalItems) * 100,
+            duration: Date.now() - process.startTime
+        }));
     }
-
+    
     /**
-     * イベントリスナーの登録
+     * 統計情報を取得
      */
-    addEventListener(eventType: string, listener: ProcessEventListener): void {
-        if (!this.eventListeners.has(eventType)) {
-            this.eventListeners.set(eventType, []);
-        }
-        this.eventListeners.get(eventType)!.push(listener);
+    getStats(): {
+        totalProcessed: number;
+        totalChunks: number;
+        averageChunkTime: number;
+        memoryPeakUsage: number;
+        totalProcessingTime: number;
+        currentMemoryUsage: number;
+        activeProcesses: number;
+    } {
+        return {
+            ...this.stats,
+            currentMemoryUsage: this.memoryUsage,
+            activeProcesses: this.activeProcesses.size
+        };
     }
-
+    
+    /**
+     * プロセスのキャンセル
+     */
+    cancelProcess(processId: string): boolean {
+        if (this.activeProcesses.has(processId)) {
+            this.activeProcesses.delete(processId);
+            this.emit('processCancelled', { id: processId });
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * イベントリスナーの追加
+     */
+    on(event: string, callback: EventListener): void {
+        if (!this.listeners.has(event)) {
+            this.listeners.set(event, []);
+        }
+        this.listeners.get(event)!.push(callback);
+    }
+    
     /**
      * イベントリスナーの削除
      */
-    removeEventListener(eventType: string, listener: ProcessEventListener): void {
-        const listeners = this.eventListeners.get(eventType);
-        if (listeners) {
-            const index = listeners.indexOf(listener);
-            if (index >= 0) {
-                listeners.splice(index, 1);
+    off(event: string, callback: EventListener): void {
+        if (this.listeners.has(event)) {
+            const callbacks = this.listeners.get(event)!;
+            const index = callbacks.indexOf(callback);
+            if (index > -1) {
+                callbacks.splice(index, 1);
             }
         }
     }
-
+    
     /**
      * イベントの発火
      */
-    private emit(eventType: string, data: ProcessEventData): void {
-        const listeners = this.eventListeners.get(eventType);
-        if (listeners) {
-            listeners.forEach(listener => {
+    private emit(event: string, data: ProcessEventData): void {
+        if (this.listeners.has(event)) {
+            this.listeners.get(event)!.forEach(callback => {
                 try {
-                    listener(data);
+                    callback(data);
                 } catch (error) {
-                    console.error(`[ChunkProcessor] Event listener error (${eventType}):`, error);
+                    console.error(`Error in chunk processor event listener for ${event}:`, error);
                 }
             });
         }
     }
-
+    
     /**
-     * アクティブなプロセス一覧の取得
-     */
-    getActiveProcesses(): ProcessInfo[] {
-        return Array.from(this.processes.values());
-    }
-
-    /**
-     * 統計情報の取得
-     */
-    getStats(): ProcessorStats {
-        return { ...this.stats };
-    }
-
-    /**
-     * 処理状態の確認
-     */
-    isCurrentlyProcessing(): boolean {
-        return this.isProcessing;
-    }
-
-    /**
-     * 設定の更新
-     */
-    updateOptions(newOptions: Partial<ChunkProcessorOptions>): void {
-        this.options = { ...this.options, ...newOptions };
-    }
-
-    /**
-     * 統計のリセット
-     */
-    resetStats(): void {
-        this.stats = {
-            totalProcessed: 0,
-            totalChunks: 0,
-            averageChunkTime: 0,
-            memoryPeakUsage: 0,
-            totalProcessingTime: 0
-        };
-    }
-
-    /**
-     * リソースのクリーンアップ
+     * リソースの解放
      */
     destroy(): void {
-        // アクティブなプロセスをクリア
-        this.processes.clear();
-
-        // メモリ監視の停止
-        if (this.memoryMonitor) {
-            clearInterval(this.memoryMonitor);
-            this.memoryMonitor = null;
-        }
-
-        // イベントリスナーのクリア
-        this.eventListeners.clear();
-
-        console.log('[ChunkProcessor] クリーンアップ完了');
+        // アクティブプロセスをクリア
+        this.activeProcesses.clear();
+        this.listeners.clear();
+        this.memoryUsage = 0;
+        
+        console.log('ChunkProcessor destroyed');
     }
 }
 
 // シングルトンインスタンス
-let chunkProcessorInstance: ChunkProcessor | null = null;
+let processorInstance: ChunkProcessor | null = null;
 
 /**
- * ChunkProcessorのシングルトンインスタンスを取得
+ * ChunkProcessorシングルトンインスタンスの取得
  */
-export function getChunkProcessor(options?: ChunkProcessorOptions): ChunkProcessor {
-    if (!chunkProcessorInstance) {
-        chunkProcessorInstance = new ChunkProcessor(options);
+export function getChunkProcessor(): ChunkProcessor {
+    if (!processorInstance) {
+        processorInstance = new ChunkProcessor();
     }
-    return chunkProcessorInstance;
+    return processorInstance;
 }

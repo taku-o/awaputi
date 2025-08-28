@@ -10,6 +10,17 @@ export interface CloudStorageConfig {
     retryAttempts?: number;
     retryDelay?: number;
     chunkSize?: number;
+    [key: string]: any; // 追加のオプション用
+}
+
+/**
+ * 認証情報インターフェース
+ */
+export interface AuthCredentials {
+    username?: string;
+    password?: string;
+    token?: string;
+    [key: string]: any;
 }
 
 /**
@@ -22,19 +33,7 @@ interface AuthData {
 }
 
 /**
- * 同期キューアイテムインターフェース
- */
-interface SyncQueueItem {
-    id: number;
-    operation: 'set' | 'remove';
-    key: string;
-    data: any | null;
-    timestamp: number;
-    retries: number;
-}
-
-/**
- * API レスポンスインターフェース
+ * APIレスポンスインターフェース
  */
 interface ApiResponse {
     success?: boolean;
@@ -46,6 +45,18 @@ interface ApiResponse {
     data?: any;
     keys?: string[];
     totalSize?: number;
+}
+
+/**
+ * 同期キューアイテムインターフェース
+ */
+interface SyncQueueItem {
+    id: number;
+    operation: 'set' | 'remove';
+    key: string;
+    data: any | null;
+    timestamp: number;
+    retries: number;
 }
 
 /**
@@ -67,6 +78,14 @@ export interface SyncStatus {
     queuedOperations: number;
     conflicts: number;
     lastSync: string | null;
+}
+
+/**
+ * リクエストオプションインターフェース
+ */
+interface RequestOptions {
+    timeout?: number;
+    [key: string]: any;
 }
 
 /**
@@ -94,7 +113,8 @@ export class CloudStorageAdapter {
             timeout: options.timeout || 30000,
             retryAttempts: options.retryAttempts || 3,
             retryDelay: options.retryDelay || 1000,
-            chunkSize: options.chunkSize || 1024 * 1024 // 1MB chunks
+            chunkSize: options.chunkSize || 1024 * 1024, // 1MB chunks
+            ...options
         };
         
         this.authToken = null;
@@ -134,8 +154,12 @@ export class CloudStorageAdapter {
             
             this.isInitialized = true;
             console.log('CloudStorageAdapter: 初期化が完了しました');
+            
         } catch (error) {
-            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.initialize');
+            getErrorHandler().handleError(error as Error, 'CLOUD_STORAGE_INITIALIZATION_ERROR', {
+                operation: 'initialize',
+                provider: this.config.provider
+            });
         }
     }
     
@@ -144,6 +168,7 @@ export class CloudStorageAdapter {
      */
     async checkAuthStatus(): Promise<boolean> {
         try {
+            // 保存された認証情報の確認
             const storedAuth = localStorage.getItem('bubblePop_cloudAuth');
             if (storedAuth) {
                 const authData: AuthData = JSON.parse(storedAuth);
@@ -159,8 +184,11 @@ export class CloudStorageAdapter {
             
             console.log('CloudStorageAdapter: No valid auth token found');
             return false;
+            
         } catch (error) {
-            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.checkAuthStatus');
+            getErrorHandler().handleError(error as Error, 'CLOUD_AUTH_CHECK_ERROR', {
+                operation: 'checkAuthStatus'
+            });
             return false;
         }
     }
@@ -188,7 +216,7 @@ export class CloudStorageAdapter {
             if (!this.config.apiEndpoint) {
                 throw new Error('APIエンドポイントが設定されていません');
             }
-
+            
             const response = await this.makeRequest('GET', '/health', null, {
                 timeout: 5000
             });
@@ -199,6 +227,7 @@ export class CloudStorageAdapter {
             }
             
             throw new Error(`接続テストに失敗しました: ${response.message || '不明なエラー'}`);
+            
         } catch (error) {
             console.warn('CloudStorageAdapter: Connection test failed:', (error as Error).message);
             throw error;
@@ -208,7 +237,7 @@ export class CloudStorageAdapter {
     /**
      * 認証処理（プレースホルダー）
      */
-    async authenticate(credentials: any): Promise<boolean> {
+    async authenticate(credentials: AuthCredentials): Promise<boolean> {
         try {
             if (!this.config.apiEndpoint) {
                 throw new Error('Cloud storage not configured');
@@ -229,13 +258,17 @@ export class CloudStorageAdapter {
                 };
                 
                 localStorage.setItem('bubblePop_cloudAuth', JSON.stringify(authData));
+                
                 console.log('CloudStorageAdapter: Authentication successful');
                 return true;
             }
-
+            
             throw new Error('Invalid authentication response');
+            
         } catch (error) {
-            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.authenticate');
+            getErrorHandler().handleError(error as Error, 'CLOUD_AUTH_ERROR', {
+                operation: 'authenticate'
+            });
             throw error;
         }
     }
@@ -248,7 +281,7 @@ export class CloudStorageAdapter {
             if (!this.isAuthenticated()) {
                 throw new Error('Not authenticated');
             }
-
+            
             if (!this.isOnline) {
                 // オフライン時は同期キューに追加
                 this.addToSyncQueue('set', key, data);
@@ -271,8 +304,12 @@ export class CloudStorageAdapter {
             });
             
             return response.success || false;
+            
         } catch (error) {
-            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.set');
+            getErrorHandler().handleError(error as Error, 'CLOUD_STORAGE_SET_ERROR', {
+                operation: 'set',
+                key
+            });
             throw error;
         }
     }
@@ -280,12 +317,12 @@ export class CloudStorageAdapter {
     /**
      * データ読み込み（クラウド）
      */
-    async get(key: string): Promise<any | null> {
+    async get(key: string): Promise<any> {
         try {
             if (!this.isAuthenticated()) {
                 throw new Error('Not authenticated');
             }
-
+            
             if (!this.isOnline) {
                 throw new Error('Offline - cannot retrieve cloud data');
             }
@@ -294,17 +331,21 @@ export class CloudStorageAdapter {
             const response = await this.makeRequest('GET', `/data/${encodeURIComponent(key)}`);
             
             if (!response.data) {
-                return null as any;
+                return null;
             }
             
             // データの後処理
             return await this.postprocessCloudData(response.data);
+            
         } catch (error: any) {
             if (error.status === 404) {
-                return null as any; // データが存在しない場合
+                return null; // データが存在しない場合
             }
-
-            getErrorHandler().handleError(error, 'CloudStorageAdapter.get');
+            
+            getErrorHandler().handleError(error, 'CLOUD_STORAGE_GET_ERROR', {
+                operation: 'get',
+                key
+            });
             throw error;
         }
     }
@@ -317,7 +358,7 @@ export class CloudStorageAdapter {
             if (!this.isAuthenticated()) {
                 throw new Error('Not authenticated');
             }
-
+            
             if (!this.isOnline) {
                 // オフライン時は同期キューに追加
                 this.addToSyncQueue('remove', key);
@@ -328,8 +369,12 @@ export class CloudStorageAdapter {
             const response = await this.makeRequest('DELETE', `/data/${encodeURIComponent(key)}`);
             
             return response.success || false;
+            
         } catch (error) {
-            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.remove');
+            getErrorHandler().handleError(error as Error, 'CLOUD_STORAGE_REMOVE_ERROR', {
+                operation: 'remove',
+                key
+            });
             throw error;
         }
     }
@@ -342,7 +387,7 @@ export class CloudStorageAdapter {
             if (!this.isAuthenticated()) {
                 throw new Error('Not authenticated');
             }
-
+            
             if (!this.isOnline) {
                 throw new Error('Offline - cannot retrieve cloud keys');
             }
@@ -351,8 +396,11 @@ export class CloudStorageAdapter {
             const response = await this.makeRequest('GET', '/data/keys');
             
             return response.keys || [];
+            
         } catch (error) {
-            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.keys');
+            getErrorHandler().handleError(error as Error, 'CLOUD_STORAGE_KEYS_ERROR', {
+                operation: 'keys'
+            });
             return [];
         }
     }
@@ -365,7 +413,7 @@ export class CloudStorageAdapter {
             if (!this.isAuthenticated()) {
                 return 0;
             }
-
+            
             if (!this.isOnline) {
                 return 0;
             }
@@ -374,8 +422,11 @@ export class CloudStorageAdapter {
             const response = await this.makeRequest('GET', '/data/usage');
             
             return response.totalSize || 0;
+            
         } catch (error) {
-            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.getSize');
+            getErrorHandler().handleError(error as Error, 'CLOUD_STORAGE_SIZE_ERROR', {
+                operation: 'getSize'
+            });
             return 0;
         }
     }
@@ -412,8 +463,12 @@ export class CloudStorageAdapter {
             });
             
             return response.success || false;
+            
         } catch (error) {
-            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.setChunked');
+            getErrorHandler().handleError(error as Error, 'CLOUD_STORAGE_CHUNK_ERROR', {
+                operation: 'setChunked',
+                key
+            });
             throw error;
         }
     }
@@ -430,7 +485,7 @@ export class CloudStorageAdapter {
                     userId: this.userId,
                     provider: this.config.provider,
                     version: '1.0.0'
-                } as CloudMetadata
+                }
             };
         } catch (error) {
             return data;
@@ -462,6 +517,7 @@ export class CloudStorageAdapter {
             timestamp: Date.now(),
             retries: 0
         });
+        
         console.log(`CloudStorageAdapter: Added ${operation} operation to sync queue`);
     }
     
@@ -489,6 +545,7 @@ export class CloudStorageAdapter {
                 }
                 
                 processedItems.push(item);
+                
             } catch (error) {
                 item.retries++;
                 if (item.retries >= this.config.retryAttempts) {
@@ -507,7 +564,7 @@ export class CloudStorageAdapter {
     /**
      * API リクエスト送信
      */
-    private async makeRequest(method: string, endpoint: string, data: any = null, options: any = {}): Promise<ApiResponse> {
+    private async makeRequest(method: string, endpoint: string, data: any = null, options: RequestOptions = {}): Promise<ApiResponse> {
         try {
             const url = `${this.config.apiEndpoint}${endpoint}`;
             const requestOptions: RequestInit = {
@@ -518,7 +575,7 @@ export class CloudStorageAdapter {
                 },
                 ...options
             };
-
+            
             if (data && ['POST', 'PUT', 'PATCH'].includes(method)) {
                 requestOptions.body = JSON.stringify(data);
             }
@@ -538,6 +595,7 @@ export class CloudStorageAdapter {
             }
             
             return await response.json();
+            
         } catch (error: any) {
             if (error.name === 'AbortError') {
                 throw new Error('Request timeout');
@@ -550,26 +608,24 @@ export class CloudStorageAdapter {
      * イベントリスナーの設定
      */
     private setupEventListeners(): void {
-        window.addEventListener('online', this.handleOnline.bind(this));
-        window.addEventListener('offline', this.handleOffline.bind(this));
-    }
-
-    private handleOnline = (): void => {
-        console.log('CloudStorageAdapter: Back online');
-        this.isOnline = true;
+        // オンライン状態の監視
+        window.addEventListener('online', () => {
+            console.log('CloudStorageAdapter: Back online');
+            this.isOnline = true;
+            
+            // 初期化が未完了の場合は実行
+            if (!this.isInitialized) {
+                this.initialize();
+            }
+            
+            // 同期キューの処理
+            this.processSyncQueue();
+        });
         
-        // 初期化が未完了の場合は実行
-        if (!this.isInitialized) {
-            this.initialize();
-        }
-        
-        // 同期キューの処理
-        this.processSyncQueue();
-    }
-
-    private handleOffline = (): void => {
-        console.log('CloudStorageAdapter: Gone offline');
-        this.isOnline = false;
+        window.addEventListener('offline', () => {
+            console.log('CloudStorageAdapter: Gone offline');
+            this.isOnline = false;
+        });
     }
     
     /**
@@ -615,6 +671,7 @@ export class CloudStorageAdapter {
      */
     destroy(): void {
         try {
+            // イベントリスナーの削除
             window.removeEventListener('online', this.handleOnline);
             window.removeEventListener('offline', this.handleOffline);
             
@@ -625,12 +682,19 @@ export class CloudStorageAdapter {
             // 認証情報のクリア
             this.authToken = null;
             this.userId = null;
-
+            
             console.log('CloudStorageAdapter: Destroyed');
+            
         } catch (error) {
-            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.destroy');
+            getErrorHandler().handleError(error as Error, 'CLOUD_STORAGE_DESTROY_ERROR', {
+                operation: 'destroy'
+            });
         }
     }
+
+    // イベントハンドラー（destroyメソッドで参照されているため必要）
+    private handleOnline = (): void => {}
+    private handleOffline = (): void => {}
 }
 
 // CloudStorageAdapter のファクトリー関数
@@ -655,6 +719,6 @@ export function createCloudStorageAdapter(provider: string = 'generic', options:
             // カスタムプロバイダーまたはジェネリック
             break;
     }
-
+    
     return new CloudStorageAdapter(config);
 }

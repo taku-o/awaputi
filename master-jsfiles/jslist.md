@@ -133,16 +133,16 @@
 - [x] src/core/AlternativeInputManager.js - ✅ **プロパティ追加と修正** 欠落プロパティと初期化処理を修正
 - [x] src/core/AsyncOperationQueue.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
 - [x] src/core/BackupManager.js - TypeScript版でValidationManager.validateの型定義修正が必要（"single"|"batch" → string）
-- [] src/core/BalanceCalculator.js
-- [] src/core/CacheSystem.js
-- [] src/core/CalculationEngine.js
-- [] src/core/CaptionManager.js
+- [x] src/core/BalanceCalculator.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/core/CacheSystem.js - TypeScript版でMemoryLeak.typeの型定義修正が必要（"single"|"batch" → string）
+- [x] src/core/CalculationEngine.js - ✅ **型定義の問題あり** 複数メソッドで'single'|'batch'の制限的な型定義（実際は'score','balance','effects'）、処理は同一 - TypeScript版で型定義修正が必要（"single"|"batch" → string、実際は'score'/'balance'/'effects'を使用）
+- [x] src/core/CaptionManager.js - ✅ **軽微な差異のみ** TypeScript版で不要な型キャスト（'music' as AudioChannel）を追加、動作には影響なし
 - [x] src/core/ChallengeSystem.js
 - [x] src/core/ChallengeUI.js
-- [] src/core/ChartRenderer.js
-- [] src/core/ChunkProcessor.js
-- [] src/core/CloudStorageAdapter.js
-- [] src/core/ColorBlindnessSupport.js
+- [x] src/core/ChartRenderer.js ⚠️ **完全に異なる実装** JavaScript版（CoreChartRenderer）は統合エンジン、TypeScript版（ChartRenderer）はシンプルな単一実装
+- [x] src/core/ChunkProcessor.js ✅ **修正完了** JavaScript版から完全に再作成（processStream、processObjectメソッドを含む）
+- [x] src/core/CloudStorageAdapter.js ✅ **修正完了** JavaScript版から完全に再作成（processStream、processObjectメソッドを含む）
+- [x] src/core/ColorBlindnessSupport.js ✅ **修正完了** JavaScript版から完全に再作成（すべての機能を保持）
 - [] src/core/ConfigurationDebugger.js
 - [] src/core/ConfigurationErrorHandler.js
 - [] src/core/ConfigurationManager.js
