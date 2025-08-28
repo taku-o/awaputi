@@ -133,6 +133,7 @@ reports/
 
 # Serena
 .serena/cache/
+.serena/logs/
 
 # Auto-generated API documentation (see Issue #92)
 docs/api-reference/

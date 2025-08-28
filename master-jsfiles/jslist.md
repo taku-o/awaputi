@@ -147,19 +147,19 @@
 - [x] src/core/ConfigurationErrorHandler.js ✅ **修正完了** JavaScript版から完全に再作成（recoveryAttemptsプロパティ定義、正しいインポート）
 - [x] src/core/ConfigurationManager.js ✅ **修正完了** JavaScript版から完全に再作成（get(category, key, defaultValue)メソッド保持）
 === ユーザーここまで確認 ===
-- [] src/core/ContextualHelpManager.js
-- [] src/core/ContrastManager.js
-- [] src/core/CoreComparisonEngine.js
-- [] src/core/CoreTrendAnalyzer.js
-- [] src/core/DailyChallengeManager.js
-- [] src/core/DataArchiveManager.js
-- [] src/core/DataCache.js
-- [] src/core/DataCompressionManager.js
-- [] src/core/DataManager.js
-- [] src/core/DataStorage.js
-- [] src/core/DeviceSpecificHandler.js
-- [] src/core/EffectsCalculator.js
-- [] src/core/EnhancedTouchManager.js
+- [x] src/core/ContextualHelpManager.js - **完全に異なる実装**: JS版はサブコンポーネントシステム（Content/Display/Trigger/Personalization）、TS版は単純なツールチップ実装
+- [x] src/core/ContrastManager.js - **実装が大きく異なる**: JS版は高度なWCAG準拠実装（リアルタイム検証、DOM監視、統計）、TS版はシンプルなCSSフィルター実装
+- [x] src/core/CoreComparisonEngine.js - **実装が大きく異なる**: JS版は高度な統計分析（サブコンポーネント使用）、TS版はシンプルな数値比較。基本的な比較処理は維持
+- [x] src/core/CoreTrendAnalyzer.js - **実装規模は異なるが処理は同一**: JS版は詳細な多期間分析、TS版はシンプル実装。線形回帰・季節性検出・ボラティリティ計算は同じ
+- [x] src/core/DailyChallengeManager.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。TS版は型定義追加のみ
+- [x] src/core/DataArchiveManager.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。TS版は型定義追加のみ（アーカイブ設定・戦略・圧縮・検索・メンテナンス全て同一）
+- [x] src/core/DataCache.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。LRUアルゴリズム・メモリ管理・イベントシステム全て同一
+- [x] src/core/DataCompressionManager.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。全5種類の圧縮アルゴリズム・統計処理・サンプリング全て同一
+- [x] src/core/DataManager.js - **主要機能は同一、一部機能削減**: 基本的なデータ管理・クラウド同期は同一。TS版では大規模データのチャンク処理機能（saveLargeData等）が削除
+- [x] src/core/DataStorage.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。LocalStorage/IndexedDBアダプター、リトライ機能、容量管理全て同一
+- [x] src/core/DeviceSpecificHandler.js ✅ **処理完全一致**: JS版とTS版は同一ロジック。全デバイス最適化処理（iOS/Android/Desktop）、高DPI対応、ブラウザ固有修正全て同一
+- [x] src/core/EffectsCalculator.js ✅ **処理完全一致**: JS版とTS版は同一ロジック。全エフェクト計算（パーティクル数、アニメーション時間、軌道、色遷移）完全同一
+- [x] src/core/EnhancedTouchManager.js **主要処理同一、軽微な差異**: 全タッチ処理・ジェスチャー検出は同一。maxTouchPoints削除とtype定義の軽微な差異のみ
 - [] src/core/ErrorRecoveryManager.js
 - [] src/core/EventRankingManager.js
 - [] src/core/EventStageManager.js
