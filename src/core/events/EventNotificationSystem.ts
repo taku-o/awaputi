@@ -23,7 +23,7 @@ interface NotificationAction {
 
 interface NotificationData {
     id: string;
-    type: "single" | "batch";
+    type: string;
     title: string;
     message: string;
     icon: string;
@@ -72,7 +72,7 @@ interface RankingData {
 }
 
 export class EventNotificationSystem {
-    // private gameEngine: any;
+    private gameEngine: any;
     private notificationQueue: NotificationData[] = [];
     private activeNotifications: Map<string, NotificationData> = new Map();
     private notificationHistory: NotificationHistoryEntry[] = [];
@@ -129,6 +129,12 @@ export class EventNotificationSystem {
             return;
         }
 
+        // notification が null または undefined の場合は早期リターン
+        if (!notification) {
+            console.warn('[EventNotificationSystem] Invalid notification object');
+            return;
+        }
+
         const fullNotification: NotificationData = {
             id: this.generateNotificationId(),
             type: notification.type || 'info',
@@ -143,10 +149,15 @@ export class EventNotificationSystem {
             expiresAt: Date.now() + (notification.duration || this.settings.notificationDuration)
         };
 
-        this.notificationQueue.push(fullNotification);
+        // 優先度に基づいて挿入位置を決定
+        const insertIndex = this.findInsertIndex(fullNotification.priority);
+        this.notificationQueue.splice(insertIndex, 0, fullNotification);
+        
+        console.log(`Notification queued: ${fullNotification.title}`);
+        
+        // 即座に処理を試行
         this.processNotificationQueue();
         
-        console.log(`Notification added: ${fullNotification.title}`);
         return fullNotification.id;
     }
     
@@ -160,18 +171,21 @@ export class EventNotificationSystem {
 
         this.addNotification({
             type: 'event_start',
-            title: 'イベント開始',
-            message: `${event.name}が開始されました！`,
+            title: 'イベント開始！',
+            message: `${event.name}が開始されました`,
             icon: event.icon || '🎉',
             priority: 'high',
             category: 'event',
-            actions: [{
-                text: 'イベントを開く',
-                action: () => {
-                    // イベント画面への遷移ロジック
-                    console.log(`Opening event: ${event.id}`);
+            actions: [
+                {
+                    text: '参加する',
+                    action: () => this.joinEvent(event.id)
+                },
+                {
+                    text: '詳細を見る',
+                    action: () => this.showEventDetails(event.id)
                 }
-            }]
+            ]
         });
     }
     
@@ -189,7 +203,13 @@ export class EventNotificationSystem {
             message: `${event.name}が完了しました！ランク: ${results.rank}`,
             icon: '🏆',
             priority: 'high',
-            category: 'event'
+            category: 'event',
+            actions: [
+                {
+                    text: '結果を見る',
+                    action: () => this.showEventResults(event.id)
+                }
+            ]
         });
     }
     
@@ -207,7 +227,13 @@ export class EventNotificationSystem {
             message: `「${achievement.name}」を獲得しました！`,
             icon: '🏅',
             priority: 'high',
-            category: 'achievement'
+            category: 'achievement',
+            actions: [
+                {
+                    text: '実績を見る',
+                    action: () => this.showAchievements()
+                }
+            ]
         });
     }
     
@@ -231,7 +257,13 @@ export class EventNotificationSystem {
             message: `現在のランク: ${rankingData.currentRank}位 (${improvementText})`,
             icon: '📊',
             priority: 'normal',
-            category: 'ranking'
+            category: 'ranking',
+            actions: [
+                {
+                    text: 'ランキングを見る',
+                    action: () => this.showRanking()
+                }
+            ]
         });
     }
     
@@ -438,6 +470,68 @@ export class EventNotificationSystem {
      */
     private generateNotificationId(): string {
         return `notification_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    }
+    
+    /**
+     * 優先度に基づく挿入位置を検索
+     */
+    private findInsertIndex(priority: 'high' | 'normal' | 'low'): number {
+        const priorityOrder = { high: 0, normal: 1, low: 2 };
+        const targetPriority = priorityOrder[priority] || 1;
+        
+        for (let i = 0; i < this.notificationQueue.length; i++) {
+            const itemPriority = priorityOrder[this.notificationQueue[i].priority] || 1;
+            if (targetPriority < itemPriority) {
+                return i;
+            }
+        }
+        
+        return this.notificationQueue.length;
+    }
+    
+    /**
+     * イベントアクション: イベント参加
+     */
+    private joinEvent(eventId: string): void {
+        if (this.gameEngine.eventStageManager) {
+            this.gameEngine.eventStageManager.startEventStage(eventId);
+        }
+    }
+    
+    /**
+     * イベントアクション: イベント詳細表示
+     */
+    private showEventDetails(eventId: string): void {
+        if (this.gameEngine.sceneManager) {
+            this.gameEngine.sceneManager.switchToScene('EventDetailsScene', { eventId });
+        }
+    }
+    
+    /**
+     * イベントアクション: イベント結果表示
+     */
+    private showEventResults(eventId: string): void {
+        if (this.gameEngine.sceneManager) {
+            this.gameEngine.sceneManager.switchToScene('EventResultsScene', { eventId });
+        }
+    }
+    
+    /**
+     * イベントアクション: 実績表示
+     */
+    private showAchievements(): void {
+        if (this.gameEngine.sceneManager) {
+            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'achievements' });
+        }
+    }
+    
+    /**
+     * イベントアクション: ランキング表示
+     */
+    private showRanking(): void {
+        if (this.gameEngine.sceneManager) {
+            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'leaderboard' });
+        }
     }
     
     /**

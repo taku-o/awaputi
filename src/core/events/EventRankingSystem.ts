@@ -24,7 +24,7 @@ interface SeasonalRankingData {
 }
 
 interface GlobalRankingData {
-    type: "single" | "batch";
+    type: string;
     rankings: PlayerRankingEntry[];
     lastUpdated: number;
     totalEvents: number;
@@ -54,7 +54,7 @@ interface PlayerRankingEntry {
 }
 
 interface EventData {
-    type: "single" | "batch";
+    type: string;
     eventId?: string;
     eventType?: string;
     timestamp: number;
@@ -497,10 +497,10 @@ export class EventRankingSystem extends EventRankingManager {
     /**
      * プレイヤーランクを取得
      */
-    getPlayerRank(playerId: string, type: "single" | "batch" = 'global', category: string | null = null): number | null {
+    getPlayerRank(playerId: string, type: string = 'global', category: string | null = null): number | null {
         const ranking = this.getRanking(type, category);
         if (!ranking || !ranking.rankings) {
-            return null as any;
+            return null;
         }
 
         const playerEntry = ranking.rankings.find((entry: PlayerRankingEntry) => entry.playerId === playerId);
@@ -510,7 +510,7 @@ export class EventRankingSystem extends EventRankingManager {
     /**
      * トップランカーを取得
      */
-    getTopRankers(type: "single" | "batch" = 'global', limit: number = 10, category: string | null = null): PlayerRankingEntry[] {
+    getTopRankers(type: string = 'global', limit: number = 10, category: string | null = null): PlayerRankingEntry[] {
         const ranking = this.getRanking(type, category);
         if (!ranking || !ranking.rankings) {
             return [];

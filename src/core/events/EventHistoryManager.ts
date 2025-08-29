@@ -22,7 +22,7 @@ interface Statistics {
 
 interface HistoryEntry {
     id: string;
-    type: "single" | "batch";
+    type: string;
     eventId?: string;
     eventName?: string;
     eventType?: string;
@@ -70,7 +70,7 @@ interface RankingData {
 interface Event {
     id: string;
     name: string;
-    type: "single" | "batch";
+    type: string;
     duration?: number;
     specialRules?: any;
     rewards?: any;

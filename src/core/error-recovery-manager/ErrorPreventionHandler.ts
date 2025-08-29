@@ -91,7 +91,7 @@ export interface GameState {
 
 export interface PreventionActionInfo {
     type: PreventionType;
-    subtype: "single" | "batch";
+    subtype: string;
     severity: WarningSeverity;
     element: HTMLElement;
     message: string;
@@ -304,7 +304,7 @@ export function getActionWarningMessage(element: HTMLElement): string | null {
     const customWarning = element.getAttribute('data-warning');
     if (customWarning) return customWarning;
     
-    return null as any;
+    return null;
 }
 
 export function createConfirmationEvent(element: HTMLElement, confirmed: boolean): CustomEvent {
