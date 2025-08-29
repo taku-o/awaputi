@@ -1,0 +1,82 @@
+{
+  "JP": {
+    "currency": "JPY",
+    "timezone": "Asia/Tokyo",
+    "firstDayOfWeek": 0,
+    "numberFormat": {
+      "groupSize": 3,
+      "groupSeparator": ",",
+      "decimalSeparator": "."
+    },
+    "dateFormat": {
+      "short": "YYYY/MM/DD",
+      "medium": "YYYY年MM月DD日",
+      "long": "YYYY年MM月DD日(ddd)",
+      "full": "YYYY年MM月DD日 dddd"
+    }
+  },
+  "US": {
+    "currency": "USD",
+    "timezone": "America/New_York",
+    "firstDayOfWeek": 0,
+    "numberFormat": {
+      "groupSize": 3,
+      "groupSeparator": ",",
+      "decimalSeparator": "."
+    },
+    "dateFormat": {
+      "short": "MM/DD/YYYY",
+      "medium": "MMM DD, YYYY",
+      "long": "MMMM DD, YYYY",
+      "full": "dddd, MMMM DD, YYYY"
+    }
+  },
+  "CN": {
+    "currency": "CNY",
+    "timezone": "Asia/Shanghai",
+    "firstDayOfWeek": 1,
+    "numberFormat": {
+      "groupSize": 3,
+      "groupSeparator": ",",
+      "decimalSeparator": "."
+    },
+    "dateFormat": {
+      "short": "YYYY/MM/DD",
+      "medium": "YYYY年MM月DD日",
+      "long": "YYYY年MM月DD日 dddd",
+      "full": "YYYY年MM月DD日 dddd"
+    }
+  },
+  "TW": {
+    "currency": "TWD",
+    "timezone": "Asia/Taipei",
+    "firstDayOfWeek": 0,
+    "numberFormat": {
+      "groupSize": 3,
+      "groupSeparator": ",",
+      "decimalSeparator": "."
+    },
+    "dateFormat": {
+      "short": "YYYY/MM/DD",
+      "medium": "YYYY年MM月DD日",
+      "long": "YYYY年MM月DD日 dddd",
+      "full": "YYYY年MM月DD日 dddd"
+    }
+  },
+  "KR": {
+    "currency": "KRW",
+    "timezone": "Asia/Seoul",
+    "firstDayOfWeek": 0,
+    "numberFormat": {
+      "groupSize": 3,
+      "groupSeparator": ",",
+      "decimalSeparator": "."
+    },
+    "dateFormat": {
+      "short": "YYYY. MM. DD",
+      "medium": "YYYY년 MM월 DD일",
+      "long": "YYYY년 MM월 DD일 dddd",
+      "full": "YYYY년 MM월 DD일 dddd"
+    }
+  }
+}

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccessibilityProfileComponent Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .demo-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .demo-header h1 {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .demo-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .demo-content {
+            padding: 24px;
+        }
+        
+        .demo-section {
+            margin-bottom: 32px;
+        }
+        
+        .demo-section h2 {
+            color: #2c3e50;
+            margin: 0 0 16px 0;
+            font-size: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 8px;
+        }
+        
+        .current-settings {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .current-settings h3 {
+            margin: 0 0 12px 0;
+            color: #495057;
+            font-size: 16px;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+        }
+        
+        .setting-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .setting-value {
+            font-family: 'Courier New', monospace;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+        
+        .setting-value.true {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .setting-value.false {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .demo-controls {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .demo-controls h3 {
+            margin: 0 0 12px 0;
+            color: #1565c0;
+            font-size: 16px;
+        }
+        
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .control-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background: #2196f3;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .control-button:hover {
+            background: #1976d2;
+            transform: translateY(-1px);
+        }
+        
+        .control-button:active {
+            transform: translateY(0);
+        }
+        
+        .event-log {
+            background: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 6px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 16px;
+        }
+        
+        .event-log h3 {
+            margin: 0 0 12px 0;
+            color: #3498db;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .log-entry {
+            margin-bottom: 4px;
+            padding: 2px 0;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .log-time {
+            color: #95a5a6;
+        }
+        
+        .log-event {
+            color: #2ecc71;
+        }
+        
+        .log-detail {
+            color: #f39c12;
+        }
+        
+        @media (max-width: 600px) {
+            .demo-content {
+                padding: 16px;
+            }
+            
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🎯 AccessibilityProfileComponent</h1>
+            <p>アクセシビリティプロファイル切り替えコンポーネントのデモ</p>
+        </div>
+        
+        <div class="demo-content">
+            <div class="demo-section">
+                <h2>📊 現在の設定状況</h2>
+                <div class="current-settings">
+                    <h3>アクセシビリティ設定</h3>
+                    <div class="settings-grid" id="current-settings">
+                        <!-- 設定項目が動的に追加されます -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>🎛️ プロファイル選択</h2>
+                <div id="accessibility-profile-container">
+                    <!-- AccessibilityProfileComponentがここに追加されます -->
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>🔧 デモ制御</h2>
+                <div class="demo-controls">
+                    <h3>テスト機能</h3>
+                    <div class="control-buttons">
+                        <button class="control-button" onclick="loadProfile('default')">
+                            🎮 デフォルトを強制適用
+                        </button>
+                        <button class="control-button" onclick="loadProfile('highContrast')">
+                            🔆 ハイコントラストを強制適用
+                        </button>
+                        <button class="control-button" onclick="loadProfile('motorAccessibility')">
+                            ♿ モビリティ対応を強制適用
+                        </button>
+                        <button class="control-button" onclick="resetComponent()">
+                            🔄 コンポーネントをリセット
+                        </button>
+                        <button class="control-button" onclick="clearEventLog()">
+                            🗑️ ログをクリア
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>📝 イベントログ</h2>
+                <div class="event-log">
+                    <h3>Component Events</h3>
+                    <div id="event-log-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        // モックGameEngineの作成
+        class MockGameEngine {
+            constructor() {
+                this.settingsManager = new MockSettingsManager();
+                this.sceneManager = {
+                    currentScene: {
+                        accessibilitySettingsManager: new MockAccessibilitySettingsManager()
+                    }
+                };
+                this.eventListeners = new Map();
+            }
+            
+            emit(eventName, data) {
+                console.log(`[MockGameEngine] Event emitted: ${eventName}`, data);
+                this.logEvent('gameEngine.emit', `${eventName}`, JSON.stringify(data));
+            }
+            
+            logEvent(type, event, detail) {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                
+                const time = new Date().toLocaleTimeString();
+                logEntry.innerHTML = `
+                    <span class="log-time">[${time}]</span> 
+                    <span class="log-event">${type}:</span> 
+                    <span class="log-detail">${event} ${detail ? '→ ' + detail : ''}</span>
+                `;
+                
+                const logContent = document.getElementById('event-log-content');
+                logContent.appendChild(logEntry);
+                logContent.scrollTop = logContent.scrollHeight;
+            }
+        }
+        
+        class MockSettingsManager {
+            constructor() {
+                this.settings = new Map([
+                    ['accessibility.profile', 'default'],
+                    ['accessibility.highContrast', false],
+                    ['accessibility.reducedMotion', false],
+                    ['accessibility.largeText', false],
+                    ['accessibility.screenReader', false],
+                    ['accessibility.colorBlindSupport', false]
+                ]);
+            }
+            
+            get(key) {
+                return this.settings.get(key);
+            }
+            
+            set(key, value) {
+                this.settings.set(key, value);
+                console.log(`[MockSettingsManager] Setting updated: ${key} = ${value}`);
+                window.gameEngine.logEvent('settings.set', key, `${value}`);
+                window.updateCurrentSettings();
+            }
+            
+            save() {
+                console.log('[MockSettingsManager] Settings saved');
+                window.gameEngine.logEvent('settings.save', 'localStorage', 'saved');
+            }
+        }
+        
+        class MockAccessibilitySettingsManager {
+            constructor() {
+                this.currentProfile = 'default';
+            }
+            
+            async applyProfile(profileId, settings) {
+                console.log(`[MockAccessibilitySettingsManager] Applying profile: ${profileId}`, settings);
+                this.currentProfile = profileId;
+                window.gameEngine.logEvent('accessibility.applyProfile', profileId, `${Object.keys(settings).length} settings`);
+                
+                // 少し時間をかけて適用する様子をシミュレート
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            notifySettingsChanged() {
+                console.log('[MockAccessibilitySettingsManager] Settings changed notification');
+                window.gameEngine.logEvent('accessibility.notifyChanged', 'notification', 'sent');
+            }
+        }
+        
+        // モックのエラーハンドラーとローカライゼーションマネージャー
+        window.getErrorHandler = () => ({
+            handleError: (error, type, context) => {
+                console.error(`[ErrorHandler] ${type}:`, error, context);
+                window.gameEngine.logEvent('error', type, error.message);
+            }
+        });
+        
+        window.getLocalizationManager = () => ({
+            t: (key) => key // そのままキーを返す
+        });
+        
+        // グローバルな参照
+        window.gameEngine = new MockGameEngine();
+        window.accessibilityProfileComponent = null;
+        
+        // AccessibilityProfileComponentをインポート
+        import('../AccessibilityProfileComponent.js').then(module => {
+            const { AccessibilityProfileComponent } = module;
+            
+            // コンポーネントを初期化
+            window.accessibilityProfileComponent = new AccessibilityProfileComponent(window.gameEngine);
+            
+            // コンテナに追加
+            const container = document.getElementById('accessibility-profile-container');
+            window.accessibilityProfileComponent.initialize(container);
+            
+            // イベントリスナーを設定
+            container.addEventListener('accessibilityProfileChanged', (event) => {
+                console.log('[Demo] Profile changed:', event.detail);
+                window.gameEngine.logEvent('component.profileChanged', event.detail.profileId, `timestamp: ${event.detail.timestamp}`);
+                window.updateCurrentSettings();
+            });
+            
+            // 初期設定を表示
+            window.updateCurrentSettings();
+            
+            window.gameEngine.logEvent('demo.init', 'component', 'initialized');
+        }).catch(error => {
+            console.error('[Demo] Error loading AccessibilityProfileComponent:', error);
+            window.gameEngine.logEvent('demo.error', 'load', error.message);
+        });
+        
+        // 現在の設定を更新
+        window.updateCurrentSettings = function() {
+            const settingsContainer = document.getElementById('current-settings');
+            const settings = [
+                { key: 'accessibility.profile', label: 'プロファイル' },
+                { key: 'accessibility.highContrast', label: 'ハイコントラスト' },
+                { key: 'accessibility.reducedMotion', label: 'モーション削減' },
+                { key: 'accessibility.largeText', label: '大きな文字' },
+                { key: 'accessibility.screenReader', label: 'スクリーンリーダー' },
+                { key: 'accessibility.colorBlindSupport', label: '色覚サポート' }
+            ];
+            
+            settingsContainer.innerHTML = '';
+            
+            settings.forEach(setting => {
+                const value = window.gameEngine.settingsManager.get(setting.key);
+                const item = document.createElement('div');
+                item.className = 'setting-item';
+                
+                item.innerHTML = `
+                    <span class="setting-label">${setting.label}</span>
+                    <span class="setting-value ${typeof value === 'boolean' ? value : ''}">${value}</span>
+                `;
+                
+                settingsContainer.appendChild(item);
+            });
+        };
+        
+        // グローバル関数
+        window.loadProfile = function(profileId) {
+            if (window.accessibilityProfileComponent) {
+                if (window.accessibilityProfileComponent.setProfile(profileId)) {
+                    window.gameEngine.logEvent('demo.forceProfile', profileId, 'applied');
+                } else {
+                    window.gameEngine.logEvent('demo.forceProfile', profileId, 'failed');
+                }
+            }
+        };
+        
+        window.resetComponent = function() {
+            if (window.accessibilityProfileComponent) {
+                window.accessibilityProfileComponent.destroy();
+                window.gameEngine.logEvent('demo.reset', 'component', 'destroyed');
+                
+                // 新しいコンポーネントを作成
+                import('../AccessibilityProfileComponent.js').then(module => {
+                    const { AccessibilityProfileComponent } = module;
+                    window.accessibilityProfileComponent = new AccessibilityProfileComponent(window.gameEngine);
+                    
+                    const container = document.getElementById('accessibility-profile-container');
+                    container.innerHTML = '';
+                    window.accessibilityProfileComponent.initialize(container);
+                    
+                    window.gameEngine.logEvent('demo.reset', 'component', 'recreated');
+                });
+            }
+        };
+        
+        window.clearEventLog = function() {
+            const logContent = document.getElementById('event-log-content');
+            logContent.innerHTML = '';
+            window.gameEngine.logEvent('demo.clearLog', 'manual', 'cleared');
+        };
+    </script>
+</body>
+</html>

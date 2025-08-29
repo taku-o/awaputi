@@ -1,0 +1,1040 @@
+- [x] src/accessibility/AccessibilityDeploymentPreparation.js - TypeScript版に深刻な構文エラー（インターフェース定義、文字列リテラル、括弧不整合） → 修正済み
+- [x] src/accessibility/AccessibilityErrorHandler.js - TypeScript版に深刻な構文エラー（インターフェース定義、制御構造、文字列リテラル） → 修正済み
+- [x] src/accessibility/AccessibilityIntegrationTester.js - TypeScript版は正常だが、一部メソッドがstub実装に変更（機能削減）
+- [x] src/accessibility/AccessibilityOnboarding.js - TypeScript版に深刻な構文エラー（インターフェース定義、文字列リテラル、メソッド定義） → 修正済み
+- [x] src/accessibility/AccessibilityProfileManager.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/AccessibilityUserTesting.js - JavaScriptファイルは削除済み、TypeScript版に深刻な構文エラー（インターフェース定義、文字列リテラル）
+- [x] src/accessibility/ColorContrastAnalyzer.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/KeyboardNavigationTester.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/LanguageSpecificAccessibility.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/ScreenReaderSimulator.js - TypeScript版に深刻な構文エラー（インターフェース定義、文字列未完了、'announcement,s'、'passe,d'などの壊れた文字列）
+- [x] src/accessibility/WCAGValidator.js - ✅ **処理同一** TypeScript版は正常動作、型定義追加、Mapシリアライゼーション改善
+- [x] src/accessibility/color-contrast/ColorAnalysisEngine.js - TypeScript版に深刻な構文エラー（同じパターン）
+- [x] src/accessibility/color-contrast/ColorBlindnessSimulator.js - TypeScript版に深刻な構文エラー（同じパターン）
+- [x] src/accessibility/color-contrast/ContrastCalculator.js - TypeScript版に深刻な構文エラー（同じパターン）
+- [x] src/accessibility/keyboard-navigation/KeyboardAccessibilityReporter.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/keyboard-navigation/KeyboardEventHandler.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/keyboard-navigation/NavigationStateManager.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/onboarding/AccessibilityTutorial.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/onboarding/OnboardingFlowManager.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/onboarding/OnboardingProgressTracker.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/screen-reader/ARIAAttributeProcessor.js - ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/screen-reader/ScreenReaderEngine.js ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/screen-reader/TextToSpeechController.js ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/wcag-validation/AccessibilityAuditor.js ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/wcag-validation/ComplianceReporter.js ✅ **修正完了** TypeScript版を完全書き直し
+- [x] src/accessibility/wcag-validation/WCAGRuleEngine.js - ✅ **機能拡張** TypeScript版はJS版の全機能を含み、さらに4つのテストメソッドを追加実装（HeadingStructure、PageTitle、LanguageOfPage、LabelsInstructions）、hex色コード解析も改善
+- [x] src/analytics/AnalyticsAPI.js - **設計が大幅に異なる**: JS版(507行)は包括的APIラッパー、TS版(325行)は軽量特化API。JS版のエンドポイント管理・レート制限・テスト機能がTS版では削除、代わりにAPIResponse統一インターフェースを導入
+- [x] src/analytics/AnalyticsComparisonEngine.js - ✅ **処理同一** TypeScript版は正常、適切な型注釈追加、ComparisonEngine後方互換エイリアス追加
+- [x] src/analytics/AnalyticsDashboard.js - ✅ **修正完了** currentTimeRange変数宣言のコメントアウトを修正
+- [x] src/analytics/AnalyticsErrorNotificationSystem.js - ✅ **処理同一** TypeScript版は正常、適切な型注釈追加、ErrorNotificationSystem後方互換エイリアス追加
+- [x] src/analytics/AnalyticsPerformanceOptimizer.js - ✅ **メモリ警告処理は正常** ❌ **型制限に問題**: processEventGroupの型が"single"|"batch"に制限されているが実際はイベントタイプ文字列が必要
+- [x] src/analytics/AnalyticsTrendAnalyzer.js - ✅ **処理同一** TypeScript版は正常、適切な型注釈追加、TrendAnalyzer後方互換エイリアス追加
+- [x] src/analytics/AnomalyDetector.js - ❌ **重大な型制限問題**: generateRecommendations、getRecommendationForType、getTypeDisplayNameで型が"single"|"batch"に制限されているが実際は異常タイプ文字列（score_outlier等）が必要
+- [x] src/analytics/ChartRenderer.js - ❌ **重大な型制限問題**: chartConfigs型が"single"|"batch"に制限されているが実際はChart.jsタイプ（'line','bar','pie','doughnut'）が必要
+- [x] src/analytics/DataCollector.js - ✅ **処理同一** TypeScript版は正常、destroyメソッドでプロパティクリーンアップ処理の軽微な差異のみ
+- [x] src/analytics/DataVisualizer.js - **重大**: TypeScript版で多数の機能削除（ネットワーク図、インタラクティブ機能、統計情報取得等）
+- [x] src/analytics/DeveloperAlertSystem.js - TypeScript版は処理同一
+- [x] src/analytics/EnhancedAnalyticsManager.js - **重大**: TypeScript版で18個の重要なゲーム追跡メソッドが削除
+- [x] src/analytics/ErrorTrackingSystem.js - TypeScript版は正常
+- [x] src/analytics/ExportManager.js - TypeScript版は処理同一
+- [x] src/analytics/GameBalanceCollector.js - TypeScript版でspawnTimingsのtype型が誤って"single"|"batch"に制限（実際はバブルタイプ文字列）→ 修正済み
+- [x] src/analytics/IndexedDBStorageManager.js - **重要な機能欠落**: aggregateData()、高度なクエリ機能、カスケード削除、イベントハンドラー等が削除。ストア定義も異なる（aggregatedData→gameBalance/userBehavior）。JS版からの再作成推奨
+- [x] src/analytics/PerformanceDataCollector.js - TypeScript版でコメントアウトされていた変数宣言とtriggerPerformanceWarningの型エラーを修正。処理ロジックは同一
+- [x] src/analytics/PerformanceWarningSystem.js - TypeScript版でコメントアウトされていた変数宣言を修正済み。プライベートメソッドが6つ追加されている（TypeScript版の拡張）。処理ロジックは同一
+- [x] src/analytics/PrivacyManager.js - **実装が大きく異なる**: JS版は同意ダイアログUI実装、TS版はプログラム的な同意管理のみ。匿名化ルール、ストレージキー、メソッド名も異なる。用途に応じた選択が必要
+- [x] src/analytics/RealtimeDashboard.js - TypeScript版でChart.js初期化時のanimation設定が欠落（duration: 0）→ 修正済み
+- [x] src/analytics/RealtimeMonitor.js - TypeScript版でgetAlertHistory()のtype引数が"single"|"batch"に制限（実際は任意のタイプ）→ 修正済み
+- [x] src/analytics/TimeSeriesVisualizer.js - TypeScript版は処理同一（未使用パラメータのコメントアウトのみ）
+- [x] src/analytics/analytics-api/APIEndpointManager.js - TypeScript版でaccessControl変数のコメントアウトとtotalRequests++の処理位置の違いを修正
+- [x] src/analytics/analytics-api/DataAggregationProcessor.js - TypeScript版でmaxCacheSize変数のコメントアウトを修正
+- [x] src/analytics/analytics-api/DataExportHandler.js - 処理ロジックの違いなし
+- [x] src/analytics/comparison/ComparisonAlgorithms.js - TypeScript版の不必要な型キャスト`null as any`を修正
+- [x] src/analytics/comparison/ComparisonAnalyzer.js - 処理ロジックの違いなし（インターフェース追加のみ）
+- [x] src/analytics/comparison/ComparisonResultRenderer.js - TypeScript版でrenderConfig変数のコメントアウトを修正
+- [x] src/analytics/comparison/DataComparator.js - TypeScript版でcomparisonPeriods変数のコメントアウトを修正
+- [x] src/analytics/enhanced-analytics-manager/AnalyticsPerformanceMonitor.js - TypeScript版でaddToHistoryメソッドの型定義を修正（"single"|"batch"→string）
+- [x] src/analytics/enhanced-analytics-manager/GameBalanceAnalyzer.js - TypeScript版でstorageManager変数のコメントアウトを修正。TS版は拡張実装（追加メソッドあり）
+- [x] src/analytics/enhanced-analytics-manager/PlayerBehaviorAnalyzer.js - TypeScript版でlongSessionMarked変数のコメントアウトを修正
+- [x] src/analytics/enhanced-analytics-manager/SessionManager.js - 処理ロジックの違いなし（インターフェース追加のみ）
+- [x] src/audio/AudioAccessibilitySupport.js - TypeScript版でコメントアウトされた変数（audioManager等）を修正、ErrorHandler型定義を修正
+- [x] src/audio/AudioCacheManager.js - TypeScript版でaudioContext変数のコメントアウトを修正、ErrorHandler型定義を修正
+- [x] src/audio/AudioConfigurationManager.js - 型制限エラー（type: "single"|"batch" → string）修正完了
+- [x] src/audio/AudioContextManager.js - 処理ロジックの違いなし。型定義追加のみ
+- [x] src/audio/AudioController.js - メソッド名の違い（_performInitialization）修正完了
+- [x] src/audio/AudioDataOptimizer.js - ErrorHandler型定義とメソッド名（_losslessCompression等）修正完了
+- [x] src/audio/AudioErrorHandler.js - ErrorHandler型定義修正、localizationManager宣言追加完了
+- [x] src/audio/AudioManager.js - インデント修正のみ。処理ロジック同一
+- [x] src/audio/AudioPerformanceMonitor.js - Alert型定義修正、audioContextコメントアウト修正完了
+- [x] src/audio/AudioPlaybackController.js - masterGainNodeコメントアウト修正、エラーログメソッド名修正完了
+- [x] src/audio/AudioSubsystemCoordinator.js - 処理ロジックの違いあり。インポート・クラス名不整合（要注意）
+- [x] src/audio/AudioVisualizer.js - dataArray・textualDescriptionコメントアウト修正完了
+- [x] src/audio/BGMGenerator.js - rhythmPatterns・baseFrequencyコメントアウト修正完了
+- [x] src/audio/BGMPlayer.js - ErrorHandler型定義修正完了
+- [x] src/audio/BGMSystem.js - currentVolumeコメントアウト修正完了
+- [x] src/audio/BGMTransitionManager.js - audioContextコメントアウト、ErrorHandler型定義修正完了
+- [x] src/audio/EnvironmentalAudioManager.js - ErrorHandler型定義修正完了
+- [x] src/audio/Equalizer.js - 処理ロジックの違いなし
+- [⚠️] src/audio/PresetManager.js - 重大：完全に異なる実装（TypeScript版とJavaScript版が別物）
+- [x] src/audio/ProceduralSoundGenerator.js - 型キャスト修正完了
+- [⚠️] src/audio/SoundEffectSystem.js - 重大：完全に異なる実装（TypeScript版とJavaScript版が別物）
+- [x] src/audio/accessibility/AudioAccessibilitySupport.js - コメントアウト変数・型定義修正完了
+- [x] src/audio/accessibility/AudioCueManager.js - 型定義修正完了
+- [x] src/audio/accessibility/AudioDescriptionManager.js - errorHandlerコメントアウト・型定義修正完了
+- [x] src/audio/accessibility/AudioEventManager.js - mainControllerコメントアウト・型定義修正完了
+- [x] src/audio/accessibility/AudioFeedbackManager.js - ColorMappingコメントアウト修正完了
+- [⚠️] src/audio/accessibility/AudioLegacyAdapter.js - 処理ロジックの違い（メソッド呼び出し方法が異なる）
+- [x] src/audio/accessibility/AudioSettingsManager.js - 処理ロジックの違いなし
+- [x] src/audio/cache/CacheDataLoader.js - ✅ **処理同一** TypeScript版は正常、適切な型注釈・インターフェース定義追加、private readonly修飾子で安全性向上
+- [x] src/audio/cache/CacheMemoryManager.js - ✅ **処理同一** TypeScript版は正常、詳細なメモリ管理インターフェース定義追加、型安全性とカプセル化向上
+- [x] src/audio/cache/CacheStatistics.js - ✅ **処理同一** ❌ **軽微な型制限問題**: Recommendationインターフェースの型が"single"|"batch"に制限されているが実際は推奨事項タイプが必要
+- [x] src/audio/cache/LRUCacheImplementation.js - ✅ **処理同一** TypeScript版は正常、ジェネリック型とインターフェース定義追加、ErrorHandlerインポートがコメントアウト（軽微）
+- [x] src/audio/components/AudioChannelManager.js - ✅ **処理同一・機能拡張** TypeScript版は正常、詳細な型定義・インターフェース追加、設定監視機能追加（configWatchers、channelConfig）
+- [x] src/audio/components/AudioComponentPerformanceMonitor.js - ✅ **処理同一・機能拡張** ❌ **軽微な型制限問題**: Alert型が"single"|"batch"に制限、設定値の軽微な差異（分析ウィンドウ期間）、AlertSystem追加 - **ユーザー修正済み**
+- [x] src/audio/components/AudioFormatHandler.js - ✅ **処理同一** TypeScript版は正常、包括的な型定義・インターフェース追加、オプショナルチェーン・型キャスト適用
+- [x] src/audio/components/AudioVolumeController.js - ✅ **処理同一** TypeScript版は正常、包括的なインターフェース・型定義追加、適切な型安全性確保
+- [x] src/audio/effects/AudioEffectContextManager.js - ✅ **処理ロジック改良・機能拡張** TypeScript版は正常、包括的なインターフェース・型定義追加、軽微なバグ修正とロジック改良
+- [❌] src/audio/effects/AudioEffectManager.js - **重大な型制限問題**: ActiveEffectInstanceのtype型が"single"|"batch"に制限されているが実際はエフェクトタイプ文字列が必要、getEffectVariationの引数型も同様に制限、コンプレッサー設定・ゲインノード初期値の軽微な省略
+- [✅] src/audio/effects/SoundEffectRenderer.js - **処理同一** TypeScript版は正常、設定値の軽微な調整（デフォルト値、周波数等）があるが処理ロジックは同一、詳細な型定義追加
+- [✅] src/audio/effects/SoundPoolManager.js - **処理同一・改良** TypeScript版は正常、null安全性とタイマー管理が改善、詳細な型定義追加、基本処理ロジックは同一
+- [❌] src/audio/environmental-audio-manager/BiomeDefinitionManager.js - **重大な型制限問題**: SoundLayer、AdditionalLayer、SoundProfileのtype型が"single"|"batch"に制限されているが実際は多様なサウンドタイプ文字列（'wind', 'leaves', 'rain', 'night_insects'等）が必要、メソッド名のアンダースコア削除（軽微）
+- [x] src/audio/environmental-audio-manager/BiomeTransitionController.js ✓ 時間帯レイヤーの固定値問題を修正
+- [x] src/audio/environmental-audio-manager/EnvironmentalAudioSettings.js ✅ 処理同一（括弧位置のバグ修正のみ）
+- [x] src/audio/environmental-audio-manager/EnvironmentalSoundGenerator.js ✅ 処理同一（型安全性向上のみ）
+- [x] src/bubbles/Bubble.js ⚠️ blendColorsメソッドの実装差異（TS版が改善）、ConfigManager呼び出し方法の違い
+- [x] src/cleanup/CleanupOrchestrator.js ✅ 処理同一（スペルミス修正、エラーチェック追加）
+- [x] src/cleanup/FileRemover.js ✅ 処理同一（型安全性向上のみ）
+- [x] src/cleanup/FileScanner.js ✅ 処理同一
+- [x] src/cleanup/ReferenceChecker.js ✅ 処理同一（未使用変数のコメントアウト、アクセス修飾子追加）
+- [x] src/cleanup/ReportGenerator.js ✅ 処理同一（型安全性追加、非同期処理の軽微な違い）
+- [x] src/cleanup/SafetyValidator.js ✅ 処理同一（型安全性追加、戻り値に追加フィールド）
+- [x] src/cleanup/index.js ✅ 処理同一（型安全性追加、エラーハンドリング改善）
+- [x] src/components/AccessibilityProfileComponent.js ✅ 処理同一（型安全性追加、nullチェック強化）
+- [x] src/components/SettingsImportExportComponent.js ✅ 処理同一（型安全性追加、フォーマット差異修正済み）
+- [x] src/components/VolumeControlComponent.js ✅ 処理ロジックに差異なし
+- [x] src/components/examples/AccessibilityProfileIntegrationExample.js ⚠️ 大幅な実装差異（TS版が簡略化）
+- [x] src/components/examples/SettingsImportExportIntegrationExample.js ⚠️ 大幅な実装差異（TS版が簡略化）
+- [x] src/components/examples/VolumeControlIntegrationExample.js ⚠️ 大幅な実装差異（TS版が簡略化）
+- [x] src/config/AudioConfig.js - TypeScript版でAudioManagerインターフェースの型定義修正済み
+- [x] src/config/EffectsConfig.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/config/FontPreloadConfig.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/config/GameBalance.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/config/GameConfig.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
+- [x] src/config/I18nPerformanceConfig.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/config/PerformanceConfig.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
+- [x] src/core/ARIAManager.js - TypeScript版は正常（coreディレクトリ確認済み）
+- [x] src/core/AccessibilityManager.js - TypeScript版は正常（coreディレクトリ確認済み）
+- [x] src/core/AchievementEventIntegrator.js - ✅ **差異なし** TypeScript版とJavaScript版は処理ロジック同一
+- [x] src/core/AchievementManager.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
+- [x] src/core/AchievementProgressEngine.js - ✅ **軽微な差異** 型安全性向上のみ、処理ロジックは同一
+- [x] src/core/AchievementStatsUI.js - ✅ **差異なし** TypeScript版とJavaScript版は処理ロジック同一
+- [x] src/core/AdvancedGestureRecognitionSystem.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
+- [x] src/core/AdvancedResponsiveLayoutManager.js - ✅ **軽微な差異のみ** ErrorHandler使用方法とdispatchLayoutEvent型定義を修正
+- [x] src/core/AlternativeInputManager.js - ✅ **プロパティ追加と修正** 欠落プロパティと初期化処理を修正
+- [x] src/core/AsyncOperationQueue.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/core/BackupManager.js - TypeScript版でValidationManager.validateの型定義修正が必要（"single"|"batch" → string）
+- [x] src/core/BalanceCalculator.js - ✅ **処理同一** TypeScript版は正常、処理ロジックは完全一致
+- [x] src/core/CacheSystem.js - TypeScript版でMemoryLeak.typeの型定義修正が必要（"single"|"batch" → string）
+- [x] src/core/CalculationEngine.js - ✅ **型定義の問題あり** 複数メソッドで'single'|'batch'の制限的な型定義（実際は'score','balance','effects'）、処理は同一 - TypeScript版で型定義修正が必要（"single"|"batch" → string、実際は'score'/'balance'/'effects'を使用）
+- [x] src/core/CaptionManager.js - ✅ **軽微な差異のみ** TypeScript版で不要な型キャスト（'music' as AudioChannel）を追加、動作には影響なし
+- [x] src/core/ChallengeSystem.js
+- [x] src/core/ChallengeUI.js
+- [x] src/core/ChartRenderer.js ⚠️ **完全に異なる実装** JavaScript版（CoreChartRenderer）は統合エンジン、TypeScript版（ChartRenderer）はシンプルな単一実装
+- [x] src/core/ChunkProcessor.js ✅ **修正完了** JavaScript版から完全に再作成（processStream、processObjectメソッドを含む）
+- [x] src/core/CloudStorageAdapter.js ✅ **修正完了** JavaScript版から完全に再作成（processStream、processObjectメソッドを含む）
+- [x] src/core/ColorBlindnessSupport.js ✅ **修正完了** JavaScript版から完全に再作成（すべての機能を保持）
+- [x] src/core/ConfigurationDebugger.js ✅ **修正完了** JavaScript版から完全に再作成（trackAccess/trackErrorメソッドを保持）
+- [x] src/core/ConfigurationErrorHandler.js ✅ **修正完了** JavaScript版から完全に再作成（recoveryAttemptsプロパティ定義、正しいインポート）
+- [x] src/core/ConfigurationManager.js ✅ **修正完了** JavaScript版から完全に再作成（get(category, key, defaultValue)メソッド保持）
+=== ユーザーここまで確認 ===
+- [x] src/core/ContextualHelpManager.js - **完全に異なる実装**: JS版はサブコンポーネントシステム（Content/Display/Trigger/Personalization）、TS版は単純なツールチップ実装
+- [x] src/core/ContrastManager.js - **実装が大きく異なる**: JS版は高度なWCAG準拠実装（リアルタイム検証、DOM監視、統計）、TS版はシンプルなCSSフィルター実装
+- [x] src/core/CoreComparisonEngine.js - **実装が大きく異なる**: JS版は高度な統計分析（サブコンポーネント使用）、TS版はシンプルな数値比較。基本的な比較処理は維持
+- [x] src/core/CoreTrendAnalyzer.js - **実装規模は異なるが処理は同一**: JS版は詳細な多期間分析、TS版はシンプル実装。線形回帰・季節性検出・ボラティリティ計算は同じ
+- [x] src/core/DailyChallengeManager.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。TS版は型定義追加のみ
+- [x] src/core/DataArchiveManager.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。TS版は型定義追加のみ（アーカイブ設定・戦略・圧縮・検索・メンテナンス全て同一）
+- [x] src/core/DataCache.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。LRUアルゴリズム・メモリ管理・イベントシステム全て同一
+- [x] src/core/DataCompressionManager.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。全5種類の圧縮アルゴリズム・統計処理・サンプリング全て同一
+- [x] src/core/DataManager.js - **主要機能は同一、一部機能削減**: 基本的なデータ管理・クラウド同期は同一。TS版では大規模データのチャンク処理機能（saveLargeData等）が削除
+- [x] src/core/DataStorage.js - ✅ **処理完全一致**: JS版とTS版は同一ロジック。LocalStorage/IndexedDBアダプター、リトライ機能、容量管理全て同一
+- [x] src/core/DeviceSpecificHandler.js ✅ **処理完全一致**: JS版とTS版は同一ロジック。全デバイス最適化処理（iOS/Android/Desktop）、高DPI対応、ブラウザ固有修正全て同一
+- [x] src/core/EffectsCalculator.js ✅ **処理完全一致**: JS版とTS版は同一ロジック。全エフェクト計算（パーティクル数、アニメーション時間、軌道、色遷移）完全同一
+- [x] src/core/EnhancedTouchManager.js **主要処理同一、軽微な差異**: 全タッチ処理・ジェスチャー検出は同一。maxTouchPoints削除とtype定義の軽微な差異のみ
+- [] src/core/ErrorRecoveryManager.js
+- [] src/core/EventRankingManager.js
+- [] src/core/EventStageManager.js
+- [] src/core/ExportManager.js
+- [] src/core/FocusManager.js
+- [] src/core/GameBalanceCompatibility.js
+- [] src/core/GameContentDescriber.js
+- [] src/core/GameEngine.js
+- [] src/core/GestureCustomizer.js
+- [] src/core/ImportManager.js
+- [] src/core/InputManager.js
+- [] src/core/InsightGenerator.js
+- [] src/core/ItemSystem.js
+- [] src/core/KeyboardAccessibilityManager.js
+- [] src/core/KeyboardShortcutManager.js
+- [] src/core/LeaderboardManager.js
+- [] src/core/LiveRegionManager.js
+- [] src/core/LocalizationManager.js
+- [] src/core/LoggingSystem.js
+- [] src/core/MobileAccessibilityManager.js
+- [] src/core/MobileSocialOptimizer.js
+- [] src/core/MobileSystemIntegrator.js
+- [] src/core/MobileUIUXManager.js
+- [] src/core/MobileWebShareHandler.js
+- [] src/core/MotionManager.js
+- [] src/core/OfflineManager.js
+- [] src/core/PWAManager.js
+- [] src/core/PlayerData.js
+- [] src/core/RecoveryManager.js
+- [] src/core/RenderingOptimizer.js
+- [] src/core/Scene.js
+- [] src/core/SceneManager.js
+- [] src/core/ScoreCalculator.js
+- [] src/core/ScreenshotCapture.js
+- [] src/core/ScreenshotOverlay.js
+- [] src/core/SecurityManager.js
+- [] src/core/SettingsManager.js
+- [] src/core/SettingsNotificationSystem.js
+- [] src/core/ShareButton.js
+- [] src/core/ShareContentGenerator.js
+- [] src/core/ShareDialog.js
+- [] src/core/SimplificationManager.js
+- [] src/core/SocialAccessibilityManager.js
+- [] src/core/SocialAnalyticsTracker.js
+- [] src/core/SocialErrorHandler.js
+- [] src/core/SocialI18nManager.js
+- [] src/core/SocialLeaderboardUI.js
+- [] src/core/SocialPlatformAdapters.js
+- [] src/core/SocialSharingManager.js
+- [] src/core/SpeechSynthesisManager.js
+- [] src/core/StageManager.js
+- [] src/core/StatisticsAccessibilityManager.js
+- [] src/core/StatisticsAnalyzer.js
+- [] src/core/StatisticsCalculator.js
+- [] src/core/StatisticsCollector.js
+- [] src/core/StatisticsDashboard.js
+- [] src/core/StatisticsDataManager.js
+- [] src/core/StatisticsDataRecovery.js
+- [] src/core/StatisticsErrorHandler.js
+- [] src/core/StatisticsEventHandler.js
+- [] src/core/StatisticsExporter.js
+- [] src/core/StatisticsFilterManager.js
+- [] src/core/StatisticsManager.js
+- [] src/core/StatisticsPerformanceOptimizer.js
+- [] src/core/StatisticsTimeSeriesManager.js
+- [] src/core/StatisticsVisualAccessibilityEnhancer.js
+- [] src/core/SyncManager.js
+- [] src/core/TextScalingManager.js
+- [] src/core/TimeSeriesDataManager.js
+- [] src/core/TimingAdjustmentManager.js
+- [] src/core/ValidationManager.js
+- [] src/core/ValidationSystem.js
+- [] src/core/VibrationManager.js
+- [] src/core/VisualFeedbackManager.js
+- [] src/core/VisualFocusManager.js
+- [] src/core/WeeklyChallengeManager.js
+- [] src/core/achievements/AchievementDefinitions.js
+- [] src/core/achievements/AchievementNotificationSystem.js
+- [] src/core/achievements/AchievementPerformanceOptimizer.js
+- [] src/core/achievements/AchievementProgressTracker.js
+- [] src/core/alternative-input-manager/EyeTrackingController.js
+- [] src/core/alternative-input-manager/HeadTrackingController.js
+- [] src/core/alternative-input-manager/SwitchInputController.js
+- [] src/core/alternative-input-manager/VoiceInputController.js
+- [] src/core/challenge/ChallengeDataController.js
+- [] src/core/challenge/ChallengeInteractionHandler.js
+- [] src/core/challenge/ChallengeUIRenderer.js
+- [] src/core/chart-renderer/BarChartRenderer.js
+- [] src/core/chart-renderer/ChartUtilities.js
+- [] src/core/chart-renderer/LineChartRenderer.js
+- [] src/core/chart-renderer/PieChartRenderer.js
+- [] src/core/comparison-engine/ComparisonDataProcessor.js
+- [] src/core/comparison-engine/StageComparisonAnalyzer.js
+- [] src/core/comparison-engine/StatisticalAnalyzer.js
+- [] src/core/contextual-help-manager/HelpContentManager.js
+- [] src/core/contextual-help-manager/HelpDisplayController.js
+- [] src/core/contextual-help-manager/HelpPersonalizationEngine.js
+- [] src/core/contextual-help-manager/HelpTriggerManager.js
+- [] src/core/data/DataStorageManager.js
+- [] src/core/error-recovery-manager/AutoSaveSystem.js
+- [] src/core/error-recovery-manager/ErrorPreventionHandler.js
+- [] src/core/error-recovery-manager/UndoRedoSystem.js
+- [] src/core/events/EventHistoryManager.js
+- [] src/core/events/EventNotificationSystem.js
+- [] src/core/events/EventRankingSystem.js
+- [] src/core/events/SeasonalEventManager.js
+- [] src/core/focus/FocusNavigation.js
+- [] src/core/focus/FocusRingRenderer.js
+- [] src/core/focus/FocusTrapManager.js
+- [] src/core/game-engine/GameEngineEventManager.js
+- [] src/core/game-engine/GameEngineInitializer.js
+- [] src/core/game-engine/GameEngineRenderer.js
+- [] src/core/game-engine/GameEngineUtilities.js
+- [] src/core/gesture-customizer/GestureAdaptationSystem.js
+- [] src/core/gesture-customizer/GestureDeviceManager.js
+- [] src/core/gesture-customizer/GestureRecognitionEngine.js
+- [] src/core/help/ContentLoader.js
+- [] src/core/help/ContentValidation.js
+- [] src/core/help/ContextManager.js
+- [] src/core/help/DataModels.js
+- [] src/core/help/FAQSystem.js
+- [] src/core/help/HelpAnalytics.js
+- [] src/core/help/HelpEffectivenessAnalyzer.js
+- [] src/core/help/HelpErrorHandler.js
+- [] src/core/help/HelpFeedbackSystem.js
+- [] src/core/help/HelpManager.js
+- [] src/core/help/MultilingualContentManager.js
+- [] src/core/help/SearchEngine.js
+- [] src/core/help/TooltipSystem.js
+- [] src/core/help/TutorialAccessibilityManager.js
+- [] src/core/help/TutorialActions.js
+- [] src/core/help/TutorialManager.js
+- [] src/core/help/TutorialOverlay.js
+- [] src/core/help/TutorialProgressManager.js
+- [] src/core/help/TutorialStatsManager.js
+- [] src/core/help/TutorialValidationEngine.js
+- [] src/core/help/components/ContentLoader.js
+- [] src/core/help/components/HelpPerformanceMonitor.js
+- [] src/core/help/components/SearchEngine.js
+- [] src/core/help/components/TutorialAnimationController.js
+- [] src/core/help/components/TutorialInteractionHandler.js
+- [] src/core/help/components/TutorialProgressTracker.js
+- [] src/core/help/components/TutorialStepManager.js
+- [] src/core/help/effectiveness/HelpDataAnalyzer.js
+- [] src/core/help/effectiveness/HelpMetricsCollector.js
+- [] src/core/help/effectiveness/HelpReportGenerator.js
+- [] src/core/help/index.js
+- [] src/core/i18n/AdvancedCacheManager.js
+- [] src/core/i18n/AnimationOptimizer.js
+- [] src/core/i18n/CompressionUtils.js
+- [] src/core/i18n/EnhancedLocalizationManager.js
+- [] src/core/i18n/FontManager.js
+- [] src/core/i18n/FormatterEngine.js
+- [] src/core/i18n/I18nPerformanceMonitor.js
+- [] src/core/i18n/I18nRenderOptimizer.js
+- [] src/core/i18n/I18nSecurityManager.js
+- [] src/core/i18n/I18nSecurityTester.js
+- [] src/core/i18n/KoreanInputHandler.js
+- [] src/core/i18n/LanguageDetector.js
+- [] src/core/i18n/LazyTranslationLoader.js
+- [] src/core/i18n/MemoryOptimizer.js
+- [] src/core/i18n/OptimizedTranslationLoader.js
+- [] src/core/i18n/RegionalSettingsManager.js
+- [] src/core/i18n/RenderingOptimizer.js
+- [] src/core/i18n/TranslationCache.js
+- [] src/core/i18n/TranslationLoader.js
+- [] src/core/i18n/UIUpdateOptimizer.js
+- [] src/core/i18n/advanced/AdvancedFormatterEngine.js
+- [] src/core/i18n/automation/TranslationFileGenerator.js
+- [] src/core/i18n/automation/TranslationImportExport.js
+- [] src/core/i18n/cultural/CulturalAdaptationSystem.js
+- [] src/core/i18n/font-loading/FontErrorHandler.js
+- [] src/core/i18n/font-loading/FontErrorIntegration.js
+- [] src/core/i18n/font-loading/FontFallbackHandler.js
+- [] src/core/i18n/font-loading/FontLoadingConfig.js
+- [] src/core/i18n/font-loading/FontLoadingManager.js
+- [] src/core/i18n/font-loading/FontSourceManager.js
+- [] src/core/i18n/management/ProgressTracker.js
+- [] src/core/i18n/management/TranslationKeyManager.js
+- [] src/core/i18n/management/ValidationCommands.js
+- [] src/core/i18n/quality/QualityChecker.js
+- [] src/core/i18n/quality/QualityReporter.js
+- [] src/core/i18n/quality/ValidationRules.js
+- [] src/core/i18n/rtl/RTLLanguageDetector.js
+- [] src/core/i18n/rtl/RTLLayoutManager.js
+- [] src/core/i18n/rtl/RTLUIComponents.js
+- [] src/core/i18n/test/RegionalFormattingTest.js
+- [] src/core/i18n/testing/SystemIntegrationTester.js
+- [] src/core/leaderboard/LeaderboardDataProcessor.js
+- [] src/core/leaderboard/LeaderboardRankingManager.js
+- [] src/core/leaderboard/LeaderboardStorageManager.js
+- [] src/core/localization-manager/CulturalAdaptationHandler.js
+- [] src/core/localization-manager/I18nIntegrationController.js
+- [] src/core/localization-manager/TranslationDataManager.js
+- [] src/core/mobile-accessibility/MobileAccessibilityValidator.js
+- [] src/core/motion/AnimationController.js
+- [] src/core/motion/MotionConfigManager.js
+- [] src/core/motion/VestibularSafetyManager.js
+- [] src/core/navigation/KeyboardShortcutRouter.js
+- [] src/core/navigation/NavigationContextManager.js
+- [] src/core/pwa/PWAInstallationManager.js
+- [] src/core/pwa/PWAServiceWorkerManager.js
+- [] src/core/settings/SettingsDataManager.js
+- [] src/core/settings/SettingsExportImport.js
+- [] src/core/settings/SettingsStorageManager.js
+- [] src/core/settings/SettingsUIController.js
+- [] src/core/settings/SettingsValidator.js
+- [] src/core/simplification-manager/AdaptiveSimplificationEngine.js
+- [] src/core/simplification-manager/InterfaceSimplifier.js
+- [] src/core/simplification-manager/SimplificationModeController.js
+- [] src/core/simplification-manager/UIComplexityAnalyzer.js
+- [] src/core/statistics/DashboardWidgetRenderer.js
+- [] src/core/statistics/RecoveryStrategies.js
+- [] src/core/statistics/RecoveryUserGuidance.js
+- [] src/core/statistics/RecoveryValidation.js
+- [] src/core/timing-adjustment/TimingAdjustmentAlgorithms.js
+- [] src/core/timing-adjustment/TimingCalibrator.js
+- [] src/core/timing-adjustment/TimingFeedbackSystem.js
+- [] src/core/visual/feedback/FeedbackAnimationManager.js
+- [] src/core/visual/feedback/FeedbackConfigManager.js
+- [] src/core/visual/feedback/FeedbackEffectRenderer.js
+- [] src/core/visual/feedback/FeedbackTriggerHandler.js
+- [] src/core/visual/focus/FocusAccessibilitySupport.js
+- [] src/core/visual/focus/FocusEffectRenderer.js
+- [] src/core/visual/focus/FocusEventHandler.js
+- [] src/core/visual/focus/FocusStateManager.js
+- [] src/debug/AccessibilityManager.js
+- [] src/debug/AdvancedPerformanceMonitor.js
+- [] src/debug/AutocompleteEngine.js
+- [] src/debug/BaseComponent.js
+- [] src/debug/BenchmarkSuite.js
+- [] src/debug/ComponentErrorHandler.js
+- [] src/debug/ConfigurationCommands.js
+- [] src/debug/DebugErrorNotificationSystem.js
+- [] src/debug/DebugErrorReporter.js
+- [] src/debug/DebugPerformanceMonitor.js
+- [] src/debug/DetailedMetricsCollector.js
+- [] src/debug/DeveloperConsole.js
+- [] src/debug/DocumentationSystem.js
+- [] src/debug/EnhancedAutocompleteEngine.js
+- [] src/debug/EnhancedDebugInterface.js
+- [] src/debug/EnhancedHistoryManager.js
+- [] src/debug/ErrorRecoveryTracker.js
+- [] src/debug/ErrorScreenshotCapture.js
+- [] src/debug/ExecutionContext.js
+- [] src/debug/FinalValidationSuite.js
+- [] src/debug/GameStateCommands.js
+- [] src/debug/IntegrationTestSuite.js
+- [] src/debug/KeyboardShortcutManager.js
+- [] src/debug/LazyLoadManager.js
+- [] src/debug/MockDataGenerator.js
+- [] src/debug/PanelManager.js
+- [] src/debug/PerformanceThresholdMonitor.js
+- [] src/debug/PerformanceVisualizer.js
+- [] src/debug/RequirementsValidationSuite.js
+- [] src/debug/ResponsiveDebugLayout.js
+- [] src/debug/TestDataGenerationCommands.js
+- [] src/debug/TestFailureAnalyzer.js
+- [] src/debug/TestResultVisualizer.js
+- [] src/debug/TestSupportTools.js
+- [] src/debug/ThemeManager.js
+- [] src/debug/analysis/CommonIssueDetector.js
+- [] src/debug/analysis/DebugSuggestionEngine.js
+- [] src/debug/analysis/FailureHistoryManager.js
+- [] src/debug/analysis/FailurePatternAnalyzer.js
+- [] src/debug/benchmark-suite/BenchmarkExecutor.js
+- [] src/debug/benchmark-suite/BenchmarkReporter.js
+- [] src/debug/benchmark-suite/BenchmarkResultAnalyzer.js
+- [] src/debug/charts/PerformanceChart.js
+- [] src/debug/error-reporter/DebugErrorAnalyzer.js
+- [] src/debug/error-reporter/ErrorCollector.js
+- [] src/debug/error-reporter/ErrorStorage.js
+- [] src/debug/error-reporter/ErrorSubmissionManager.js
+- [] src/debug/interface/DebugCommandProcessor.js
+- [] src/debug/interface/DebugDataExporter.js
+- [] src/debug/interface/DebugPanelManager.js
+- [] src/debug/interface/DebugVisualization.js
+- [] src/debug/mock/MockBubbleDataGenerator.js
+- [] src/debug/mock/MockDataValidator.js
+- [] src/debug/mock/MockGameStateGenerator.js
+- [] src/debug/mock/MockUserDataGenerator.js
+- [] src/debug/panels/ConsolePanel.js
+- [] src/debug/panels/ErrorPanel.js
+- [] src/debug/panels/OverviewPanel.js
+- [] src/debug/panels/PerformancePanel.js
+- [] src/debug/panels/TestPanel.js
+- [] src/debug/state/CommandHistoryManager.js
+- [] src/debug/state/SafetyValidator.js
+- [] src/debug/state/StateManipulationCommands.js
+- [] src/debug/state/UndoOperationManager.js
+- [] src/debug/support/BenchmarkManager.js
+- [] src/debug/support/MockDataManager.js
+- [] src/debug/support/TestExecutionManager.js
+- [] src/debug/support/TestResultProcessor.js
+- [] src/debug/test-data-generation/BubbleGenerationCommands.js
+- [] src/debug/test-data-generation/CommandValidator.js
+- [] src/debug/test-data-generation/GameStateGenerationCommands.js
+- [] src/debug/test-data-generation/ScenarioCommands.js
+- [] src/debug/test-result-visualizer/TestChartGenerator.js
+- [] src/debug/test-result-visualizer/TestDataVisualizer.js
+- [] src/effects/AnimationManager.js
+- [] src/effects/AudioVisualSynchronizer.js
+- [] src/effects/EffectConfigurationIntegrator.js
+- [] src/effects/EffectDebugInterface.js
+- [] src/effects/EffectErrorHandler.js
+- [] src/effects/EffectManager.js
+- [] src/effects/EffectOptimizationAdvisor.js
+- [] src/effects/EffectPerformanceMonitor.js
+- [] src/effects/EffectPerformanceOptimizer.js
+- [] src/effects/EffectProfiler.js
+- [] src/effects/EffectQualityController.js
+- [] src/effects/EnhancedEffectManager.js
+- [] src/effects/EnhancedParticleManager.js
+- [] src/effects/ParticleManager.js
+- [] src/effects/QualityScalingSystem.js
+- [] src/effects/SeasonalEffectManager.js
+- [] src/effects/VisualPolishEnhancements.js
+- [] src/effects/accessibility/AccessibilityEffectIntegrator.js
+- [] src/effects/accessibility/AccessibilitySettingsIntegrator.js
+- [] src/effects/accessibility/AlternativeFeedbackManager.js
+- [] src/effects/accessibility/VisualEffectAccessibilityManager.js
+- [] src/effects/animation-manager/AnimationEngineCore.js
+- [] src/effects/animation-manager/AnimationRenderers.js
+- [] src/effects/animation-manager/AnimationTypeHandlers.js
+- [] src/effects/enhanced-effect-manager/BackgroundEffectRenderer.js
+- [] src/effects/enhanced-effect-manager/EffectApiManager.js
+- [] src/effects/enhanced-effect-manager/EffectTransitionRenderer.js
+- [] src/effects/enhanced-effect-manager/EnhancedEffectController.js
+- [] src/effects/enhanced-effect-manager/LightingSystemRenderer.js
+- [] src/effects/enhanced-effect-manager/PostProcessingRenderer.js
+- [] src/effects/enhanced-effect-manager/ReflectionRenderer.js
+- [] src/effects/enhanced-particle-manager/ParticlePhysicsEngine.js
+- [] src/effects/enhanced-particle-manager/ParticleQualityManager.js
+- [] src/effects/enhanced-particle-manager/ParticleRenderingEngine.js
+- [] src/effects/mobile/MobileEffectIntegrator.js
+- [] src/effects/mobile/MobileEffectOptimizer.js
+- [] src/effects/mobile/MobileResourceManager.js
+- [] src/effects/particles/ParticleLifecycleManager.js
+- [] src/effects/particles/ParticleRenderer.js
+- [] src/effects/renderers/BubbleEffectRenderer.js
+- [] src/effects/renderers/ComboEffectRenderer.js
+- [] src/effects/renderers/SeasonalEffectRenderer.js
+- [] src/effects/renderers/SpecialEffectRenderer.js
+- [] src/effects/seasonal-effect-manager/CustomThemeManager.js
+- [] src/effects/seasonal-effect-manager/SeasonDetector.js
+- [] src/effects/seasonal-effect-manager/SeasonalParticleRenderer.js
+- [] src/effects/seasonal-effect-manager/ThemeManager.js
+- [] src/main.js
+- [] src/managers/BubbleManager.js
+- [] src/managers/ScoreManager.js
+- [] src/managers/bubble-manager/BubbleDragSystem.js
+- [] src/managers/bubble-manager/BubbleEffectProcessor.js
+- [] src/managers/bubble-manager/BubblePhysicsEngine.js
+- [] src/managers/bubble-manager/BubbleSpawner.js
+- [] src/models/BalanceChange.js
+- [] src/scenes/GameInputManager.js
+- [] src/scenes/GameScene.js
+- [] src/scenes/HelpScene.js
+- [] src/scenes/MainMenuScene.js
+- [] src/scenes/SettingsScene.js
+- [] src/scenes/ShopScene.js
+- [] src/scenes/StageSelectScene.js
+- [] src/scenes/UserInfoScene.js
+- [] src/scenes/components/AchievementsTab.js
+- [] src/scenes/components/ChallengesTab.js
+- [] src/scenes/components/ComponentEventBus.js
+- [] src/scenes/components/HelpSectionSelector.js
+- [] src/scenes/components/HelpTab.js
+- [] src/scenes/components/LeaderboardTab.js
+- [] src/scenes/components/ManagementTab.js
+- [] src/scenes/components/SceneState.js
+- [] src/scenes/components/ScenesBaseDialog.js
+- [] src/scenes/components/ScenesDialogManager.js
+- [] src/scenes/components/ScenesExportDialog.js
+- [] src/scenes/components/ScenesImportDialog.js
+- [] src/scenes/components/StatisticsDashboardRenderer.js
+- [] src/scenes/components/StatisticsFilterUI.js
+- [] src/scenes/components/StatisticsRenderer.js
+- [] src/scenes/components/StatisticsTab.js
+- [] src/scenes/components/TabComponent.js
+- [] src/scenes/components/UsernameDialog.js
+- [] src/scenes/components/dialogs/ImportDataProcessor.js
+- [] src/scenes/components/dialogs/ImportMethodSelector.js
+- [] src/scenes/components/dialogs/ImportProgressManager.js
+- [] src/scenes/components/dialogs/ImportResultHandler.js
+- [] src/scenes/components/user-info/UserAchievementDisplay.js
+- [] src/scenes/components/user-info/UserDataExporter.js
+- [] src/scenes/components/user-info/UserHelpIntegration.js
+- [] src/scenes/components/user-info/UserInfoEventHandler.js
+- [] src/scenes/components/user-info/UserInfoRenderer.js
+- [] src/scenes/components/user-info/UserInfoTabManager.js
+- [] src/scenes/components/user-info/UserProfileManager.js
+- [] src/scenes/components/user-info/UserStatisticsRenderer.js
+- [] src/scenes/game-scene/ConfirmationDialog.js
+- [] src/scenes/game-scene/GameControlButtons.js
+- [] src/scenes/game-scene/GamePerformanceMonitor.js
+- [] src/scenes/game-scene/GameStateManager.js
+- [] src/scenes/game-scene/GameUIManager.js
+- [] src/scenes/game-scene/GameVisualizationManager.js
+- [] src/scenes/help-scene/ContextualHelpManager.js
+- [] src/scenes/help-scene/HelpAccessibilityManager.js
+- [] src/scenes/help-scene/HelpAnimationManager.js
+- [] src/scenes/help-scene/HelpContentManager.js
+- [] src/scenes/help-scene/HelpEventManager.js
+- [] src/scenes/help-scene/HelpRenderer.js
+- [] src/scenes/main-menu/MainMenuDialogManager.js
+- [] src/scenes/main-menu/MainMenuRenderer.js
+- [] src/scenes/main-menu/MenuInputHandler.js
+- [] src/scenes/main-menu/UsernameInputManager.js
+- [] src/scenes/settings-scene/AccessibilitySettingsManager.js
+- [] src/scenes/stage-select/EventStageDataManager.js
+- [] src/scenes/stage-select/StageSelectDataManager.js
+- [] src/scenes/user-info-scene/UserDataManager.js
+- [] src/scenes/user-info-scene/UserInterfaceController.js
+- [] src/seo/FaviconManager.js
+- [] src/seo/SEOConfig.js
+- [] src/seo/SEOErrorHandler.js
+- [] src/seo/SEOI18nManager.js
+- [] src/seo/SEOLogger.js
+- [] src/seo/SEOMetaManager.js
+- [] src/seo/SEOMonitor.js
+- [] src/seo/SEOPerformanceOptimizer.js
+- [] src/seo/SEOTester.js
+- [] src/seo/SEOUtils.js
+- [] src/seo/SearchConsoleIntegration.js
+- [] src/seo/SitemapGenerator.js
+- [] src/seo/SocialMediaOptimizer.js
+- [] src/seo/StructuredDataEngine.js
+- [] src/seo/index.js
+- [] src/seo/scripts/generateFavicons.js
+- [] src/seo/seo-monitor/HealthChecker.js
+- [] src/seo/seo-monitor/MetaTagAnalyzer.js
+- [] src/seo/seo-monitor/SEOMonitoringEngine.js
+- [] src/seo/seo-monitor/SearchConsoleIntegrator.js
+- [] src/seo/seo-monitor/SocialEngagementAnalyzer.js
+- [] src/seo/testing/MetaTagValidator.js
+- [] src/seo/testing/PerformanceValidator.js
+- [] src/seo/testing/SEOReportGenerator.js
+- [] src/seo/testing/StructuredDataValidator.js
+- [] src/tests/GameEndSharing.test.js
+- [] src/tests/ScreenshotCapture.test.js
+- [] src/tests/ScreenshotOverlay.test.js
+- [] src/tests/ShareButton.test.js
+- [] src/tests/ShareContentGenerator.test.js
+- [] src/tests/ShareDialog.test.js
+- [] src/tests/ShareUI.test.js
+- [] src/tests/SocialMediaIntegration.test.js
+- [] src/tests/SocialSharingManager.test.js
+- [] src/tests/SocialSharingOverlay.test.js
+- [] src/tests/SocialSharingScreenshot.test.js
+- [] src/tests/WebShareAPI.test.js
+- [] src/tests/integration/SocialE2EFlow.test.js
+- [] src/tests/integration/SocialGameEngineIntegration.test.js
+- [] src/tests/integration/SocialSystemsIntegration.test.js
+- [] src/tests/integration/SocialUIIntegration.test.js
+- [] src/tests/integration/jest.integration.config.js
+- [] src/tests/integration/setup.js
+- [] src/tests/mobile/MobileTestSuite.js
+- [] src/tests/mobile/mobile-test-suite/MobileDeviceSimulator.js
+- [] src/tests/mobile/mobile-test-suite/MobileTestReporter.js
+- [] src/tests/mobile/mobile-test-suite/MobileTestRunner.js
+- [] src/ui/AchievementHelpSystem.js
+- [] src/ui/AudioSettingsUI.js
+- [] src/ui/AudioTestPanel.js
+- [] src/ui/DataManagementUI.js
+- [] src/ui/FloatingTextManager.js
+- [] src/ui/MobileShareUI.js
+- [] src/ui/audio-settings/AudioSettingsDataManager.js
+- [] src/ui/audio-settings/AudioSettingsTabManager.js
+- [] src/ui/audio-settings/AudioSettingsTabRenderers.js
+- [] src/ui/audio-settings/AudioSettingsUIComponentFactory.js
+- [] src/ui/components/ChallengeDetailModal.js
+- [] src/ui/components/LeaderboardUI.js
+- [] src/ui/components/leaderboard/LeaderboardAnimationController.js
+- [] src/ui/components/leaderboard/LeaderboardDataManager.js
+- [] src/ui/components/leaderboard/LeaderboardEventHandler.js
+- [] src/ui/components/leaderboard/LeaderboardRenderer.js
+- [] src/ui/data-management-ui/DataManagementDialogs.js
+- [] src/ui/data-management-ui/DataManagementRenderer.js
+- [] src/ui/data-management-ui/DataManagementStateManager.js
+- [] src/utilities/PWAAssetGenerator.js
+- [] src/utils/AdaptiveQualityController.js
+- [] src/utils/AdvancedRenderingOptimizer.js
+- [] src/utils/Analytics.js
+- [] src/utils/BackupManager.js
+- [] src/utils/BalanceAdjustmentValidationRules.js
+- [] src/utils/BalanceChangeDocumentationSystem.js
+- [] src/utils/BalanceConfigurationValidator.js
+- [] src/utils/BalanceGuidelinesManager.js
+- [] src/utils/BrowserCompatibility.js
+- [] src/utils/ConfigurationMigrationUtility.js
+- [] src/utils/ConfigurationSynchronizer.js
+- [] src/utils/ConflictInfo.js
+- [] src/utils/CoordinateCalculator.js
+- [] src/utils/CoordinateSystemDebugger.js
+- [] src/utils/DuplicationAnalyzer.js
+- [] src/utils/ErrorHandler.js
+- [] src/utils/FileRenamer.js
+- [] src/utils/FrameStabilizer.js
+- [] src/utils/ImportUpdater.js
+- [] src/utils/ImportValidator.js
+- [] src/utils/InputCoordinateConverter.js
+- [] src/utils/MemoryManager.js
+- [] src/utils/MobilePerformanceOptimizer.js
+- [] src/utils/MobileSocialPerformanceOptimizer.js
+- [] src/utils/NamingStrategyEngine.js
+- [] src/utils/ObjectPool.js
+- [] src/utils/ParticlePerformanceOptimizer.js
+- [] src/utils/PerformanceConfigurationIntegration.js
+- [] src/utils/PerformanceDiagnostics.js
+- [] src/utils/PerformanceErrorRecoverySystem.js
+- [] src/utils/PerformanceIntegrationTesting.js
+- [] src/utils/PerformanceMonitoringSystem.js
+- [] src/utils/PerformanceOptimizer-fix.js
+- [] src/utils/PerformanceOptimizer.js
+- [] src/utils/PerformanceProfiler.js
+- [] src/utils/PerformanceTestSuite.js
+- [] src/utils/PerformanceWarningSystem.js
+- [] src/utils/RenderOptimizer.js
+- [] src/utils/ResponsiveCanvasManager.js
+- [] src/utils/ScaledCoordinateManager.js
+- [] src/utils/ScaledRenderingContext.js
+- [] src/utils/TestConfigurationGenerator.js
+- [] src/utils/UIPositionCalculator.js
+- [] src/utils/adaptive-quality-controller/QualityDecisionAnalyzer.js
+- [] src/utils/adaptive-quality-controller/QualityTransitionController.js
+- [] src/utils/adaptive-quality-controller/QualityValidationManager.js
+- [] src/utils/advanced-rendering-optimizer/AdvancedDirtyRegionManager.js
+- [] src/utils/advanced-rendering-optimizer/AdvancedLayerManager.js
+- [] src/utils/advanced-rendering-optimizer/AdvancedViewportCuller.js
+- [] src/utils/backup-cleanup/BackupFileInvestigator.js
+- [] src/utils/backup-cleanup/CleanupOrchestrator.js
+- [] src/utils/backup-cleanup/CleanupReporter.js
+- [] src/utils/backup-cleanup/IntegrityValidator.js
+- [] src/utils/backup-cleanup/ReferenceAnalyzer.js
+- [] src/utils/backup-cleanup/SafetyVerifier.js
+- [] src/utils/backup-cleanup/SequentialFileRemover.js
+- [] src/utils/backup-cleanup/cleanup-main.js
+- [] src/utils/balance-validation/ValidationResultProcessor.js
+- [] src/utils/balance-validation/ValidationRuleDefinitions.js
+- [] src/utils/balance-validation/ValidationRuleEngine.js
+- [] src/utils/error/ErrorLogger.js
+- [] src/utils/error/ErrorRecovery.js
+- [] src/utils/error/UtilsErrorAnalyzer.js
+- [] src/utils/error/UtilsErrorReporter.js
+- [] src/utils/local-execution/BrowserCompatibilityManager.js
+- [] src/utils/local-execution/DeveloperGuidanceSystem.js
+- [] src/utils/local-execution/FaviconGenerator.js
+- [] src/utils/local-execution/LocalExecutionDetector.js
+- [] src/utils/local-execution/LocalExecutionErrorHandler.js
+- [] src/utils/local-execution/LocalModeManager.js
+- [] src/utils/local-execution/MetaTagOptimizer.js
+- [] src/utils/local-execution/favicon/FaviconCacheManager.js
+- [] src/utils/local-execution/favicon/FaviconCanvasRenderer.js
+- [] src/utils/local-execution/favicon/FaviconDOMManager.js
+- [] src/utils/local-execution/favicon/FaviconPerformanceManager.js
+- [] src/utils/local-execution/local-mode/LocalModeErrorHandler.js
+- [] src/utils/local-execution/local-mode/LocalModeInitializer.js
+- [] src/utils/local-execution/local-mode/LocalModeStatusManager.js
+- [] src/utils/memory-manager/LeakDetector.js
+- [] src/utils/memory-manager/MemoryUsageAnalyzer.js
+- [] src/utils/memory-manager/ProactiveCleanupManager.js
+- [] src/utils/mobile/MobileBatteryOptimizer.js
+- [] src/utils/mobile/MobileMemoryManager.js
+- [] src/utils/mobile/MobileRenderOptimizer.js
+- [] src/utils/mobile/MobileResourceManager.js
+- [] src/utils/particle-performance-optimizer/ParticleBatchRenderer.js
+- [] src/utils/particle-performance-optimizer/ParticleCullingSystem.js
+- [] src/utils/particle-performance-optimizer/ParticleQualityManager.js
+- [] src/utils/performance-config/ConfigurationApplier.js
+- [] src/utils/performance-config/ConfigurationMonitor.js
+- [] src/utils/performance-config/ConfigurationValidator.js
+- [] src/utils/performance-diagnostics/DiagnosticAnalyzer.js
+- [] src/utils/performance-diagnostics/DiagnosticDataCollector.js
+- [] src/utils/performance-diagnostics/DiagnosticReporter.js
+- [] src/utils/performance-error-recovery-system/ErrorDetectionSystem.js
+- [] src/utils/performance-error-recovery-system/RecoveryExecutionSystem.js
+- [] src/utils/performance-integration/IntegrationTestOrchestrator.js
+- [] src/utils/performance-monitoring/PerformanceDataAnalyzer.js
+- [] src/utils/performance-monitoring/PerformanceDataProcessor.js
+- [] src/utils/performance-monitoring/PerformanceLegacyComponents.js
+- [] src/utils/performance-monitoring/PerformanceMetricsCollector.js
+- [] src/utils/performance-monitoring/PerformanceReportGenerator.js
+- [] src/utils/performance-monitoring/PerformanceThresholdManager.js
+- [] src/utils/performance-monitoring/RealTimePerformanceMonitor.js
+- [] src/utils/performance-optimizer/PerformanceAdaptiveController.js
+- [] src/utils/performance-optimizer/PerformanceAnalyzer.js
+- [] src/utils/performance-optimizer/PerformanceStabilizerIntegrator.js
+- [] src/utils/performance-profiler/PerformanceAnalysisSystem.js
+- [] src/utils/performance-profiler/PerformanceMetricsCollectors.js
+- [] src/utils/performance-testing/PerformanceMetricsCollector.js
+- [] src/utils/performance-testing/PerformanceTestExecutor.js
+- [] src/utils/performance-testing/PerformanceTestReporter.js
+- [] src/utils/performance-warning/PerformanceAlertGenerator.js
+- [] src/utils/performance-warning/PerformanceThresholdMonitor.js
+- [] src/utils/performance-warning/WarningNotificationManager.js
+- [] src/utils/rendering/BasicDirtyRegionManager.js
+- [] src/utils/rendering/BasicLayerManager.js
+- [] src/utils/rendering/BasicViewportCuller.js
+- [] src/utils/rendering/QuadTree.js
+- [] src/utils/rendering/RenderingPerformanceMonitor.js
+- [] src/utils/syntax-validation/HTMLJavaScriptChecker.js
+- [] src/utils/syntax-validation/JavaScriptModuleValidator.js
+- [] src/utils/test-configuration/ConfigurationParser.js
+- [] src/utils/test-configuration/ConfigurationValidator.js
+- [] src/utils/test-configuration/ExpectationGenerator.js
+- [] src/utils/test-configuration/TestFileOperations.js
+- [] src/utils/validation/NamingConflictDetector.js
+- [] src/utils/validation/ReportGenerator.js
+- [] src/utils/validation/ValidationEngine.js
+- [] test/debug/AdvancedPerformanceMonitor.test.js
+- [] test/debug/ConfigurationCommands.test.js
+- [] test/debug/DetailedMetricsCollector.test.js
+- [] test/debug/DeveloperConsole.test.js
+- [] test/debug/EnhancedAutocompleteEngine.test.js
+- [] test/debug/EnhancedDebugInterface.test.js
+- [] test/debug/EnhancedHistoryManager.test.js
+- [] test/debug/ErrorNotificationSystem.test.js
+- [] test/debug/ErrorRecoveryTracker.test.js
+- [] test/debug/ErrorReporter.test.js
+- [] test/debug/ErrorScreenshotCapture.test.js
+- [] test/debug/GameStateCommands.test.js
+- [] test/debug/KeyboardShortcutManager.test.js
+- [] test/debug/PanelManager.test.js
+- [] test/debug/PerformanceThresholdMonitor.test.js
+- [] test/debug/PerformanceVisualizer.test.js
+- [] test/e2e/visual-effects-e2e.test.js
+- [] test/integration/EventFlow.test.js
+- [] test/integration/EventStageManager.test.js
+- [] test/integration/StageSelectScene-events.test.js
+- [] test/integration/canvas-scale-ui-positioning-integration.test.js
+- [] test/integration/visual-effects-integration.test.js
+- [] test/performance/canvas-scale-ui-positioning-performance.test.js
+- [] test/performance/username-input-performance.test.js
+- [] test/performance/visual-effects-performance.test.js
+- [] test/visual/canvas-scale-ui-positioning-visual.test.js
+- [] test/visual/username-input-positioning.test.js
+- [] test/visual/visual-effects-regression.test.js
+- [] tests/accessibility/help-system-accessibility.test.js
+- [] tests/analytics/AnalyticsAPI.test.js
+- [] tests/analytics/AnalyticsComponentIntegration.test.js
+- [] tests/analytics/AnalyticsDashboard.test.js
+- [] tests/analytics/AnalyticsSystemIntegration.test.js
+- [] tests/analytics/AnomalyDetector.test.js
+- [] tests/analytics/ChartRenderer.test.js
+- [] tests/analytics/ComparisonEngine.test.js
+- [] tests/analytics/DataCollector.test.js
+- [] tests/analytics/DataVisualizer.test.js
+- [] tests/analytics/DeveloperAlertSystem.test.js
+- [] tests/analytics/EnhancedAnalyticsManager.test.js
+- [] tests/analytics/ErrorNotificationSystem.test.js
+- [] tests/analytics/ErrorTrackingSystem.test.js
+- [] tests/analytics/ExportManager.test.js
+- [] tests/analytics/GameBalanceCollector.test.js
+- [] tests/analytics/IndexedDBStorageManager.test.js
+- [] tests/analytics/PerformanceDataCollector.test.js
+- [] tests/analytics/PerformanceWarningSystem.test.js
+- [] tests/analytics/PrivacyManager.test.js
+- [] tests/analytics/RealtimeDashboard.test.js
+- [] tests/analytics/RealtimeMonitor.test.js
+- [] tests/analytics/RealtimeMonitoringIntegration.test.js
+- [] tests/analytics/TimeSeriesVisualizer.test.js
+- [] tests/analytics/TrendAnalyzer.test.js
+- [] tests/analytics/comparison-engine-tests/ComparisonEngineAdvancedTests.js
+- [] tests/analytics/comparison-engine-tests/ComparisonEngineBasicTests.js
+- [] tests/analytics/comparison-engine-tests/ComparisonEngineIntegrationTests.js
+- [] tests/analytics/comparison-engine-tests/ComparisonEnginePerformanceTests.js
+- [] tests/backward-compatibility-test.js
+- [] tests/compatibility-manual-check.js
+- [] tests/config/path-mappings.js
+- [] tests/config/performance-thresholds.js
+- [] tests/core/KeyboardShortcutManager-integration.test.js
+- [] tests/core/KeyboardShortcutManager-remaining-functionality.test.js
+- [] tests/core/KeyboardShortcutManager-removed-shortcuts.test.js
+- [] tests/core/KeyboardShortcutRouter-integration.test.js
+- [] tests/core/navigation/KeyboardShortcutRouter-functional.test.js
+- [] tests/core/navigation/KeyboardShortcutRouter.test.js
+- [] tests/core/navigation/NavigationContextManager.test.js
+- [] tests/debug/TestDataGenerationCommands.test.js
+- [] tests/e2e/StatisticsE2E.test.js
+- [] tests/e2e/achievement-system-e2e.spec.js
+- [] tests/e2e/analytics-privacy-e2e.spec.js
+- [] tests/e2e/browser-compatibility-i18n-e2e.spec.js
+- [] tests/e2e/configuration-system-e2e.spec.js
+- [] tests/e2e/consolidated-screen-workflows-e2e.spec.js
+- [] tests/e2e/data-management-cloud-e2e.spec.js
+- [] tests/e2e/game-analytics-e2e.spec.js
+- [] tests/e2e/game-control-buttons-accessibility.spec.js
+- [] tests/e2e/game-control-buttons-cross-browser.spec.js
+- [] tests/e2e/game-control-buttons-final-integration.spec.js
+- [] tests/e2e/game-e2e.spec.js
+- [] tests/e2e/global-setup.js
+- [] tests/e2e/global-teardown.js
+- [] tests/e2e/help-settings-navigation-e2e.spec.js
+- [] tests/e2e/help-system-e2e.spec.js
+- [] tests/e2e/help-system.test.js
+- [] tests/e2e/internationalization-e2e.spec.js
+- [] tests/e2e/keyboard-shortcut-removal-e2e.spec.js
+- [] tests/e2e/keyboard-shortcuts-to-settings-ui-e2e.spec.js
+- [] tests/e2e/language-switching-e2e.spec.js
+- [] tests/e2e/local-execution-e2e.spec.js
+- [] tests/e2e/localization-features-e2e.spec.js
+- [] tests/e2e/multilingual-gameplay-e2e.spec.js
+- [] tests/e2e/multilingual-ui-e2e.spec.js
+- [] tests/e2e/pwa-installation.spec.js
+- [] tests/e2e/regional-features-e2e.spec.js
+- [] tests/e2e/run-i18n-e2e-tests.js
+- [] tests/e2e/serviceworker.spec.js
+- [] tests/e2e/shop-button-main-menu-e2e.spec.js
+- [] tests/help/content/japanese-content.test.js
+- [] tests/help/error-handling/help-system-errors.test.js
+- [] tests/help/integration/multilingual-system.test.js
+- [] tests/integration/AnalyticsFinalIntegration.test.js
+- [] tests/integration/AnalyticsSystemPerformance.test.js
+- [] tests/integration/DuplicateImplementation-removal.test.js
+- [] tests/integration/DuplicateSettings-removal-verification.test.js
+- [] tests/integration/StatisticsSystemIntegration.test.js
+- [] tests/integration/UserInfoSceneBackwardCompatibility.test.js
+- [] tests/integration/UserInfoSceneComponents.test.js
+- [] tests/integration/UserInfoSceneIntegration.test.js
+- [] tests/integration/UsernameInputManager-responsive.test.js
+- [] tests/integration/__mocks__/GameEngine.js
+- [] tests/integration/achievement-system-integration.test.js
+- [] tests/integration/audio-manager-integration.test.js
+- [] tests/integration/audio-system-integration.test.js
+- [] tests/integration/build-process-integration.test.js
+- [] tests/integration/build-process/BuildProcess.test.js
+- [] tests/integration/canvas-scale-ui-positioning-integration.test.js
+- [] tests/integration/configuration-system-integration.test.js
+- [] tests/integration/data-management-cloud-integration.test.js
+- [] tests/integration/effect-manager-integration.test.js
+- [] tests/integration/game-control-workflow.test.js
+- [] tests/integration/game-flow.test.js
+- [] tests/integration/help-system/help-system-integration.test.js
+- [] tests/integration/help-to-mainmenu-navigation.test.js
+- [] tests/integration/help/HelpSystemFunctionality.test.js
+- [] tests/integration/i18n-setup-idempotency.test.js
+- [] tests/integration/local-execution-final-integration.test.js
+- [] tests/integration/local-execution-integration.test.js
+- [] tests/integration/mobile-system-integrator-integration.test.js
+- [] tests/integration/particle-manager-integration.test.js
+- [] tests/integration/performance-debug-basic-integration.test.js
+- [] tests/integration/performance-debug-splitting-integration.test.js
+- [] tests/integration/performance-optimization-integration.test.js
+- [] tests/integration/performance-optimizer-integration.test.js
+- [] tests/integration/phase-g-end-to-end.test.js
+- [] tests/integration/phase-g-file-structure.test.js
+- [] tests/integration/phase-g-functionality.test.js
+- [] tests/integration/phase-g-integration.test.js
+- [] tests/integration/security-integration.test.js
+- [] tests/integration/serviceworker-head-request-integration.test.js
+- [] tests/integration/settings-dynamic-reflection.test.js
+- [] tests/integration/settings-manager-integration.test.js
+- [] tests/integration/settings-persistence.test.js
+- [] tests/integration/settings-to-mainmenu-navigation.test.js
+- [] tests/integration/settings-ui-integration.test.js
+- [] tests/integration/shop-button-main-menu-integration.test.js
+- [] tests/integration/translation-loader-compatibility.test.js
+- [] tests/integration/unified-help-screen-access.test.js
+- [] tests/integration/unified-settings-screen-access.test.js
+- [] tests/integration/visual-effects-integration.test.js
+- [] tests/jest-globals.js
+- [] tests/mocks/MockFactory.js
+- [] tests/performance/AnalyticsPerformance.test.js
+- [] tests/performance/I18nPerformance.test.js
+- [] tests/performance/StatisticsPerformance.test.js
+- [] tests/performance/achievement-system-performance.test.js
+- [] tests/performance/audio-performance.test.js
+- [] tests/performance/calculation-performance.test.js
+- [] tests/performance/canvas-scale-ui-positioning-performance.test.js
+- [] tests/performance/configuration-access-performance.test.js
+- [] tests/performance/data-management-cloud-performance.test.js
+- [] tests/performance/memory-usage.test.js
+- [] tests/performance/performance-test.js
+- [] tests/performance/phase-g-performance.test.js
+- [] tests/performance/statistics-performance-tests/AnalysisRenderingPerformanceTests.js
+- [] tests/performance/statistics-performance-tests/DataCollectionPerformanceTests.js
+- [] tests/performance/statistics-performance-tests/ExportMemoryOptimizationTests.js
+- [] tests/performance/statistics-performance-tests/PerformanceTestUtilities.js
+- [] tests/performance/username-input-performance.test.js
+- [] tests/performance/visual-effects-performance.test.js
+- [] tests/pwa/PWACrossDeviceTest.js
+- [] tests/pwa/PWATestFramework.js
+- [] tests/pwa/pwa-test-framework/PWAFeatureTests.js
+- [] tests/pwa/pwa-test-framework/PWAPerformanceTests.js
+- [] tests/pwa/pwa-test-framework/PWAReportGenerator.js
+- [] tests/pwa/pwa-test-framework/PWATestExecutor.js
+- [] tests/quality/I18nUsability.test.js
+- [] tests/quality/TranslationQuality.test.js
+- [] tests/results-processor.js
+- [] tests/scenes/HelpScene-contextual.test.js
+- [] tests/scenes/HelpScene-navigation.test.js
+- [] tests/scenes/MainMenuScene.test.js
+- [] tests/scenes/SettingsScene-accessibility.test.js
+- [] tests/scenes/SettingsScene-navigation.test.js
+- [] tests/scenes/main-menu/MainMenuRenderer.test.js
+- [] tests/scenes/stage-select/StageSelectDataManager.test.js
+- [] tests/setup.js
+- [] tests/unit/AchievementEventIntegrator.test.js
+- [] tests/unit/AchievementManager.test.js
+- [] tests/unit/AchievementNotificationSystem.test.js
+- [] tests/unit/AnalyticsPerformanceOptimizer.test.js
+- [] tests/unit/AudioConfig.test.js
+- [] tests/unit/BalanceCalculator.test.js
+- [] tests/unit/BalanceConfigurationValidator.test.js
+- [] tests/unit/Bubble.test.js
+- [] tests/unit/Bubble.updated.test.js
+- [] tests/unit/BubbleManager.test.js
+- [] tests/unit/CacheSystem.test.js
+- [] tests/unit/CalculationEngine.test.js
+- [] tests/unit/CloudStorageAdapter.test.js
+- [] tests/unit/ConfigurationConsistency.test.js
+- [] tests/unit/ConfigurationDebugger.test.js
+- [] tests/unit/ConfigurationErrorHandler.basic.test.js
+- [] tests/unit/ConfigurationErrorHandler.test.js
+- [] tests/unit/ConfigurationManager.basic.test.js
+- [] tests/unit/ConfigurationMigrationUtility.test.js
+- [] tests/unit/ConfigurationSynchronizer.test.js
+- [] tests/unit/EffectsCalculator.test.js
+- [] tests/unit/EffectsConfig.test.js
+- [] tests/unit/GameBalance.test.js
+- [] tests/unit/GameBalanceCompatibility.test.js
+- [] tests/unit/GameConfig.test.js
+- [] tests/unit/GameEngine.test.js
+- [] tests/unit/InputCoordinateConverter.test.js
+- [] tests/unit/KeyboardShortcutRemoval.test.js
+- [] tests/unit/LoggingSystem.test.js
+- [] tests/unit/OfflineManager.test.js
+- [] tests/unit/PerformanceConfig.test.js
+- [] tests/unit/PlayerData.test.js
+- [] tests/unit/ScaledCoordinateManager.test.js
+- [] tests/unit/ScoreCalculator.test.js
+- [] tests/unit/SyncManager.test.js
+- [] tests/unit/UIPositionCalculator.test.js
+- [] tests/unit/UsernameInputManager-coordinates.test.js
+- [] tests/unit/ValidationSystem.test.js
+- [] tests/unit/components/AccessibilityProfileComponent.test.js
+- [] tests/unit/components/SettingsImportExportComponent.test.js
+- [] tests/unit/components/VolumeControlComponent.test.js
+- [] tests/unit/confirmation-dialog.test.js
+- [] tests/unit/core/help/HelpAnalytics.test.js
+- [] tests/unit/core/i18n/font-loading/FontErrorHandler.test.js
+- [] tests/unit/core/i18n/font-loading/FontFallbackHandler.test.js
+- [] tests/unit/core/i18n/font-loading/FontLoadingManager.test.js
+- [] tests/unit/core/i18n/font-loading/FontSourceManager.test.js
+- [] tests/unit/game-control-buttons.test.js
+- [] tests/unit/help-system/ContextManager.test.js
+- [] tests/unit/help-system/HelpManager.test.js
+- [] tests/unit/help-system/TutorialManager.test.js
+- [] tests/unit/local-execution/BrowserCompatibilityManager.test.js
+- [] tests/unit/local-execution/FaviconGenerator.test.js
+- [] tests/unit/local-execution/LocalExecutionDetector.test.js
+- [] tests/unit/local-execution/LocalExecutionErrorHandler-integration.test.js
+- [] tests/unit/scenes/HelpSceneNavigation.test.js
+- [] tests/unit/scenes/SettingsSceneNavigation.test.js
+- [] tests/unit/social-sharing/ChallengeSystem.test.js
+- [] tests/unit/social-sharing/LeaderboardManager.test.js
+- [] tests/unit/social-sharing/ScreenshotCapture.test.js
+- [] tests/unit/social-sharing/ShareContentGenerator.test.js
+- [] tests/unit/sw.test.js
+- [] tests/unit/syntax-validation/SyntaxValidation.test.js
+- [] tests/unit/visual-effects/EnhancedEffectManager.test.js
+- [] tests/unit/visual-effects/EnhancedParticleManager.test.js
+- [] tests/username-input-positioning.test.js
+- [] tests/utils/CoordinateCalculator.test.js
+- [] tests/utils/CrossEnvironmentManager.js
+- [] tests/utils/EnvironmentManager.js
+- [] tests/utils/InterfaceValidator.js
+- [] tests/utils/JestErrorRecovery.js
+- [] tests/utils/MockErrorHandler.js
+- [] tests/utils/ModuleLoadingOptimizer.js
+- [] tests/utils/NodeEnvironmentSupport.js
+- [] tests/utils/PerformanceErrorRecovery.js
+- [] tests/utils/PerformanceRetryHandler.js
+- [] tests/utils/PerformanceTestUtils.js
+- [] tests/validation/AIToolCompatibilityValidation.js
+- [] tests/validation/keyboard-shortcuts-documentation-validation.test.js
+- [] tests/visual/canvas-scale-ui-positioning-visual.test.js

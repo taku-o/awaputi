@@ -5,6 +5,7 @@
 
 import { defineConfig, loadEnv } from 'vite';
 import { resolve } from 'path';
+import checker from 'vite-plugin-checker';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -157,6 +158,27 @@ export default defineConfig(({ command, mode }) => {
       '**/*.woff', '**/*.woff2', '**/*.eot', '**/*.ttf', '**/*.otf'
     ],
     
+    // TypeScript configuration via esbuild
+    esbuild: {
+      target: 'es2020',
+      keepNames: true, // Preserve class names for debugging
+      // Enable JSX if needed for any future React components
+      // jsx: 'transform',
+      // jsxFactory: 'React.createElement',
+      // jsxFragment: 'React.Fragment'
+    },
+    
+    // Path resolution for TypeScript
+    resolve: {
+      alias: {
+        '@': resolve(__dirname, 'src'),
+        '@tests': resolve(__dirname, 'tests'),
+        '@utils': resolve(__dirname, 'src/utils'),
+        '@core': resolve(__dirname, 'src/core')
+      },
+      extensions: ['.ts', '.js', '.json', '.mjs']
+    },
+    
     // Define global constants for runtime optimization
     define: {
       __DEV__: JSON.stringify(!isProduction),
@@ -204,6 +226,14 @@ export default defineConfig(({ command, mode }) => {
     
     // Plugin configuration
     plugins: [
+      // TypeScript type checking plugin
+      checker({
+        typescript: {
+          root: process.cwd(),
+          tsconfigPath: 'tsconfig.json',
+          buildMode: isProduction
+        }
+      }),
       // Add plugins for production optimization
       ...(isProduction ? [
         // Could add plugins like:

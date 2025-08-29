@@ -1,0 +1,90 @@
+{
+  "domainPrefixes": {
+    "src/core": "Core",
+    "src/debug": "Debug", 
+    "src/ui": "UI",
+    "src/scenes": "Scene",
+    "src/analytics": "Analytics",
+    "src/audio": "Audio",
+    "src/utils": "Utils",
+    "src/managers": "Manager",
+    "src/accessibility": "Accessibility",
+    "src/effects": "Effect",
+    "src/tests": "Test",
+    "src/bubbles": "Bubble",
+    "src/models": "Model",
+    "src/utilities": "Utility",
+    "src/cleanup": "Cleanup",
+    "src/seo": "SEO"
+  },
+  "specialCases": {
+    "DialogManager": {
+      "src/scenes/main-menu": "MainMenuDialogManager",
+      "src/scenes/components": "ComponentDialogManager", 
+      "src/ui/data-management-ui": "DataManagementDialogManager"
+    },
+    "BaseDialog": {
+      "src/scenes/components": "SceneBaseDialog",
+      "src/ui": "UIBaseDialog"
+    },
+    "PerformanceMonitor": {
+      "src/analytics": "AnalyticsPerformanceMonitor",
+      "src/debug": "DebugPerformanceMonitor",
+      "src/core/render": "RenderPerformanceMonitor",
+      "src/core": "CorePerformanceMonitor"
+    },
+    "ChartRenderer": {
+      "src/analytics": "AnalyticsChartRenderer",
+      "src/core": "CoreChartRenderer"
+    },
+    "ErrorReporter": {
+      "src/debug": "DebugErrorReporter",
+      "src/utils": "UtilsErrorReporter"
+    },
+    "AudioAccessibilitySupport": {
+      "src/core/audio": "CoreAudioAccessibilitySupport",
+      "src/ui/components/audio": "ComponentAudioAccessibilitySupport"
+    },
+    "AudioContextManager": {
+      "src/core/audio": "AudioContextManager",
+      "src/effects/audio": "AudioEffectContextManager"
+    }
+  },
+  "namingConventions": {
+    "class": "PascalCase",
+    "file": "camelCase",
+    "prefix": "PascalCase",
+    "maxLength": 50,
+    "minLength": 3
+  },
+  "customRules": {
+    "avoidPrefixes": ["Abstract", "Base"],
+    "preferredPrefixes": ["Core", "Main", "Component", "Service", "Manager"],
+    "suffixRules": {
+      "Manager": "Manager",
+      "Service": "Service", 
+      "Component": "Component",
+      "Dialog": "Dialog",
+      "Renderer": "Renderer",
+      "Monitor": "Monitor",
+      "Analyzer": "Analyzer"
+    }
+  },
+  "fileNamingRules": {
+    "useDirectoryPrefix": true,
+    "preserveExtension": true,
+    "separateWordsWithCamelCase": true,
+    "maxDirectoryDepthForPrefix": 3
+  },
+  "validationRules": {
+    "allowReservedWords": false,
+    "requireUniqueNames": true,
+    "enforceNamingConventions": true,
+    "maxDuplicateResolutions": 10
+  },
+  "priorityMappings": {
+    "high": ["DialogManager", "PerformanceMonitor", "ErrorReporter"],
+    "medium": ["BaseDialog", "ChartRenderer", "AudioContextManager"],
+    "low": ["DataProcessor", "ValidationHelper"]
+  }
+}

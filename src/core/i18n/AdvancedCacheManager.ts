@@ -1,0 +1,861 @@
+/**
+ * 高度キャッシュマネージャー
+ * 多層キャッシュ、スマートな削除戦略、パフォーマンス最適化を提供
+ */
+
+// 型定義
+export interface CacheOptions {
+    maxMemorySize?: number;
+    maxEntries?: number;
+    defaultTTL?: number;
+    cleanupInterval?: number;
+}
+
+export interface SetOptions {
+    ttl?: number;
+    priority?: 'low' | 'normal' | 'high';
+    compress?: boolean | null;
+    layer?: CacheLayer | null;
+}
+
+export interface CacheMetadata {
+    key: string;
+    createdAt: number;
+    lastAccessed: number;
+    accessCount: number;
+    ttl: number;
+    priority: 'low' | 'normal' | 'high';
+    originalSize: number;
+    compressed: boolean;
+    compressedSize?: number;
+    layer: CacheLayer;
+}
+
+export interface AccessPattern {
+    totalAccesses: number;
+    recentAccesses: number;
+    lastAccessTime: number;
+    accessIntervals: number[];
+    avgAccessInterval: number;
+}
+
+export interface EvictionCandidate {
+    key: string;
+    metadata: CacheMetadata;
+    size: number;
+    score: number;
+}
+
+export interface CacheStats {
+    totalRequests: number;
+    hitsByLayer: Record<CacheLayer, number>;
+    misses: number;
+    evictions: number;
+    compressions: number;
+    decompressions: number;
+    currentMemoryUsage: number;
+    totalEntries: number;
+    averageAccessTime: number;
+    accessTimes: number[];
+}
+
+export interface LayerDetails {
+    entries: number;
+    sizeKB: number;
+    hitRate: number;
+}
+
+export interface TopAccessPattern {
+    key: string;
+    totalAccesses: number;
+    avgInterval: number;
+}
+
+export interface DetailedStats extends CacheStats {
+    hitRate: number;
+    memoryUsagePercent: number;
+    memoryUsageKB: number;
+    maxMemoryKB: number;
+    layerDistribution: Record<CacheLayer, number>;
+    layerDetails: Record<CacheLayer, LayerDetails>;
+    topAccessPatterns: TopAccessPattern[];
+    performanceMode: PerformanceMode;
+    evictionStrategy: EvictionStrategy;
+}
+
+export interface AdaptiveWeights {
+    frequency: number;
+    recency: number;
+    size: number;
+    ttl: number;
+}
+
+export interface ConfigurationUpdate {
+    maxMemorySize?: number;
+    performanceMode?: PerformanceMode;
+    evictionStrategy?: EvictionStrategy;
+    compressionEnabled?: boolean;
+}
+
+export type CacheLayer = 'hot' | 'warm' | 'cold';
+export type PerformanceMode = 'memory' | 'speed' | 'balanced';
+export type EvictionStrategy = 'lru' | 'lfu' | 'adaptive' | 'ttl';
+export type SerializationFormat = 'json' | 'msgpack';
+
+export class AdvancedCacheManager {
+    private maxMemorySize: number;
+    // private _maxEntries: number; // Removed: unused variable
+    private defaultTTL: number;
+    private cleanupInterval: number;
+
+    // 多層キャッシュ構造
+    private layers: Record<CacheLayer, Map<string, string>>;
+    
+    // メタデータ管理
+    private metadata: Map<string, CacheMetadata>;
+    private accessPatterns: Map<string, AccessPattern>;
+    private sizeTracker: Map<string, number>;
+    
+    // パフォーマンス設定
+    private performanceMode: PerformanceMode;
+    private compressionThreshold: number;
+    // private _hotCacheRatio: number; // Removed: unused variable
+    // private _warmCacheRatio: number; // Removed: unused variable
+
+    // 統計情報
+    private stats: CacheStats;
+
+    // 削除戦略設定
+    private evictionStrategy: EvictionStrategy;
+    private adaptiveWeights: AdaptiveWeights;
+
+    // 圧縮とシリアライゼーション
+    private compressionEnabled: boolean;
+    private serializationFormat: SerializationFormat;
+
+    // 定期クリーンアップ
+    private cleanupIntervalId?: number;
+
+    constructor(options: CacheOptions = {}) {
+        // 基本設定
+        this.maxMemorySize = options.maxMemorySize || 20 * 1024 * 1024; // 20MB
+        this._maxEntries = options.maxEntries || 1000;
+        this.defaultTTL = options.defaultTTL || 600000; // 10分
+        this.cleanupInterval = options.cleanupInterval || 60000; // 1分
+        
+        // 多層キャッシュ構造
+        this.layers = {
+            hot: new Map<string, string>(),    // 頻繁にアクセスされるデータ（インメモリ）
+            warm: new Map<string, string>(),   // 中程度のアクセス頻度（圧縮済み）
+            cold: new Map<string, string>()    // 低頻度アクセス（IndexedDB対応予定）
+        };
+        
+        // メタデータ管理
+        this.metadata = new Map<string, CacheMetadata>();
+        this.accessPatterns = new Map<string, AccessPattern>();
+        this.sizeTracker = new Map<string, number>();
+        
+        // パフォーマンス設定
+        this.performanceMode = 'balanced';
+        this.compressionThreshold = 1024;
+        this._hotCacheRatio = 0.3;
+        this._warmCacheRatio = 0.5;
+        
+        // 統計情報
+        this.stats = {
+            totalRequests: 0,
+            hitsByLayer: { hot: 0, warm: 0, cold: 0 },
+            misses: 0,
+            evictions: 0,
+            compressions: 0,
+            decompressions: 0,
+            currentMemoryUsage: 0,
+            totalEntries: 0,
+            averageAccessTime: 0,
+            accessTimes: []
+        };
+        
+        // 削除戦略設定
+        this.evictionStrategy = 'adaptive';
+        this.adaptiveWeights = {
+            frequency: 0.4,
+            recency: 0.3,
+            size: 0.2,
+            ttl: 0.1
+        };
+
+        // 圧縮とシリアライゼーション
+        this.compressionEnabled = true;
+        this.serializationFormat = 'json';
+
+        // 定期クリーンアップの開始
+        this.startPeriodicCleanup();
+        console.log('AdvancedCacheManager initialized with', Object.keys(this.layers).length, 'cache layers');
+    }
+    
+    /**
+     * データをキャッシュに追加
+     */
+    async set(key: string, value: any, options: SetOptions = {}): Promise<boolean> {
+        try {
+            const startTime = performance.now();
+            const { priority = 'normal', compress = null, layer = null } = options;
+            
+            // データサイズを計算
+            const serializedValue = this.serialize(value);
+            const dataSize = this.calculateSize(serializedValue);
+            
+            // メタデータを作成
+            const metadata: CacheMetadata = {
+                key,
+                createdAt: Date.now(),
+                lastAccessed: Date.now(),
+                accessCount: 0,
+                ttl: options.ttl || this.defaultTTL,
+                priority,
+                originalSize: dataSize,
+                compressed: false,
+                layer: 'hot' // 初期値、後で更新
+            };
+
+            // 圧縮判定
+            const shouldCompress = compress !== null ? compress : (this.compressionEnabled && dataSize > this.compressionThreshold);
+            let finalValue = serializedValue;
+            if (shouldCompress) {
+                finalValue = await this.compress(serializedValue);
+                metadata.compressed = true;
+                metadata.compressedSize = this.calculateSize(finalValue);
+                this.stats.compressions++;
+            }
+            
+            // 適切なレイヤーを決定
+            const targetLayer = layer || this.determineLayer(metadata, priority);
+            metadata.layer = targetLayer;
+            
+            // スペース確保
+            await this.ensureSpace(dataSize, targetLayer);
+            
+            // キャッシュに追加
+            this.layers[targetLayer].set(key, finalValue);
+            this.metadata.set(key, metadata);
+            this.sizeTracker.set(key, metadata.compressed ? metadata.compressedSize! : metadata.originalSize);
+            
+            // 統計更新
+            this.updateStats(dataSize, performance.now() - startTime);
+            // アクセスパターンを初期化
+            this.initializeAccessPattern(key);
+
+            console.log(`Cached ${key} in ${targetLayer} layer (${dataSize} bytes${shouldCompress ? ', compressed' : ''})`);
+            
+            return true;
+        } catch (error) {
+            console.error('Cache set failed:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * キャッシュからデータを取得
+     */
+    async get(key: string): Promise<any> {
+        const startTime = performance.now();
+        this.stats.totalRequests++;
+        
+        try {
+            // メタデータチェック
+            const metadata = this.metadata.get(key);
+            if (!metadata) {
+                this.stats.misses++;
+                return null as any;
+            }
+            
+            // TTLチェック
+            if (this.isExpired(metadata)) {
+                await this.delete(key);
+                this.stats.misses++;
+                return null as any;
+            }
+            
+            // レイヤーから取得
+            const layer = metadata.layer;
+            const cachedValue = this.layers[layer].get(key);
+            
+            if (!cachedValue) {
+                this.stats.misses++;
+                this.metadata.delete(key);
+                this.sizeTracker.delete(key);
+                return null as any;
+            }
+            
+            // 展開処理
+            let value = cachedValue;
+            if (metadata.compressed) {
+                value = await this.decompress(cachedValue);
+                this.stats.decompressions++;
+            }
+            
+            const deserializedValue = this.deserialize(value);
+            
+            // アクセス情報を更新
+            this.updateAccessInfo(key, metadata);
+            
+            // レイヤー最適化（頻繁にアクセスされるものは上位レイヤーに）
+            this.optimizeLayerPlacement(key, metadata);
+            
+            // 統計更新
+            this.stats.hitsByLayer[layer]++;
+            const accessTime = performance.now() - startTime;
+            this.stats.accessTimes.push(accessTime);
+            this.updateAverageAccessTime(accessTime);
+            this.trackAccessPattern(key, accessTime);
+            
+            return deserializedValue;
+        } catch (error) {
+            console.error('Cache get failed:', error);
+            this.stats.misses++;
+            return null as any;
+        }
+    }
+    
+    /**
+     * 複数キーの一括取得
+     */
+    async getMultiple(keys: string[]): Promise<Map<string, any>> {
+        const results = new Map<string, any>();
+        const promises = keys.map(async (key) => {
+            const value = await this.get(key);
+            if (value !== null) {
+                results.set(key, value);
+            }
+        });
+        
+        await Promise.all(promises);
+        return results;
+    }
+    
+    /**
+     * キャッシュエントリを削除
+     */
+    async delete(key: string): Promise<boolean> {
+        try {
+            const metadata = this.metadata.get(key);
+            if (!metadata) {
+                return false;
+            }
+            
+            // 全レイヤーから削除
+            for (const layer of Object.keys(this.layers) as CacheLayer[]) {
+                this.layers[layer].delete(key);
+            }
+            
+            // メタデータとサイズトラッカーから削除
+            this.metadata.delete(key);
+            const size = this.sizeTracker.get(key) || 0;
+            this.sizeTracker.delete(key);
+            this.accessPatterns.delete(key);
+            
+            // 統計更新
+            this.stats.currentMemoryUsage -= size;
+            this.stats.totalEntries--;
+            
+            return true;
+        } catch (error) {
+            console.error('Cache delete failed:', error);
+            return false;
+        }
+    }
+    
+    /**
+     * キーの存在確認
+     */
+    has(key: string): boolean {
+        const metadata = this.metadata.get(key);
+        if (!metadata) {
+            return false;
+        }
+        
+        // TTLチェック
+        if (this.isExpired(metadata)) {
+            this.delete(key);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * 適切なキャッシュレイヤーを決定
+     */
+    private determineLayer(metadata: CacheMetadata, priority: 'low' | 'normal' | 'high'): CacheLayer {
+        const { originalSize } = metadata;
+
+        switch(this.performanceMode) {
+            case 'speed':
+                return originalSize < 10240 ? 'hot' : 'warm';
+
+            case 'memory':
+                if (originalSize > 102400) return 'cold';
+                if (originalSize > 10240) return 'warm';
+                return 'hot';
+
+            case 'balanced':
+            default:
+                if (priority === 'high' || originalSize < 5120) {
+                    return 'hot';
+                }
+                if (priority === 'low' || originalSize > 51200) {
+                    return 'cold';
+                }
+                return 'warm';
+        }
+    }
+    
+    /**
+     * スペースを確保
+     */
+    private async ensureSpace(requiredSize: number, targetLayer: CacheLayer): Promise<void> {
+        const currentSize = this.getCurrentMemoryUsage();
+        if (currentSize + requiredSize <= this.maxMemorySize) {
+            return;
+        }
+        
+        const spaceToFree = (currentSize + requiredSize) - this.maxMemorySize + (requiredSize * 0.1);
+        await this.evictEntries(spaceToFree, targetLayer);
+    }
+    
+    /**
+     * エントリを削除してスペースを確保
+     */
+    private async evictEntries(spaceToFree: number, protectedLayer: CacheLayer): Promise<void> {
+        let freedSpace = 0;
+        const evictionCandidates: EvictionCandidate[] = [];
+        
+        for(const [key, metadata] of this.metadata) {
+            if (metadata.layer === protectedLayer) {
+                continue;
+            }
+            
+            const size = this.sizeTracker.get(key) || 0;
+            const score = this.calculateEvictionScore(key, metadata);
+            
+            evictionCandidates.push({ key, metadata, size, score });
+        }
+        
+        evictionCandidates.sort((a, b) => a.score - b.score);
+        
+        for (const candidate of evictionCandidates) {
+            if (freedSpace >= spaceToFree) {
+                break;
+            }
+            
+            await this.delete(candidate.key);
+            freedSpace += candidate.size;
+            this.stats.evictions++;
+        }
+        
+        console.log(`Evicted entries to free ${freedSpace} bytes`);
+    }
+    
+    /**
+     * 削除スコアを計算
+     */
+    private calculateEvictionScore(key: string, metadata: CacheMetadata): number {
+        const now = Date.now();
+        const age = now - metadata.createdAt;
+        const timeSinceLastAccess = now - metadata.lastAccessed;
+        const accessFrequency = metadata.accessCount / Math.max(age / 1000, 1);
+        const size = this.sizeTracker.get(key) || 0;
+        const ttlRemaining = Math.max(0, (metadata.createdAt + metadata.ttl) - now);
+
+        switch(this.evictionStrategy) {
+            case 'lru':
+                return timeSinceLastAccess;
+            case 'lfu':
+                return -metadata.accessCount;
+            case 'ttl':
+                return -ttlRemaining;
+            case 'adaptive':
+            default:
+                const normalizedFrequency = Math.min(accessFrequency, 10) / 10;
+                const normalizedRecency = Math.min(timeSinceLastAccess / 1000, 3600) / 3600;
+                const normalizedSize = Math.min(size / 1024, 1024) / 1024;
+                const normalizedTTL = Math.min(ttlRemaining / 1000, 3600) / 3600;
+                
+                return (
+                    (1 - normalizedFrequency) * this.adaptiveWeights.frequency +
+                    normalizedRecency * this.adaptiveWeights.recency +
+                    normalizedSize * this.adaptiveWeights.size +
+                    (1 - normalizedTTL) * this.adaptiveWeights.ttl
+                );
+        }
+    }
+    
+    /**
+     * レイヤー配置を最適化
+     */
+    private optimizeLayerPlacement(key: string, metadata: CacheMetadata): void {
+        const currentLayer = metadata.layer;
+        const accessPattern = this.accessPatterns.get(key);
+        if (!accessPattern) return;
+        
+        const optimalLayer = this.calculateOptimalLayer(accessPattern, metadata);
+        if (optimalLayer !== currentLayer) {
+            this.moveToLayer(key, currentLayer, optimalLayer);
+        }
+    }
+    
+    /**
+     * 最適なレイヤーを計算
+     */
+    private calculateOptimalLayer(accessPattern: AccessPattern, _metadata: CacheMetadata): CacheLayer {
+        const recentAccessRate = accessPattern.recentAccesses / Math.max(accessPattern.totalAccesses, 1);
+        const avgAccessInterval = accessPattern.avgAccessInterval;
+
+        if (recentAccessRate > 0.7 && avgAccessInterval < 60000) {
+            return 'hot';
+        }
+        
+        if (recentAccessRate > 0.3 && avgAccessInterval < 300000) {
+            return 'warm';
+        }
+        
+        return 'cold';
+    }
+    
+    /**
+     * レイヤー間移動
+     */
+    private moveToLayer(key: string, fromLayer: CacheLayer, toLayer: CacheLayer): void {
+        const value = this.layers[fromLayer].get(key);
+        if (value) {
+            this.layers[fromLayer].delete(key);
+            this.layers[toLayer].set(key, value);
+            const metadata = this.metadata.get(key);
+            if (metadata) {
+                metadata.layer = toLayer;
+            }
+            
+            console.log(`Moved ${key} from ${fromLayer} to ${toLayer} layer`);
+        }
+    }
+
+    /**
+     * アクセス情報を更新
+     */
+    private updateAccessInfo(_key: string, metadata: CacheMetadata): void {
+        metadata.lastAccessed = Date.now();
+        metadata.accessCount++;
+    }
+    
+    /**
+     * アクセスパターンを初期化
+     */
+    private initializeAccessPattern(key: string): void {
+        this.accessPatterns.set(key, {
+            totalAccesses: 0,
+            recentAccesses: 0,
+            lastAccessTime: Date.now(),
+            accessIntervals: [],
+            avgAccessInterval: 0
+        });
+    }
+    
+    /**
+     * アクセスパターンを追跡
+     */
+    private trackAccessPattern(key: string, _accessTime: number): void {
+        const pattern = this.accessPatterns.get(key);
+        if (!pattern) return;
+        
+        const now = Date.now();
+        const interval = now - pattern.lastAccessTime;
+        
+        pattern.totalAccesses++;
+        pattern.recentAccesses++;
+        pattern.lastAccessTime = now;
+        
+        pattern.accessIntervals.push(interval);
+        if (pattern.accessIntervals.length > 10) {
+            pattern.accessIntervals.shift();
+        }
+        
+        pattern.avgAccessInterval = pattern.accessIntervals.reduce((a, b) => a + b, 0) / pattern.accessIntervals.length;
+        
+        if (now - pattern.lastAccessTime > 3600000) {
+            pattern.recentAccesses = Math.max(0, pattern.recentAccesses - 1);
+        }
+    }
+    
+    /**
+     * TTL期限切れチェック
+     */
+    private isExpired(metadata: CacheMetadata): boolean {
+        return Date.now() > (metadata.createdAt + metadata.ttl);
+    }
+    
+    /**
+     * データをシリアライズ
+     */
+    private serialize(value: any): string {
+        switch(this.serializationFormat) {
+            case 'json':
+            default:
+                return JSON.stringify(value);
+        }
+    }
+
+    /**
+     * データをデシリアライズ
+     */
+    private deserialize(serializedValue: string): any {
+        switch(this.serializationFormat) {
+            case 'json':
+            default:
+                return JSON.parse(serializedValue);
+        }
+    }
+
+    /**
+     * データを圧縮
+     */
+    private async compress(data: string): Promise<string> {
+        try {
+            return data.replace(/\s+/g, ' ').trim();
+        } catch (error) {
+            console.warn('Compression failed:', error);
+            return data;
+        }
+    }
+    
+    /**
+     * データを展開
+     */
+    private async decompress(compressedData: string): Promise<string> {
+        try {
+            return compressedData;
+        } catch (error) {
+            console.warn('Decompression failed:', error);
+            return compressedData;
+        }
+    }
+    
+    /**
+     * データサイズを計算
+     */
+    private calculateSize(data: string): number {
+        return new Blob([data]).size;
+    }
+    
+    /**
+     * 現在のメモリ使用量を取得
+     */
+    private getCurrentMemoryUsage(): number {
+        let totalSize = 0;
+        for (const size of this.sizeTracker.values()) {
+            totalSize += size;
+        }
+        return totalSize;
+    }
+    
+    /**
+     * 統計を更新
+     */
+    private updateStats(_dataSize: number, accessTime: number): void {
+        this.stats.currentMemoryUsage = this.getCurrentMemoryUsage();
+        this.stats.totalEntries = this.metadata.size;
+        
+        if (accessTime > 0) {
+            this.updateAverageAccessTime(accessTime);
+        }
+    }
+    
+    /**
+     * 平均アクセス時間を更新
+     */
+    private updateAverageAccessTime(_accessTime: number): void {
+        const times = this.stats.accessTimes;
+        if (times.length > 100) {
+            times.shift();
+        }
+        
+        this.stats.averageAccessTime = times.reduce((a, b) => a + b, 0) / times.length;
+    }
+    
+    /**
+     * 定期クリーンアップを開始
+     */
+    private startPeriodicCleanup(): void {
+        this.cleanupIntervalId = window.setInterval(() => {
+            this.performPeriodicCleanup();
+        }, this.cleanupInterval);
+    }
+    
+    /**
+     * 定期クリーンアップを実行
+     */
+    private async performPeriodicCleanup(): Promise<void> {
+        const startTime = performance.now();
+        let cleanedEntries = 0;
+        
+        const expiredKeys: string[] = [];
+        for(const [key, metadata] of this.metadata) {
+            if (this.isExpired(metadata)) {
+                expiredKeys.push(key);
+            }
+        }
+        
+        for (const key of expiredKeys) {
+            await this.delete(key);
+            cleanedEntries++;
+        }
+        
+        if (this.getCurrentMemoryUsage() > this.maxMemorySize * 0.9) {
+            const spaceToFree = this.maxMemorySize * 0.1;
+            await this.evictEntries(spaceToFree, 'hot');
+        }
+        
+        this.cleanupAccessPatterns();
+        
+        const cleanupTime = performance.now() - startTime;
+        if (cleanedEntries > 0 || cleanupTime > 100) {
+            console.log(`Periodic cleanup completed: ${cleanedEntries} entries removed in ${cleanupTime.toFixed(2)}ms`);
+        }
+    }
+    
+    /**
+     * アクセスパターンのクリーンアップ
+     */
+    private cleanupAccessPatterns(): void {
+        const now = Date.now();
+        const cleanupThreshold = 24 * 60 * 60 * 1000;
+        
+        for(const [_key, pattern] of this.accessPatterns) {
+            if (now - pattern.lastAccessTime > cleanupThreshold) {
+                pattern.recentAccesses = Math.max(0, pattern.recentAccesses - 1);
+            }
+        }
+    }
+
+    /**
+     * 全キャッシュをクリア
+     */
+    clear(): void {
+        for (const layer of Object.values(this.layers)) {
+            layer.clear();
+        }
+        this.metadata.clear();
+        this.accessPatterns.clear();
+        this.sizeTracker.clear();
+        console.log('All cache layers cleared');
+    }
+    
+    /**
+     * 統計情報を取得
+     */
+    getStats(): DetailedStats {
+        const hitRate = this.stats.totalRequests > 0 
+            ? ((this.stats.totalRequests - this.stats.misses) / this.stats.totalRequests) * 100 
+            : 0;
+            
+        const memoryUsagePercent = (this.stats.currentMemoryUsage / this.maxMemorySize) * 100;
+        
+        return {
+            ...this.stats,
+            hitRate: Math.round(hitRate * 100) / 100,
+            memoryUsagePercent: Math.round(memoryUsagePercent * 100) / 100,
+            memoryUsageKB: Math.round(this.stats.currentMemoryUsage / 1024),
+            maxMemoryKB: Math.round(this.maxMemorySize / 1024),
+            averageAccessTime: Math.round(this.stats.averageAccessTime * 100) / 100,
+            layerDistribution: {
+                hot: this.layers.hot.size,
+                warm: this.layers.warm.size,
+                cold: this.layers.cold.size
+            },
+            layerDetails: this.getLayerDetails(),
+            topAccessPatterns: this.getTopAccessPatterns(),
+            performanceMode: this.performanceMode,
+            evictionStrategy: this.evictionStrategy
+        };
+    }
+    
+    /**
+     * 詳細統計を取得
+     */
+    getDetailedStats(): DetailedStats {
+        return this.getStats();
+    }
+    
+    /**
+     * レイヤー別詳細を取得
+     */
+    private getLayerDetails(): Record<CacheLayer, LayerDetails> {
+        const layerDetails: Record<CacheLayer, LayerDetails> = {} as any;
+        
+        for (const [layerName, layer] of Object.entries(this.layers) as [CacheLayer, Map<string, string>][]) {
+            let layerSize = 0;
+            let layerEntries = 0;
+            
+            for(const [key] of layer) {
+                const metadata = this.metadata.get(key);
+                if (metadata && metadata.layer === layerName) {
+                    layerSize += this.sizeTracker.get(key) || 0;
+                    layerEntries++;
+                }
+            }
+            
+            layerDetails[layerName] = {
+                entries: layerEntries,
+                sizeKB: Math.round(layerSize / 1024),
+                hitRate: this.stats.hitsByLayer[layerName] / Math.max(this.stats.totalRequests, 1) * 100
+            };
+        }
+        
+        return layerDetails;
+    }
+    
+    /**
+     * トップアクセスパターンを取得
+     */
+    private getTopAccessPatterns(): TopAccessPattern[] {
+        return Array.from(this.accessPatterns.entries())
+            .sort(([,a], [,b]) => b.totalAccesses - a.totalAccesses)
+            .slice(0, 10)
+            .map(([key, pattern]) => ({
+                key,
+                totalAccesses: pattern.totalAccesses,
+                avgInterval: Math.round(pattern.avgAccessInterval / 1000)
+            }));
+    }
+    
+    /**
+     * 設定を更新
+     */
+    updateConfiguration(config: ConfigurationUpdate): void {
+        if (config.maxMemorySize !== undefined) {
+            this.maxMemorySize = config.maxMemorySize;
+        }
+        if (config.performanceMode) {
+            this.performanceMode = config.performanceMode;
+        }
+        if (config.evictionStrategy) {
+            this.evictionStrategy = config.evictionStrategy;
+        }
+        if (config.compressionEnabled !== undefined) {
+            this.compressionEnabled = config.compressionEnabled;
+        }
+
+        console.log('AdvancedCacheManager configuration updated:', config);
+    }
+    
+    /**
+     * クリーンアップ
+     */
+    cleanup(): void {
+        if (this.cleanupIntervalId) {
+            clearInterval(this.cleanupIntervalId);
+        }
+
+        this.clear();
+        console.log('AdvancedCacheManager cleaned up');
+    }
+}

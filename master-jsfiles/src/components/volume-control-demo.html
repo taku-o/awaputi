@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VolumeControlComponent Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .demo-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .demo-button {
+            padding: 10px 20px;
+            background: rgba(0, 255, 255, 0.2);
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-button:hover {
+            background: rgba(0, 255, 255, 0.4);
+        }
+        
+        .stats-display {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin-top: 15px;
+        }
+        
+        .log-output {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .error {
+            color: #ff6b6b;
+        }
+        
+        .success {
+            color: #51cf66;
+        }
+        
+        .info {
+            color: #74c0fc;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🔊 VolumeControlComponent Demo</h1>
+            <p>Issue #170 - キーボードショートカット設定UI移行プロジェクト - タスク1.1</p>
+        </div>
+        
+        <div class="demo-section">
+            <h2>📱 コンポーネント表示エリア</h2>
+            <div id="volume-control-container">
+                <!-- VolumeControlComponent がここに表示されます -->
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>🎮 デモ操作</h2>
+            <div class="demo-controls">
+                <button class="demo-button" onclick="initializeComponent()">初期化</button>
+                <button class="demo-button" onclick="testVolumeUp()">音量アップ</button>
+                <button class="demo-button" onclick="testVolumeDown()">音量ダウン</button>
+                <button class="demo-button" onclick="setVolumeToHalf()">50%に設定</button>
+                <button class="demo-button" onclick="setVolumeToMax()">最大音量</button>
+                <button class="demo-button" onclick="setVolumeToMin()">最小音量</button>
+                <button class="demo-button" onclick="showStats()">統計表示</button>
+                <button class="demo-button" onclick="toggleVisibility()">表示切替</button>
+                <button class="demo-button" onclick="disposeComponent()">破棄</button>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>📊 統計情報</h2>
+            <div id="stats-display" class="stats-display">
+                統計情報はここに表示されます
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>📝 ログ出力</h2>
+            <div id="log-output" class="log-output">
+                ログはここに表示されます
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // MockGameEngine の作成
+        class MockGameEngine {
+            constructor() {
+                this.settingsManager = new MockSettingsManager();
+                this.audioManager = new MockAudioManager();
+            }
+        }
+        
+        class MockSettingsManager {
+            constructor() {
+                this.settings = { masterVolume: 0.5 };
+            }
+            
+            get(key) {
+                logMessage(`Settings get: ${key} = ${this.settings[key]}`, 'info');
+                return this.settings[key];
+            }
+            
+            set(key, value) {
+                this.settings[key] = value;
+                logMessage(`Settings set: ${key} = ${value}`, 'success');
+            }
+        }
+        
+        class MockAudioManager {
+            playUISound(soundName, options = {}) {
+                logMessage(`UI Sound: ${soundName} (volume: ${options.volume || 1.0})`, 'info');
+            }
+        }
+        
+        // MockErrorHandler の作成
+        class MockErrorHandler {
+            handleError(error, type, context = {}) {
+                logMessage(`Error [${type}]: ${error.message}`, 'error');
+                console.error('MockErrorHandler:', error, type, context);
+            }
+        }
+        
+        // MockLocalizationManager の作成
+        class MockLocalizationManager {
+            getText(key) {
+                const translations = {
+                    'settings.audio.masterVolume': 'マスター音量',
+                    'settings.audio.volumeUp': '音量を上げる',
+                    'settings.audio.volumeDown': '音量を下げる'
+                };
+                return translations[key] || key;
+            }
+        }
+        
+        // グローバル変数
+        let gameEngine;
+        let volumeControl;
+        let isVisible = true;
+        
+        // モック関数をグローバルに設定
+        window.getErrorHandler = () => new MockErrorHandler();
+        window.getLocalizationManager = () => new MockLocalizationManager();
+        
+        // ログ機能
+        function logMessage(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logOutput = document.getElementById('log-output');
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.innerHTML = `[${timestamp}] ${message}`;
+            logOutput.appendChild(logEntry);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+        
+        // 統計表示更新
+        function updateStats() {
+            const statsDisplay = document.getElementById('stats-display');
+            if (volumeControl) {
+                const stats = volumeControl.getStats();
+                statsDisplay.innerHTML = `
+                    <strong>VolumeControlComponent 統計:</strong><br>
+                    初期化済み: ${stats.isInitialized}<br>
+                    現在音量: ${stats.currentVolume.toFixed(2)} (${stats.currentVolumePercent}%)<br>
+                    最小音量: ${stats.isAtMinVolume}<br>
+                    最大音量: ${stats.isAtMaxVolume}<br>
+                    有効状態: ${stats.isEnabled}<br>
+                    コンテナ有無: ${stats.hasContainer}<br>
+                    ボタン有無: ${stats.hasButtons}
+                `;
+            } else {
+                statsDisplay.innerHTML = 'コンポーネントが初期化されていません';
+            }
+        }
+        
+        // グローバル関数
+        window.initializeComponent = function() {
+            try {
+                gameEngine = new MockGameEngine();
+                
+                // VolumeControlComponentをインポート
+                import('./VolumeControlComponent.js').then(module => {
+                    const { VolumeControlComponent } = module;
+                    volumeControl = new VolumeControlComponent(gameEngine);
+                    
+                    const container = document.getElementById('volume-control-container');
+                    container.innerHTML = ''; // クリア
+                    
+                    const success = volumeControl.initialize(container);
+                    if (success) {
+                        logMessage('VolumeControlComponent初期化成功', 'success');
+                        updateStats();
+                    } else {
+                        logMessage('VolumeControlComponent初期化失敗', 'error');
+                    }
+                }).catch(error => {
+                    logMessage(`インポートエラー: ${error.message}`, 'error');
+                });
+            } catch (error) {
+                logMessage(`初期化エラー: ${error.message}`, 'error');
+            }
+        };
+        
+        window.testVolumeUp = function() {
+            if (volumeControl) {
+                volumeControl.handleVolumeUp();
+                updateStats();
+            } else {
+                logMessage('コンポーネントが初期化されていません', 'error');
+            }
+        };
+        
+        window.testVolumeDown = function() {
+            if (volumeControl) {
+                volumeControl.handleVolumeDown();
+                updateStats();
+            } else {
+                logMessage('コンポーネントが初期化されていません', 'error');
+            }
+        };
+        
+        window.setVolumeToHalf = function() {
+            if (volumeControl) {
+                volumeControl.setVolume(0.5);
+                updateStats();
+            }
+        };
+        
+        window.setVolumeToMax = function() {
+            if (volumeControl) {
+                volumeControl.setVolume(1.0);
+                updateStats();
+            }
+        };
+        
+        window.setVolumeToMin = function() {
+            if (volumeControl) {
+                volumeControl.setVolume(0.0);
+                updateStats();
+            }
+        };
+        
+        window.showStats = function() {
+            updateStats();
+            if (volumeControl) {
+                logMessage('統計情報を更新しました', 'info');
+            }
+        };
+        
+        window.toggleVisibility = function() {
+            if (volumeControl) {
+                isVisible = !isVisible;
+                volumeControl.setVisible(isVisible);
+                logMessage(`表示状態: ${isVisible ? '表示' : '非表示'}`, 'info');
+            }
+        };
+        
+        window.disposeComponent = function() {
+            if (volumeControl) {
+                volumeControl.dispose();
+                volumeControl = null;
+                logMessage('コンポーネントを破棄しました', 'info');
+                updateStats();
+            }
+        };
+        
+        // 初期メッセージ
+        logMessage('VolumeControlComponent Demo を開始しました', 'success');
+        logMessage('「初期化」ボタンをクリックしてコンポーネントを開始してください', 'info');
+    </script>
+</body>
+</html>

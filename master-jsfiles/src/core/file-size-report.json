@@ -1,0 +1,2917 @@
+{
+  "timestamp": "2025-08-02T09:14:51.310Z",
+  "config": {
+    "WORD_LIMIT": 2500,
+    "TOKEN_LIMIT": 20000,
+    "EXCLUDED_PATTERNS": [
+      "node_modules/**",
+      "dist/**",
+      "**/*.log",
+      "test-results/**",
+      "playwright-report/**",
+      ".git/**",
+      "coverage/**"
+    ],
+    "TARGET_EXTENSIONS": [
+      ".js",
+      ".md"
+    ],
+    "WARNING_THRESHOLD": 2000,
+    "ERROR_THRESHOLD": 2500
+  },
+  "summary": {
+    "totalFiles": 182,
+    "warningFiles": 34,
+    "errorFiles": 23,
+    "averageWordCount": 1814
+  },
+  "results": [
+    {
+      "filePath": "src/core/StatisticsManagerOld.js",
+      "relativePath": "StatisticsManagerOld.js",
+      "fileName": "StatisticsManagerOld.js",
+      "wordCount": 5625,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.250Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/AchievementManager.js",
+      "relativePath": "AchievementManager.js",
+      "fileName": "AchievementManager.js",
+      "wordCount": 5097,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.202Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ComparisonEngine.js",
+      "relativePath": "ComparisonEngine.js",
+      "fileName": "ComparisonEngine.js",
+      "wordCount": 5029,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.214Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/GameEngine.js",
+      "relativePath": "GameEngine.js",
+      "fileName": "GameEngine.js",
+      "wordCount": 3979,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.224Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/AlternativeInputManager.js",
+      "relativePath": "AlternativeInputManager.js",
+      "fileName": "AlternativeInputManager.js",
+      "wordCount": 3967,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.206Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ContextualHelpManager.js",
+      "relativePath": "ContextualHelpManager.js",
+      "fileName": "ContextualHelpManager.js",
+      "wordCount": 3929,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.216Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ChartRenderer.js",
+      "relativePath": "ChartRenderer.js",
+      "fileName": "ChartRenderer.js",
+      "wordCount": 3894,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.212Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SimplificationManager.js",
+      "relativePath": "SimplificationManager.js",
+      "fileName": "SimplificationManager.js",
+      "wordCount": 3837,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.241Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/LocalizationManager.js",
+      "relativePath": "LocalizationManager.js",
+      "fileName": "LocalizationManager.js",
+      "wordCount": 3588,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.229Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ErrorRecoveryManager.js",
+      "relativePath": "ErrorRecoveryManager.js",
+      "fileName": "ErrorRecoveryManager.js",
+      "wordCount": 3573,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.221Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/GestureCustomizer.js",
+      "relativePath": "GestureCustomizer.js",
+      "fileName": "GestureCustomizer.js",
+      "wordCount": 3567,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.225Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/LeaderboardManager.js",
+      "relativePath": "LeaderboardManager.js",
+      "fileName": "LeaderboardManager.js",
+      "wordCount": 3332,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.228Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/PWAManager.js",
+      "relativePath": "PWAManager.js",
+      "fileName": "PWAManager.js",
+      "wordCount": 2928,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.234Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SettingsManager.js",
+      "relativePath": "SettingsManager.js",
+      "fileName": "SettingsManager.js",
+      "wordCount": 2774,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.238Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/HelpEffectivenessAnalyzer.js",
+      "relativePath": "help/HelpEffectivenessAnalyzer.js",
+      "fileName": "HelpEffectivenessAnalyzer.js",
+      "wordCount": 2744,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.262Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsDataRecovery.js",
+      "relativePath": "StatisticsDataRecovery.js",
+      "fileName": "StatisticsDataRecovery.js",
+      "wordCount": 2730,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.247Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/FocusManager.js",
+      "relativePath": "FocusManager.js",
+      "fileName": "FocusManager.js",
+      "wordCount": 2728,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.223Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/MotionManager.js",
+      "relativePath": "MotionManager.js",
+      "fileName": "MotionManager.js",
+      "wordCount": 2726,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.233Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ChallengeUI.js",
+      "relativePath": "ChallengeUI.js",
+      "fileName": "ChallengeUI.js",
+      "wordCount": 2614,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.211Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsDashboard.js",
+      "relativePath": "StatisticsDashboard.js",
+      "fileName": "StatisticsDashboard.js",
+      "wordCount": 2585,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.246Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/MobileAccessibilityManager.js",
+      "relativePath": "MobileAccessibilityManager.js",
+      "fileName": "MobileAccessibilityManager.js",
+      "wordCount": 2574,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.230Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/DataManager.js",
+      "relativePath": "DataManager.js",
+      "fileName": "DataManager.js",
+      "wordCount": 2563,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.218Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/TimingAdjustmentManager.js",
+      "relativePath": "TimingAdjustmentManager.js",
+      "fileName": "TimingAdjustmentManager.js",
+      "wordCount": 2511,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.254Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/VisualFocusManager.js",
+      "relativePath": "VisualFocusManager.js",
+      "fileName": "VisualFocusManager.js",
+      "wordCount": 2490,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.257Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SocialLeaderboardUI.js",
+      "relativePath": "SocialLeaderboardUI.js",
+      "fileName": "SocialLeaderboardUI.js",
+      "wordCount": 2484,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.242Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/VisualFeedbackManager.js",
+      "relativePath": "VisualFeedbackManager.js",
+      "fileName": "VisualFeedbackManager.js",
+      "wordCount": 2483,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.257Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/MobileSystemIntegrator.js",
+      "relativePath": "MobileSystemIntegrator.js",
+      "fileName": "MobileSystemIntegrator.js",
+      "wordCount": 2449,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.231Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ImportManager.js",
+      "relativePath": "ImportManager.js",
+      "fileName": "ImportManager.js",
+      "wordCount": 2419,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.225Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/DataArchiveManager.js",
+      "relativePath": "DataArchiveManager.js",
+      "fileName": "DataArchiveManager.js",
+      "wordCount": 2404,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.217Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/management/ValidationCommands.js",
+      "relativePath": "i18n/management/ValidationCommands.js",
+      "fileName": "ValidationCommands.js",
+      "wordCount": 2386,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.276Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/CaptionManager.js",
+      "relativePath": "CaptionManager.js",
+      "fileName": "CaptionManager.js",
+      "wordCount": 2383,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.210Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ARIAManager.js",
+      "relativePath": "ARIAManager.js",
+      "fileName": "ARIAManager.js",
+      "wordCount": 2370,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.199Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/TooltipSystem.js",
+      "relativePath": "help/TooltipSystem.js",
+      "fileName": "TooltipSystem.js",
+      "wordCount": 2362,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.263Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ShareContentGenerator.js",
+      "relativePath": "ShareContentGenerator.js",
+      "fileName": "ShareContentGenerator.js",
+      "wordCount": 2339,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.240Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/MobileUIUXManager.js",
+      "relativePath": "MobileUIUXManager.js",
+      "fileName": "MobileUIUXManager.js",
+      "wordCount": 2337,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.232Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/AdvancedGestureRecognitionSystem.js",
+      "relativePath": "AdvancedGestureRecognitionSystem.js",
+      "fileName": "AdvancedGestureRecognitionSystem.js",
+      "wordCount": 2308,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.205Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/VibrationManager.js",
+      "relativePath": "VibrationManager.js",
+      "fileName": "VibrationManager.js",
+      "wordCount": 2303,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.256Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/quality/QualityReporter.js",
+      "relativePath": "i18n/quality/QualityReporter.js",
+      "fileName": "QualityReporter.js",
+      "wordCount": 2285,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.277Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsVisualAccessibilityEnhancer.js",
+      "relativePath": "StatisticsVisualAccessibilityEnhancer.js",
+      "fileName": "StatisticsVisualAccessibilityEnhancer.js",
+      "wordCount": 2284,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.251Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/CacheSystem.js",
+      "relativePath": "CacheSystem.js",
+      "fileName": "CacheSystem.js",
+      "wordCount": 2278,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.209Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ScreenshotCapture.js",
+      "relativePath": "ScreenshotCapture.js",
+      "fileName": "ScreenshotCapture.js",
+      "wordCount": 2277,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.237Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/SearchEngine.js",
+      "relativePath": "help/SearchEngine.js",
+      "fileName": "SearchEngine.js",
+      "wordCount": 2264,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.263Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ShareButton.js",
+      "relativePath": "ShareButton.js",
+      "fileName": "ShareButton.js",
+      "wordCount": 2246,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.239Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/ContextManager.js",
+      "relativePath": "help/ContextManager.js",
+      "fileName": "ContextManager.js",
+      "wordCount": 2215,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.261Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ContrastManager.js",
+      "relativePath": "ContrastManager.js",
+      "fileName": "ContrastManager.js",
+      "wordCount": 2199,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.216Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/MultilingualContentManager.js",
+      "relativePath": "help/MultilingualContentManager.js",
+      "fileName": "MultilingualContentManager.js",
+      "wordCount": 2194,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.263Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/RecoveryManager.js",
+      "relativePath": "RecoveryManager.js",
+      "fileName": "RecoveryManager.js",
+      "wordCount": 2182,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.235Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/advanced/AdvancedFormatterEngine.js",
+      "relativePath": "i18n/advanced/AdvancedFormatterEngine.js",
+      "fileName": "AdvancedFormatterEngine.js",
+      "wordCount": 2155,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.275Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/KeyboardAccessibilityManager.js",
+      "relativePath": "KeyboardAccessibilityManager.js",
+      "fileName": "KeyboardAccessibilityManager.js",
+      "wordCount": 2098,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.226Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsAccessibilityManager.js",
+      "relativePath": "StatisticsAccessibilityManager.js",
+      "fileName": "StatisticsAccessibilityManager.js",
+      "wordCount": 2091,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.244Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ShareDialog.js",
+      "relativePath": "ShareDialog.js",
+      "fileName": "ShareDialog.js",
+      "wordCount": 2076,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.240Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsErrorHandler.js",
+      "relativePath": "StatisticsErrorHandler.js",
+      "fileName": "StatisticsErrorHandler.js",
+      "wordCount": 2041,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.248Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/HelpAnalytics.js",
+      "relativePath": "help/HelpAnalytics.js",
+      "fileName": "HelpAnalytics.js",
+      "wordCount": 2040,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.262Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SocialErrorHandler.js",
+      "relativePath": "SocialErrorHandler.js",
+      "fileName": "SocialErrorHandler.js",
+      "wordCount": 2030,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.242Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/ContentValidation.js",
+      "relativePath": "help/ContentValidation.js",
+      "fileName": "ContentValidation.js",
+      "wordCount": 2023,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.260Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ScreenshotOverlay.js",
+      "relativePath": "ScreenshotOverlay.js",
+      "fileName": "ScreenshotOverlay.js",
+      "wordCount": 2019,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.237Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/CalculationEngine.js",
+      "relativePath": "CalculationEngine.js",
+      "fileName": "CalculationEngine.js",
+      "wordCount": 2003,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.209Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ColorBlindnessSupport.js",
+      "relativePath": "ColorBlindnessSupport.js",
+      "fileName": "ColorBlindnessSupport.js",
+      "wordCount": 1998,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.213Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/testing/SystemIntegrationTester.js",
+      "relativePath": "i18n/testing/SystemIntegrationTester.js",
+      "fileName": "SystemIntegrationTester.js",
+      "wordCount": 1987,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.278Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/DeviceSpecificHandler.js",
+      "relativePath": "DeviceSpecificHandler.js",
+      "fileName": "DeviceSpecificHandler.js",
+      "wordCount": 1982,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.219Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/GameContentDescriber.js",
+      "relativePath": "GameContentDescriber.js",
+      "fileName": "GameContentDescriber.js",
+      "wordCount": 1979,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.223Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/FAQSystem.js",
+      "relativePath": "help/FAQSystem.js",
+      "fileName": "FAQSystem.js",
+      "wordCount": 1973,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.261Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/AdvancedResponsiveLayoutManager.js",
+      "relativePath": "AdvancedResponsiveLayoutManager.js",
+      "fileName": "AdvancedResponsiveLayoutManager.js",
+      "wordCount": 1964,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.205Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SpeechSynthesisManager.js",
+      "relativePath": "SpeechSynthesisManager.js",
+      "fileName": "SpeechSynthesisManager.js",
+      "wordCount": 1943,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.243Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SocialI18nManager.js",
+      "relativePath": "SocialI18nManager.js",
+      "fileName": "SocialI18nManager.js",
+      "wordCount": 1942,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.242Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsPerformanceOptimizer.js",
+      "relativePath": "StatisticsPerformanceOptimizer.js",
+      "fileName": "StatisticsPerformanceOptimizer.js",
+      "wordCount": 1940,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.250Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/management/ProgressTracker.js",
+      "relativePath": "i18n/management/ProgressTracker.js",
+      "fileName": "ProgressTracker.js",
+      "wordCount": 1935,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.276Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/AccessibilityManager.js",
+      "relativePath": "AccessibilityManager.js",
+      "fileName": "AccessibilityManager.js",
+      "wordCount": 1921,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.200Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SocialAccessibilityManager.js",
+      "relativePath": "SocialAccessibilityManager.js",
+      "fileName": "SocialAccessibilityManager.js",
+      "wordCount": 1917,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.241Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/DataCompressionManager.js",
+      "relativePath": "DataCompressionManager.js",
+      "fileName": "DataCompressionManager.js",
+      "wordCount": 1914,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.218Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/AchievementNotificationSystem.js",
+      "relativePath": "AchievementNotificationSystem.js",
+      "fileName": "AchievementNotificationSystem.js",
+      "wordCount": 1910,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.203Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/LiveRegionManager.js",
+      "relativePath": "LiveRegionManager.js",
+      "fileName": "LiveRegionManager.js",
+      "wordCount": 1909,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.228Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/RenderingOptimizer.js",
+      "relativePath": "i18n/RenderingOptimizer.js",
+      "fileName": "RenderingOptimizer.js",
+      "wordCount": 1907,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.274Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/ValidationManager.js",
+      "relativePath": "ValidationManager.js",
+      "fileName": "ValidationManager.js",
+      "wordCount": 1895,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.255Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/quality/ValidationRules.js",
+      "relativePath": "i18n/quality/ValidationRules.js",
+      "fileName": "ValidationRules.js",
+      "wordCount": 1889,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.277Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/EnhancedTouchManager.js",
+      "relativePath": "EnhancedTouchManager.js",
+      "fileName": "EnhancedTouchManager.js",
+      "wordCount": 1888,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.220Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/cultural/CulturalAdaptationSystem.js",
+      "relativePath": "i18n/cultural/CulturalAdaptationSystem.js",
+      "fileName": "CulturalAdaptationSystem.js",
+      "wordCount": 1852,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.275Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/DataModels.js",
+      "relativePath": "help/DataModels.js",
+      "fileName": "DataModels.js",
+      "wordCount": 1849,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.261Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/UIUpdateOptimizer.js",
+      "relativePath": "i18n/UIUpdateOptimizer.js",
+      "fileName": "UIUpdateOptimizer.js",
+      "wordCount": 1844,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.274Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/FormatterEngine.js",
+      "relativePath": "i18n/FormatterEngine.js",
+      "fileName": "FormatterEngine.js",
+      "wordCount": 1827,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.271Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/SecurityManager.js",
+      "relativePath": "SecurityManager.js",
+      "fileName": "SecurityManager.js",
+      "wordCount": 1813,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.238Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/TextScalingManager.js",
+      "relativePath": "TextScalingManager.js",
+      "fileName": "TextScalingManager.js",
+      "wordCount": 1806,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.252Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/AnimationOptimizer.js",
+      "relativePath": "i18n/AnimationOptimizer.js",
+      "fileName": "AnimationOptimizer.js",
+      "wordCount": 1806,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.270Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/AdvancedCacheManager.js",
+      "relativePath": "i18n/AdvancedCacheManager.js",
+      "fileName": "AdvancedCacheManager.js",
+      "wordCount": 1780,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.270Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/management/TranslationKeyManager.js",
+      "relativePath": "i18n/management/TranslationKeyManager.js",
+      "fileName": "TranslationKeyManager.js",
+      "wordCount": 1775,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.276Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/LazyTranslationLoader.js",
+      "relativePath": "i18n/LazyTranslationLoader.js",
+      "fileName": "LazyTranslationLoader.js",
+      "wordCount": 1774,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.273Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/StatisticsTimeSeriesManager.js",
+      "relativePath": "StatisticsTimeSeriesManager.js",
+      "fileName": "StatisticsTimeSeriesManager.js",
+      "wordCount": 1762,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.251Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/RenderingOptimizer.js",
+      "relativePath": "RenderingOptimizer.js",
+      "fileName": "RenderingOptimizer.js",
+      "wordCount": 1757,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.235Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/HelpFeedbackSystem.js",
+      "relativePath": "help/HelpFeedbackSystem.js",
+      "fileName": "HelpFeedbackSystem.js",
+      "wordCount": 1746,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.262Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/I18nPerformanceMonitor.js",
+      "relativePath": "i18n/I18nPerformanceMonitor.js",
+      "fileName": "I18nPerformanceMonitor.js",
+      "wordCount": 1746,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.272Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/StatisticsCalculator.js",
+      "relativePath": "StatisticsCalculator.js",
+      "fileName": "StatisticsCalculator.js",
+      "wordCount": 1742,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.245Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialAnimationController.js",
+      "relativePath": "help/components/TutorialAnimationController.js",
+      "fileName": "TutorialAnimationController.js",
+      "wordCount": 1733,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.267Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/ConfigurationErrorHandler.js",
+      "relativePath": "ConfigurationErrorHandler.js",
+      "fileName": "ConfigurationErrorHandler.js",
+      "wordCount": 1709,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.215Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/ContentLoader.js",
+      "relativePath": "help/ContentLoader.js",
+      "fileName": "ContentLoader.js",
+      "wordCount": 1700,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.260Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/ConfigurationDebugger.js",
+      "relativePath": "ConfigurationDebugger.js",
+      "fileName": "ConfigurationDebugger.js",
+      "wordCount": 1690,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.215Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/TrendAnalyzer.js",
+      "relativePath": "TrendAnalyzer.js",
+      "fileName": "TrendAnalyzer.js",
+      "wordCount": 1687,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.255Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/automation/TranslationImportExport.js",
+      "relativePath": "i18n/automation/TranslationImportExport.js",
+      "fileName": "TranslationImportExport.js",
+      "wordCount": 1685,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.275Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/WeeklyChallengeManager.js",
+      "relativePath": "WeeklyChallengeManager.js",
+      "fileName": "WeeklyChallengeManager.js",
+      "wordCount": 1684,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.257Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ConfigurationManager.js",
+      "relativePath": "ConfigurationManager.js",
+      "fileName": "ConfigurationManager.js",
+      "wordCount": 1668,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.215Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/I18nRenderOptimizer.js",
+      "relativePath": "i18n/I18nRenderOptimizer.js",
+      "fileName": "I18nRenderOptimizer.js",
+      "wordCount": 1663,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.272Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/automation/TranslationFileGenerator.js",
+      "relativePath": "i18n/automation/TranslationFileGenerator.js",
+      "fileName": "TranslationFileGenerator.js",
+      "wordCount": 1658,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.275Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/quality/QualityChecker.js",
+      "relativePath": "i18n/quality/QualityChecker.js",
+      "fileName": "QualityChecker.js",
+      "wordCount": 1625,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.276Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialOverlay.js",
+      "relativePath": "help/TutorialOverlay.js",
+      "fileName": "TutorialOverlay.js",
+      "wordCount": 1624,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.265Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/I18nSecurityManager.js",
+      "relativePath": "i18n/I18nSecurityManager.js",
+      "fileName": "I18nSecurityManager.js",
+      "wordCount": 1623,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.272Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/HelpManager.js",
+      "relativePath": "help/HelpManager.js",
+      "fileName": "HelpManager.js",
+      "wordCount": 1613,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.262Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/MobileWebShareHandler.js",
+      "relativePath": "MobileWebShareHandler.js",
+      "fileName": "MobileWebShareHandler.js",
+      "wordCount": 1599,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.232Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/rtl/RTLUIComponents.js",
+      "relativePath": "i18n/rtl/RTLUIComponents.js",
+      "fileName": "RTLUIComponents.js",
+      "wordCount": 1584,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.277Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialInteractionHandler.js",
+      "relativePath": "help/components/TutorialInteractionHandler.js",
+      "fileName": "TutorialInteractionHandler.js",
+      "wordCount": 1571,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.268Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/StatisticsEventHandler.js",
+      "relativePath": "StatisticsEventHandler.js",
+      "fileName": "StatisticsEventHandler.js",
+      "wordCount": 1561,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.248Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/StatisticsExporter.js",
+      "relativePath": "StatisticsExporter.js",
+      "fileName": "StatisticsExporter.js",
+      "wordCount": 1552,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.249Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/ExportManager.js",
+      "relativePath": "ExportManager.js",
+      "fileName": "ExportManager.js",
+      "wordCount": 1548,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.222Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/InputManager.js",
+      "relativePath": "InputManager.js",
+      "fileName": "InputManager.js",
+      "wordCount": 1520,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.226Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/I18nSecurityTester.js",
+      "relativePath": "i18n/I18nSecurityTester.js",
+      "fileName": "I18nSecurityTester.js",
+      "wordCount": 1516,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.272Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/TimeSeriesDataManager.js",
+      "relativePath": "TimeSeriesDataManager.js",
+      "fileName": "TimeSeriesDataManager.js",
+      "wordCount": 1495,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.253Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/components/SearchEngine.js",
+      "relativePath": "help/components/SearchEngine.js",
+      "fileName": "SearchEngine.js",
+      "wordCount": 1483,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.267Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/MobileSocialOptimizer.js",
+      "relativePath": "MobileSocialOptimizer.js",
+      "fileName": "MobileSocialOptimizer.js",
+      "wordCount": 1460,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.230Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialManager.js",
+      "relativePath": "help/TutorialManager.js",
+      "fileName": "TutorialManager.js",
+      "wordCount": 1450,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.264Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/HelpErrorHandler.js",
+      "relativePath": "help/HelpErrorHandler.js",
+      "fileName": "HelpErrorHandler.js",
+      "wordCount": 1445,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.262Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/AchievementStatsUI.js",
+      "relativePath": "AchievementStatsUI.js",
+      "fileName": "AchievementStatsUI.js",
+      "wordCount": 1443,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.204Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/OptimizedTranslationLoader.js",
+      "relativePath": "i18n/OptimizedTranslationLoader.js",
+      "fileName": "OptimizedTranslationLoader.js",
+      "wordCount": 1441,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.273Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/InsightGenerator.js",
+      "relativePath": "InsightGenerator.js",
+      "fileName": "InsightGenerator.js",
+      "wordCount": 1420,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.226Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/EffectsCalculator.js",
+      "relativePath": "EffectsCalculator.js",
+      "fileName": "EffectsCalculator.js",
+      "wordCount": 1419,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.220Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/MemoryOptimizer.js",
+      "relativePath": "i18n/MemoryOptimizer.js",
+      "fileName": "MemoryOptimizer.js",
+      "wordCount": 1416,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.273Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialProgressTracker.js",
+      "relativePath": "help/components/TutorialProgressTracker.js",
+      "fileName": "TutorialProgressTracker.js",
+      "wordCount": 1393,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.268Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/CompressionUtils.js",
+      "relativePath": "i18n/CompressionUtils.js",
+      "fileName": "CompressionUtils.js",
+      "wordCount": 1393,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.271Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/AchievementProgressEngine.js",
+      "relativePath": "AchievementProgressEngine.js",
+      "fileName": "AchievementProgressEngine.js",
+      "wordCount": 1385,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.203Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/StatisticsManager.js",
+      "relativePath": "StatisticsManager.js",
+      "fileName": "StatisticsManager.js",
+      "wordCount": 1376,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.249Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/KoreanInputHandler.js",
+      "relativePath": "i18n/KoreanInputHandler.js",
+      "fileName": "KoreanInputHandler.js",
+      "wordCount": 1372,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.272Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialActions.js",
+      "relativePath": "help/TutorialActions.js",
+      "fileName": "TutorialActions.js",
+      "wordCount": 1370,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.264Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/ChallengeSystem.js",
+      "relativePath": "ChallengeSystem.js",
+      "fileName": "ChallengeSystem.js",
+      "wordCount": 1335,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.211Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/CloudStorageAdapter.js",
+      "relativePath": "CloudStorageAdapter.js",
+      "fileName": "CloudStorageAdapter.js",
+      "wordCount": 1319,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.213Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/DailyChallengeManager.js",
+      "relativePath": "DailyChallengeManager.js",
+      "fileName": "DailyChallengeManager.js",
+      "wordCount": 1306,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.217Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/components/HelpPerformanceMonitor.js",
+      "relativePath": "help/components/HelpPerformanceMonitor.js",
+      "fileName": "HelpPerformanceMonitor.js",
+      "wordCount": 1301,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.266Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/DataStorage.js",
+      "relativePath": "DataStorage.js",
+      "fileName": "DataStorage.js",
+      "wordCount": 1295,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.219Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/StatisticsFilterManager.js",
+      "relativePath": "StatisticsFilterManager.js",
+      "fileName": "StatisticsFilterManager.js",
+      "wordCount": 1284,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.249Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/rtl/RTLLanguageDetector.js",
+      "relativePath": "i18n/rtl/RTLLanguageDetector.js",
+      "fileName": "RTLLanguageDetector.js",
+      "wordCount": 1283,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.277Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/LoggingSystem.js",
+      "relativePath": "LoggingSystem.js",
+      "fileName": "LoggingSystem.js",
+      "wordCount": 1277,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.229Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/DataCache.js",
+      "relativePath": "DataCache.js",
+      "fileName": "DataCache.js",
+      "wordCount": 1249,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.218Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/SyncManager.js",
+      "relativePath": "SyncManager.js",
+      "fileName": "SyncManager.js",
+      "wordCount": 1244,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.252Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsDataManager.js",
+      "relativePath": "StatisticsDataManager.js",
+      "fileName": "StatisticsDataManager.js",
+      "wordCount": 1227,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.247Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/TutorialStatsManager.js",
+      "relativePath": "help/TutorialStatsManager.js",
+      "fileName": "TutorialStatsManager.js",
+      "wordCount": 1206,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.265Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsAnalyzer.js",
+      "relativePath": "StatisticsAnalyzer.js",
+      "fileName": "StatisticsAnalyzer.js",
+      "wordCount": 1202,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.245Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/BalanceCalculator.js",
+      "relativePath": "BalanceCalculator.js",
+      "fileName": "BalanceCalculator.js",
+      "wordCount": 1201,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.208Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/events/EventHistoryManager.js",
+      "relativePath": "events/EventHistoryManager.js",
+      "fileName": "EventHistoryManager.js",
+      "wordCount": 1188,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.258Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/components/ContentLoader.js",
+      "relativePath": "help/components/ContentLoader.js",
+      "fileName": "ContentLoader.js",
+      "wordCount": 1188,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.266Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/BackupManager.js",
+      "relativePath": "BackupManager.js",
+      "fileName": "BackupManager.js",
+      "wordCount": 1184,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.207Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/events/EventRankingSystem.js",
+      "relativePath": "events/EventRankingSystem.js",
+      "fileName": "EventRankingSystem.js",
+      "wordCount": 1173,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.259Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialValidationEngine.js",
+      "relativePath": "help/TutorialValidationEngine.js",
+      "fileName": "TutorialValidationEngine.js",
+      "wordCount": 1173,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.266Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/rtl/RTLLayoutManager.js",
+      "relativePath": "i18n/rtl/RTLLayoutManager.js",
+      "fileName": "RTLLayoutManager.js",
+      "wordCount": 1162,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.277Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ChunkProcessor.js",
+      "relativePath": "ChunkProcessor.js",
+      "fileName": "ChunkProcessor.js",
+      "wordCount": 1144,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.212Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/SettingsNotificationSystem.js",
+      "relativePath": "SettingsNotificationSystem.js",
+      "fileName": "SettingsNotificationSystem.js",
+      "wordCount": 1134,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.239Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/FontManager.js",
+      "relativePath": "i18n/FontManager.js",
+      "fileName": "FontManager.js",
+      "wordCount": 1133,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.271Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/EventRankingManager.js",
+      "relativePath": "EventRankingManager.js",
+      "fileName": "EventRankingManager.js",
+      "wordCount": 1126,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.222Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/KeyboardShortcutManager.js",
+      "relativePath": "KeyboardShortcutManager.js",
+      "fileName": "KeyboardShortcutManager.js",
+      "wordCount": 1119,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.227Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/OfflineManager.js",
+      "relativePath": "OfflineManager.js",
+      "fileName": "OfflineManager.js",
+      "wordCount": 1114,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.233Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/EnhancedLocalizationManager.js",
+      "relativePath": "i18n/EnhancedLocalizationManager.js",
+      "fileName": "EnhancedLocalizationManager.js",
+      "wordCount": 1096,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.271Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/AsyncOperationQueue.js",
+      "relativePath": "AsyncOperationQueue.js",
+      "fileName": "AsyncOperationQueue.js",
+      "wordCount": 1061,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.207Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/test/RegionalFormattingTest.js",
+      "relativePath": "i18n/test/RegionalFormattingTest.js",
+      "fileName": "RegionalFormattingTest.js",
+      "wordCount": 1016,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.277Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialProgressManager.js",
+      "relativePath": "help/TutorialProgressManager.js",
+      "fileName": "TutorialProgressManager.js",
+      "wordCount": 988,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.265Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SocialPlatformAdapters.js",
+      "relativePath": "SocialPlatformAdapters.js",
+      "fileName": "SocialPlatformAdapters.js",
+      "wordCount": 968,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.243Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/ValidationSystem.js",
+      "relativePath": "ValidationSystem.js",
+      "fileName": "ValidationSystem.js",
+      "wordCount": 944,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.256Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/StageManager.js",
+      "relativePath": "StageManager.js",
+      "fileName": "StageManager.js",
+      "wordCount": 924,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.244Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/EventStageManager.js",
+      "relativePath": "EventStageManager.js",
+      "fileName": "EventStageManager.js",
+      "wordCount": 921,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.222Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/AchievementEventIntegrator.js",
+      "relativePath": "AchievementEventIntegrator.js",
+      "fileName": "AchievementEventIntegrator.js",
+      "wordCount": 920,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.200Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/RegionalSettingsManager.js",
+      "relativePath": "i18n/RegionalSettingsManager.js",
+      "fileName": "RegionalSettingsManager.js",
+      "wordCount": 915,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.273Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SocialAnalyticsTracker.js",
+      "relativePath": "SocialAnalyticsTracker.js",
+      "fileName": "SocialAnalyticsTracker.js",
+      "wordCount": 896,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.242Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/TranslationCache.js",
+      "relativePath": "i18n/TranslationCache.js",
+      "fileName": "TranslationCache.js",
+      "wordCount": 893,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.274Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/StatisticsCollector.js",
+      "relativePath": "StatisticsCollector.js",
+      "fileName": "StatisticsCollector.js",
+      "wordCount": 877,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.246Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/components/TutorialStepManager.js",
+      "relativePath": "help/components/TutorialStepManager.js",
+      "fileName": "TutorialStepManager.js",
+      "wordCount": 868,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.269Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ScoreCalculator.js",
+      "relativePath": "ScoreCalculator.js",
+      "fileName": "ScoreCalculator.js",
+      "wordCount": 834,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.236Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/i18n/TranslationLoader.js",
+      "relativePath": "i18n/TranslationLoader.js",
+      "fileName": "TranslationLoader.js",
+      "wordCount": 804,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.274Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/SocialSharingManager.js",
+      "relativePath": "SocialSharingManager.js",
+      "fileName": "SocialSharingManager.js",
+      "wordCount": 796,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.243Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ItemSystem.js",
+      "relativePath": "ItemSystem.js",
+      "fileName": "ItemSystem.js",
+      "wordCount": 764,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.226Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/events/EventNotificationSystem.js",
+      "relativePath": "events/EventNotificationSystem.js",
+      "fileName": "EventNotificationSystem.js",
+      "wordCount": 738,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.258Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/TutorialAccessibilityManager.js",
+      "relativePath": "help/TutorialAccessibilityManager.js",
+      "fileName": "TutorialAccessibilityManager.js",
+      "wordCount": 722,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.263Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/PlayerData.js",
+      "relativePath": "PlayerData.js",
+      "fileName": "PlayerData.js",
+      "wordCount": 707,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.235Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/events/SeasonalEventManager.js",
+      "relativePath": "events/SeasonalEventManager.js",
+      "fileName": "SeasonalEventManager.js",
+      "wordCount": 702,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.260Z",
+      "suggestions": [
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/LanguageDetector.js",
+      "relativePath": "i18n/LanguageDetector.js",
+      "fileName": "LanguageDetector.js",
+      "wordCount": 616,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.273Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/GameBalanceCompatibility.js",
+      "relativePath": "GameBalanceCompatibility.js",
+      "fileName": "GameBalanceCompatibility.js",
+      "wordCount": 450,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.223Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/help/index.js",
+      "relativePath": "help/index.js",
+      "fileName": "index.js",
+      "wordCount": 286,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.270Z",
+      "suggestions": []
+    },
+    {
+      "filePath": "src/core/SceneManager.js",
+      "relativePath": "SceneManager.js",
+      "fileName": "SceneManager.js",
+      "wordCount": 121,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.236Z",
+      "suggestions": [
+        "UIコンポーネントを別ファイルに分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/Scene.js",
+      "relativePath": "Scene.js",
+      "fileName": "Scene.js",
+      "wordCount": 73,
+      "limit": 2500,
+      "status": "ok",
+      "lastChecked": "2025-08-02T09:14:51.236Z",
+      "suggestions": [
+        "UIコンポーネントを別ファイルに分離してください"
+      ]
+    }
+  ],
+  "warnings": [
+    {
+      "filePath": "src/core/ARIAManager.js",
+      "relativePath": "ARIAManager.js",
+      "fileName": "ARIAManager.js",
+      "wordCount": 2370,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.199Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/AdvancedGestureRecognitionSystem.js",
+      "relativePath": "AdvancedGestureRecognitionSystem.js",
+      "fileName": "AdvancedGestureRecognitionSystem.js",
+      "wordCount": 2308,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.205Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/CacheSystem.js",
+      "relativePath": "CacheSystem.js",
+      "fileName": "CacheSystem.js",
+      "wordCount": 2278,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.209Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/CalculationEngine.js",
+      "relativePath": "CalculationEngine.js",
+      "fileName": "CalculationEngine.js",
+      "wordCount": 2003,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.209Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/CaptionManager.js",
+      "relativePath": "CaptionManager.js",
+      "fileName": "CaptionManager.js",
+      "wordCount": 2383,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.210Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ContrastManager.js",
+      "relativePath": "ContrastManager.js",
+      "fileName": "ContrastManager.js",
+      "wordCount": 2199,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.216Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/DataArchiveManager.js",
+      "relativePath": "DataArchiveManager.js",
+      "fileName": "DataArchiveManager.js",
+      "wordCount": 2404,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.217Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ImportManager.js",
+      "relativePath": "ImportManager.js",
+      "fileName": "ImportManager.js",
+      "wordCount": 2419,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.225Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/KeyboardAccessibilityManager.js",
+      "relativePath": "KeyboardAccessibilityManager.js",
+      "fileName": "KeyboardAccessibilityManager.js",
+      "wordCount": 2098,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.226Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/MobileSystemIntegrator.js",
+      "relativePath": "MobileSystemIntegrator.js",
+      "fileName": "MobileSystemIntegrator.js",
+      "wordCount": 2449,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.231Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/MobileUIUXManager.js",
+      "relativePath": "MobileUIUXManager.js",
+      "fileName": "MobileUIUXManager.js",
+      "wordCount": 2337,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.232Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/RecoveryManager.js",
+      "relativePath": "RecoveryManager.js",
+      "fileName": "RecoveryManager.js",
+      "wordCount": 2182,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.235Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ScreenshotCapture.js",
+      "relativePath": "ScreenshotCapture.js",
+      "fileName": "ScreenshotCapture.js",
+      "wordCount": 2277,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.237Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ScreenshotOverlay.js",
+      "relativePath": "ScreenshotOverlay.js",
+      "fileName": "ScreenshotOverlay.js",
+      "wordCount": 2019,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.237Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ShareButton.js",
+      "relativePath": "ShareButton.js",
+      "fileName": "ShareButton.js",
+      "wordCount": 2246,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.239Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ShareContentGenerator.js",
+      "relativePath": "ShareContentGenerator.js",
+      "fileName": "ShareContentGenerator.js",
+      "wordCount": 2339,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.240Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ShareDialog.js",
+      "relativePath": "ShareDialog.js",
+      "fileName": "ShareDialog.js",
+      "wordCount": 2076,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.240Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SocialErrorHandler.js",
+      "relativePath": "SocialErrorHandler.js",
+      "fileName": "SocialErrorHandler.js",
+      "wordCount": 2030,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.242Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SocialLeaderboardUI.js",
+      "relativePath": "SocialLeaderboardUI.js",
+      "fileName": "SocialLeaderboardUI.js",
+      "wordCount": 2484,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.242Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsAccessibilityManager.js",
+      "relativePath": "StatisticsAccessibilityManager.js",
+      "fileName": "StatisticsAccessibilityManager.js",
+      "wordCount": 2091,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.244Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsErrorHandler.js",
+      "relativePath": "StatisticsErrorHandler.js",
+      "fileName": "StatisticsErrorHandler.js",
+      "wordCount": 2041,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.248Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsVisualAccessibilityEnhancer.js",
+      "relativePath": "StatisticsVisualAccessibilityEnhancer.js",
+      "fileName": "StatisticsVisualAccessibilityEnhancer.js",
+      "wordCount": 2284,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.251Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/VibrationManager.js",
+      "relativePath": "VibrationManager.js",
+      "fileName": "VibrationManager.js",
+      "wordCount": 2303,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.256Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/VisualFeedbackManager.js",
+      "relativePath": "VisualFeedbackManager.js",
+      "fileName": "VisualFeedbackManager.js",
+      "wordCount": 2483,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.257Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/VisualFocusManager.js",
+      "relativePath": "VisualFocusManager.js",
+      "fileName": "VisualFocusManager.js",
+      "wordCount": 2490,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.257Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/ContentValidation.js",
+      "relativePath": "help/ContentValidation.js",
+      "fileName": "ContentValidation.js",
+      "wordCount": 2023,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.260Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/ContextManager.js",
+      "relativePath": "help/ContextManager.js",
+      "fileName": "ContextManager.js",
+      "wordCount": 2215,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.261Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/HelpAnalytics.js",
+      "relativePath": "help/HelpAnalytics.js",
+      "fileName": "HelpAnalytics.js",
+      "wordCount": 2040,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.262Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/MultilingualContentManager.js",
+      "relativePath": "help/MultilingualContentManager.js",
+      "fileName": "MultilingualContentManager.js",
+      "wordCount": 2194,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.263Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/SearchEngine.js",
+      "relativePath": "help/SearchEngine.js",
+      "fileName": "SearchEngine.js",
+      "wordCount": 2264,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.263Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/TooltipSystem.js",
+      "relativePath": "help/TooltipSystem.js",
+      "fileName": "TooltipSystem.js",
+      "wordCount": 2362,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.263Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/advanced/AdvancedFormatterEngine.js",
+      "relativePath": "i18n/advanced/AdvancedFormatterEngine.js",
+      "fileName": "AdvancedFormatterEngine.js",
+      "wordCount": 2155,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.275Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/management/ValidationCommands.js",
+      "relativePath": "i18n/management/ValidationCommands.js",
+      "fileName": "ValidationCommands.js",
+      "wordCount": 2386,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.276Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    },
+    {
+      "filePath": "src/core/i18n/quality/QualityReporter.js",
+      "relativePath": "i18n/quality/QualityReporter.js",
+      "fileName": "QualityReporter.js",
+      "wordCount": 2285,
+      "limit": 2500,
+      "status": "warning",
+      "lastChecked": "2025-08-02T09:14:51.277Z",
+      "suggestions": [
+        "警告: ファイルサイズが大きくなっています",
+        "リファクタリングを検討してください"
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "filePath": "src/core/AchievementManager.js",
+      "relativePath": "AchievementManager.js",
+      "fileName": "AchievementManager.js",
+      "wordCount": 5097,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.202Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/AlternativeInputManager.js",
+      "relativePath": "AlternativeInputManager.js",
+      "fileName": "AlternativeInputManager.js",
+      "wordCount": 3967,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.206Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ChallengeUI.js",
+      "relativePath": "ChallengeUI.js",
+      "fileName": "ChallengeUI.js",
+      "wordCount": 2614,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.211Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ChartRenderer.js",
+      "relativePath": "ChartRenderer.js",
+      "fileName": "ChartRenderer.js",
+      "wordCount": 3894,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.212Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ComparisonEngine.js",
+      "relativePath": "ComparisonEngine.js",
+      "fileName": "ComparisonEngine.js",
+      "wordCount": 5029,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.214Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ContextualHelpManager.js",
+      "relativePath": "ContextualHelpManager.js",
+      "fileName": "ContextualHelpManager.js",
+      "wordCount": 3929,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.216Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/DataManager.js",
+      "relativePath": "DataManager.js",
+      "fileName": "DataManager.js",
+      "wordCount": 2563,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.218Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/ErrorRecoveryManager.js",
+      "relativePath": "ErrorRecoveryManager.js",
+      "fileName": "ErrorRecoveryManager.js",
+      "wordCount": 3573,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.221Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/FocusManager.js",
+      "relativePath": "FocusManager.js",
+      "fileName": "FocusManager.js",
+      "wordCount": 2728,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.223Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/GameEngine.js",
+      "relativePath": "GameEngine.js",
+      "fileName": "GameEngine.js",
+      "wordCount": 3979,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.224Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/GestureCustomizer.js",
+      "relativePath": "GestureCustomizer.js",
+      "fileName": "GestureCustomizer.js",
+      "wordCount": 3567,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.225Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/LeaderboardManager.js",
+      "relativePath": "LeaderboardManager.js",
+      "fileName": "LeaderboardManager.js",
+      "wordCount": 3332,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.228Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/LocalizationManager.js",
+      "relativePath": "LocalizationManager.js",
+      "fileName": "LocalizationManager.js",
+      "wordCount": 3588,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.229Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/MobileAccessibilityManager.js",
+      "relativePath": "MobileAccessibilityManager.js",
+      "fileName": "MobileAccessibilityManager.js",
+      "wordCount": 2574,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.230Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/MotionManager.js",
+      "relativePath": "MotionManager.js",
+      "fileName": "MotionManager.js",
+      "wordCount": 2726,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.233Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/PWAManager.js",
+      "relativePath": "PWAManager.js",
+      "fileName": "PWAManager.js",
+      "wordCount": 2928,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.234Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SettingsManager.js",
+      "relativePath": "SettingsManager.js",
+      "fileName": "SettingsManager.js",
+      "wordCount": 2774,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.238Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/SimplificationManager.js",
+      "relativePath": "SimplificationManager.js",
+      "fileName": "SimplificationManager.js",
+      "wordCount": 3837,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.241Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsDashboard.js",
+      "relativePath": "StatisticsDashboard.js",
+      "fileName": "StatisticsDashboard.js",
+      "wordCount": 2585,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.246Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsDataRecovery.js",
+      "relativePath": "StatisticsDataRecovery.js",
+      "fileName": "StatisticsDataRecovery.js",
+      "wordCount": 2730,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.247Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    },
+    {
+      "filePath": "src/core/StatisticsManagerOld.js",
+      "relativePath": "StatisticsManagerOld.js",
+      "fileName": "StatisticsManagerOld.js",
+      "wordCount": 5625,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.250Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/TimingAdjustmentManager.js",
+      "relativePath": "TimingAdjustmentManager.js",
+      "fileName": "TimingAdjustmentManager.js",
+      "wordCount": 2511,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.254Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください",
+        "機能別にサブマネージャーを作成してください"
+      ]
+    },
+    {
+      "filePath": "src/core/help/HelpEffectivenessAnalyzer.js",
+      "relativePath": "help/HelpEffectivenessAnalyzer.js",
+      "fileName": "HelpEffectivenessAnalyzer.js",
+      "wordCount": 2744,
+      "limit": 2500,
+      "status": "error",
+      "lastChecked": "2025-08-02T09:14:51.262Z",
+      "suggestions": [
+        "緊急: ファイルを複数のモジュールに分割してください",
+        "単一責任の原則に従ってクラス/機能を分離してください"
+      ]
+    }
+  ]
+}

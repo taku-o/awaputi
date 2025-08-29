@@ -1,0 +1,287 @@
+{
+  "category": "bubbles",
+  "title": "泡泡類型指南",
+  "description": "awaputi中出現的所有泡泡類型的詳細說明",
+  "language": "zh-TW",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "normal_bubbles",
+      "title": "普通泡泡",
+      "description": "基本泡泡類型",
+      "content": {
+        "normal": {
+          "name": "普通泡泡",
+          "appearance": "半透明球體",
+          "behavior": "經過一定時間後自然破裂",
+          "score": 15,
+          "hp_damage": 10,
+          "strategy": "基本得分來源。作為連擊起點使用。"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 60,
+      "tags": ["普通", "基本", "標準"]
+    },
+    {
+      "id": "hardened_bubbles",
+      "title": "硬化泡泡",
+      "description": "需要多次點擊的堅硬泡泡",
+      "content": {
+        "stone": {
+          "name": "石頭泡泡",
+          "appearance": "灰色石頭般外觀",
+          "behavior": "點擊2次後破裂",
+          "score": 30,
+          "hp_damage": 15,
+          "strategy": "有時間時處理。可望高分。",
+          "visual_cues": "第一次點擊後出現裂痕"
+        },
+        "iron": {
+          "name": "鐵質泡泡",
+          "appearance": "金屬光澤外觀",
+          "behavior": "點擊3次後破裂",
+          "score": 45,
+          "hp_damage": 20,
+          "strategy": "高分但耗時。在畫面清空時鎖定目標。",
+          "visual_cues": "每次點擊裂痕都會加深"
+        },
+        "diamond": {
+          "name": "鑽石泡泡",
+          "appearance": "透明閃閃發光的寶石外觀",
+          "behavior": "點擊4次後破裂",
+          "score": 60,
+          "hp_damage": 25,
+          "strategy": "硬化泡泡中得分最高。時間允許時是重要得分來源。",
+          "special_note": "稀有出現。發現時值得優先處理。"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["硬化", "多次點擊", "高分"]
+    },
+    {
+      "id": "beneficial_bubbles",
+      "title": "有益泡泡",
+      "description": "為玩家提供有利效果的泡泡",
+      "content": {
+        "rainbow": {
+          "name": "彩虹泡泡",
+          "appearance": "發出美麗彩虹光芒的泡泡",
+          "behavior": "點擊1次破裂",
+          "score": 50,
+          "special_effect": "觸發獎勵時間（10秒內2倍分數）",
+          "strategy": "在高分泡泡較多時使用。",
+          "timing": "效果生效期間積極戳破泡泡"
+        },
+        "pink": {
+          "name": "粉紅泡泡（治療泡泡）",
+          "appearance": "柔和粉紅色泡泡",
+          "behavior": "點擊1次破裂",
+          "score": 25,
+          "special_effect": "HP回復（20點）",
+          "strategy": "HP較低時的最優先目標。",
+          "bonus_note": "HP滿狀態時也會給予相當於治療量的獎勵分數"
+        },
+        "clock": {
+          "name": "時鐘泡泡",
+          "appearance": "可看見時鐘面的泡泡",
+          "behavior": "點擊1次破裂",
+          "score": 30,
+          "special_effect": "時間停止（5秒）",
+          "strategy": "畫面混亂時用於清理。重新整理策略的時間。",
+          "usage_tip": "效果期間鎖定危險或高分泡泡"
+        },
+        "golden": {
+          "name": "黃金泡泡",
+          "appearance": "散發金色光芒的豪華泡泡",
+          "behavior": "點擊1次破裂",
+          "score": 75,
+          "special_effect": "普通泡泡的5倍分數",
+          "strategy": "最優先目標。在連擊中戳破得分更高。",
+          "rarity": "稀有出現。發現時立即處理"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["有益", "獎勵", "治療", "高分"]
+    },
+    {
+      "id": "hazardous_bubbles",
+      "title": "危險泡泡",
+      "description": "具有有害效果需要小心的泡泡",
+      "content": {
+        "poison": {
+          "name": "毒泡泡",
+          "appearance": "散發紫色氣場的詭異泡泡",
+          "behavior": "點擊1次破裂",
+          "score": 40,
+          "hp_damage": 30,
+          "special_effect": "即使戳破也會造成HP傷害",
+          "strategy": "高分但有風險。僅在HP充足時瞄準。",
+          "warning": "HP較低時避開或用拖曳移動"
+        },
+        "electric": {
+          "name": "電氣泡泡",
+          "appearance": "藍白色泡泡內有電流通過",
+          "behavior": "點擊1次破裂",
+          "score": 35,
+          "special_effect": "畫面震動（3秒）",
+          "strategy": "仔細選擇時機。震動期間操作困難。",
+          "tactical_use": "敵人較多時最後處理"
+        },
+        "spiky": {
+          "name": "尖刺泡泡",
+          "appearance": "表面有尖刺的危險泡泡",
+          "behavior": "破裂時對周圍造成傷害",
+          "score": 25,
+          "special_effect": "對周圍泡泡造成連鎖傷害",
+          "strategy": "處理前考慮周圍泡泡配置。可瞄準連鎖。",
+          "range": "周圍50像素半徑範圍內"
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 210,
+      "tags": ["危險", "傷害", "風險", "注意"]
+    },
+    {
+      "id": "special_effect_bubbles",
+      "title": "特殊效果泡泡",
+      "description": "具有獨特效果的特殊泡泡",
+      "content": {
+        "frozen": {
+          "name": "冰凍泡泡",
+          "appearance": "可看見冰晶的藍色泡泡",
+          "behavior": "點擊1次破裂",
+          "score": 35,
+          "special_effect": "減緩周圍泡泡移動（8秒）",
+          "strategy": "爭取時間和策略規劃時很有用。",
+          "area_effect": "周圍100像素半徑範圍內"
+        },
+        "magnetic": {
+          "name": "磁性泡泡",
+          "appearance": "可看見磁力線的金屬泡泡",
+          "behavior": "點擊1次破裂",
+          "score": 30,
+          "special_effect": "吸引周圍泡泡（5秒）",
+          "strategy": "聚集泡泡準備連擊。聚集後一起處理。",
+          "tactical_advantage": "整理散亂泡泡的完美選擇"
+        },
+        "explosive": {
+          "name": "爆炸泡泡",
+          "appearance": "有閃爍紅色危險標誌的泡泡",
+          "behavior": "點擊1次爆炸",
+          "score": 45,
+          "special_effect": "與周圍泡泡一起破壞",
+          "strategy": "危險泡泡聚集時批量處理。可能發生連鎖反應。",
+          "explosion_radius": "周圍80像素半徑範圍內",
+          "chain_reaction": "其他爆炸泡泡也會引爆"
+        },
+        "phantom": {
+          "name": "幽靈泡泡",
+          "appearance": "半透明偶爾消失的神秘泡泡",
+          "behavior": "可視性間歇性變化",
+          "score": 55,
+          "special_effect": "僅在可見時可點擊",
+          "strategy": "仔細把握點擊時機。值得高分。",
+          "visibility_cycle": "可見2秒→隱形1秒循環"
+        },
+        "multiplier": {
+          "name": "倍率泡泡",
+          "appearance": "顯示「×2」、「×3」等數字的泡泡",
+          "behavior": "點擊1次破裂",
+          "score": "顯示倍率×20",
+          "special_effect": "下一個戳破泡泡的分數增加倍率",
+          "strategy": "在高分泡泡前戳破。與連擊組合可獲得巨大分數。",
+          "multiplier_types": "存在三種類型：×2、×3、×5"
+        },
+        "escaping": {
+          "name": "逃跑泡泡",
+          "appearance": "快速移動的敏捷泡泡",
+          "behavior": "從滑鼠指標逃跑",
+          "score": 50,
+          "special_effect": "被追時逃跑",
+          "strategy": "逼到牆角，或從不同方向接近。",
+          "escape_speed": "普通泡泡移動速度的3倍"
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 360,
+      "tags": ["特殊效果", "策略", "進階", "獨特"]
+    },
+    {
+      "id": "boss_bubbles",
+      "title": "首領泡泡",
+      "description": "特別強大的大型泡泡",
+      "content": {
+        "boss": {
+          "name": "首領泡泡",
+          "appearance": "其他泡泡的兩倍大小，威風凜凜的外觀",
+          "behavior": "多次點擊後破裂（5-8次）",
+          "score": 100,
+          "hp_damage": 50,
+          "special_effect": "破裂時對整個畫面產生特殊效果",
+          "strategy": "最高分但耗時。先清理其他泡泡再集中攻擊。",
+          "health_display": "用HP條顯示剩餘體力",
+          "variants": [
+            "紅色首領：爆炸效果",
+            "藍色首領：冰凍效果",
+            "黃色首領：電氣效果",
+            "紫色首領：毒霧效果"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 120,
+      "tags": ["首領", "大型", "高分", "多次攻擊"]
+    }
+  ],
+  "bubble_identification_guide": {
+    "color_coding": {
+      "beneficial": ["彩虹", "粉紅", "黃金", "藍色（時鐘）"],
+      "neutral": ["透明（普通）", "灰色（石頭）", "銀色（鐵質）", "白色（鑽石）"],
+      "hazardous": ["紫色（毒）", "藍白色（電氣）", "紅色（尖刺/爆炸）"],
+      "special": ["半透明（幽靈）", "磁力線（磁性）", "數字（倍率）"]
+    },
+    "size_categories": {
+      "small": "普通大小（30-35px）",
+      "medium": "中等（40-45px）",
+      "large": "大型/首領（60-70px）"
+    },
+    "animation_patterns": {
+      "static": "普通泡泡、硬化泡泡",
+      "pulsing": "危險泡泡、特殊效果泡泡",
+      "moving": "逃跑泡泡、磁性泡泡效果",
+      "flickering": "幽靈泡泡、電氣泡泡"
+    }
+  },
+  "strategic_combinations": [
+    {
+      "combo": "彩虹泡泡＋黃金泡泡",
+      "effect": "獎勵時間內高分獲得",
+      "score_potential": "最大150分（含獎勵）"
+    },
+    {
+      "combo": "磁性泡泡＋爆炸泡泡",
+      "effect": "聚集泡泡後批量處理",
+      "score_potential": "透過連鎖大幅增加連擊"
+    },
+    {
+      "combo": "時鐘泡泡＋多個首領泡泡",
+      "effect": "時間停止期間處理首領泡泡",
+      "score_potential": "可安全征服首領"
+    },
+    {
+      "combo": "倍率泡泡＋首領泡泡",
+      "effect": "倍增首領擊敗分數",
+      "score_potential": "最高500分的超高分"
+    }
+  ],
+  "mastery_progression": {
+    "beginner": ["普通和硬化泡泡的基本處理"],
+    "intermediate": ["有益泡泡的有效利用、危險泡泡的安全處理"],
+    "advanced": ["特殊效果泡泡的戰略運用、組合活用"],
+    "expert": ["首領泡泡征服、複雜連鎖設計、完美時機控制"]
+  }
+}

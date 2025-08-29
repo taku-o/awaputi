@@ -1,0 +1,82 @@
+{
+  "ja": {
+    "name": "Japanese",
+    "nativeName": "日本語",
+    "code": "ja",
+    "region": "JP",
+    "direction": "ltr",
+    "pluralRules": "japanese",
+    "dateFormat": "YYYY年MM月DD日",
+    "numberFormat": {
+      "decimal": ".",
+      "thousands": ",",
+      "currency": "¥"
+    },
+    "fonts": ["Noto Sans JP", "Hiragino Sans", "Yu Gothic", "Meiryo", "MS Gothic"],
+    "fallbacks": ["en"]
+  },
+  "en": {
+    "name": "English",
+    "nativeName": "English",
+    "code": "en",
+    "region": "US",
+    "direction": "ltr",
+    "pluralRules": "english",
+    "dateFormat": "MM/DD/YYYY",
+    "numberFormat": {
+      "decimal": ".",
+      "thousands": ",",
+      "currency": "$"
+    },
+    "fonts": ["Arial", "Helvetica", "sans-serif"],
+    "fallbacks": ["ja"]
+  },
+  "zh-CN": {
+    "name": "Chinese (Simplified)",
+    "nativeName": "简体中文",
+    "code": "zh-CN",
+    "region": "CN",
+    "direction": "ltr",
+    "pluralRules": "chinese",
+    "dateFormat": "YYYY年MM月DD日",
+    "numberFormat": {
+      "decimal": ".",
+      "thousands": ",",
+      "currency": "¥"
+    },
+    "fonts": ["Noto Sans SC", "PingFang SC", "Microsoft YaHei", "SimHei"],
+    "fallbacks": ["en", "ja"]
+  },
+  "zh-TW": {
+    "name": "Chinese (Traditional)",
+    "nativeName": "繁體中文",
+    "code": "zh-TW",
+    "region": "TW",
+    "direction": "ltr",
+    "pluralRules": "chinese",
+    "dateFormat": "YYYY年MM月DD日",
+    "numberFormat": {
+      "decimal": ".",
+      "thousands": ",",
+      "currency": "NT$"
+    },
+    "fonts": ["Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "MingLiU"],
+    "fallbacks": ["zh-CN", "en", "ja"]
+  },
+  "ko": {
+    "name": "Korean",
+    "nativeName": "한국어",
+    "code": "ko",
+    "region": "KR",
+    "direction": "ltr",
+    "pluralRules": "korean",
+    "dateFormat": "YYYY년 MM월 DD일",
+    "numberFormat": {
+      "decimal": ".",
+      "thousands": ",",
+      "currency": "₩"
+    },
+    "fonts": ["Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "Dotum"],
+    "fallbacks": ["en", "ja"]
+  }
+}

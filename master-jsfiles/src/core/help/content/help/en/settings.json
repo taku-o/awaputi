@@ -1,0 +1,468 @@
+{
+  "category": "settings",
+  "title": "Settings Guide",
+  "description": "Game settings and customization options",
+  "language": "en",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "audio_settings",
+      "title": "Audio Settings",
+      "description": "Detailed settings for BGM, sound effects, and volume",
+      "content": {
+        "volume_controls": {
+          "master_volume": {
+            "description": "Overall volume adjustment",
+            "range": "0% - 100%",
+            "default": "80%",
+            "note": "Serves as base for other volume settings"
+          },
+          "bgm_volume": {
+            "description": "Background music volume",
+            "range": "0% - 100%",
+            "default": "60%",
+            "tracks": [
+              "Main menu BGM",
+              "Gameplay BGM",
+              "Bonus time BGM",
+              "Game over BGM"
+            ]
+          },
+          "sfx_volume": {
+            "description": "Sound effects volume",
+            "range": "0% - 100%",
+            "default": "70%",
+            "sound_types": [
+              "Bubble popping sounds",
+              "Special effect sounds",
+              "Warning sounds",
+              "UI operation sounds"
+            ]
+          }
+        },
+        "audio_quality": {
+          "sample_rate": {
+            "description": "Audio sampling rate",
+            "options": ["22kHz", "44kHz", "48kHz"],
+            "default": "44kHz",
+            "impact": "Higher quality increases CPU usage"
+          },
+          "audio_buffer": {
+            "description": "Audio buffer size",
+            "options": ["Small (Low latency)", "Medium (Standard)", "Large (Stable)"],
+            "default": "Medium",
+            "recommendation": "Select 'Large' if audio skipping occurs"
+          }
+        },
+        "accessibility_audio": {
+          "visual_audio_cues": {
+            "description": "Audio visualization",
+            "features": [
+              "Screen flash based on volume",
+              "Subtitle display for important sounds",
+              "Vibration feedback (supported devices)"
+            ]
+          },
+          "audio_descriptions": {
+            "description": "Audio description feature",
+            "content": "Voice description of screen status",
+            "activation": "Settings → Accessibility → Audio Description"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["audio", "volume", "BGM", "sound-effects"]
+    },
+    {
+      "id": "display_settings",
+      "title": "Display Settings",
+      "description": "Screen display and visual effects settings",
+      "content": {
+        "resolution_settings": {
+          "canvas_resolution": {
+            "description": "Game screen resolution",
+            "options": [
+              "800x600 (4:3)",
+              "1024x768 (4:3)",
+              "1280x720 (16:9)",
+              "1920x1080 (16:9)",
+              "Auto adjust"
+            ],
+            "default": "Auto adjust",
+            "note": "Adjusts to browser window size"
+          },
+          "ui_scaling": {
+            "description": "UI display scale",
+            "range": "50% - 200%",
+            "default": "100%",
+            "impact": "Changes size of text and buttons"
+          }
+        },
+        "visual_effects": {
+          "particle_effects": {
+            "description": "Particle effects settings",
+            "quality_levels": {
+              "off": "Disable particle effects",
+              "low": "Minimal particles",
+              "medium": "Standard particles",
+              "high": "Rich particle effects",
+              "ultra": "Highest quality particles"
+            },
+            "default": "medium",
+            "performance_impact": "Higher quality increases GPU usage"
+          },
+          "animation_quality": {
+            "description": "Animation quality",
+            "options": ["Simple", "Standard", "Smooth", "Maximum"],
+            "default": "Standard",
+            "features": [
+              "Smoothness of bubble movement",
+              "Beauty of UI transitions",
+              "Detail level of special effects"
+            ]
+          },
+          "screen_effects": {
+            "description": "Screen effects",
+            "options": {
+              "screen_shake": "Screen shake effects",
+              "flash_effects": "Flash effects",
+              "blur_effects": "Blur effects",
+              "glow_effects": "Glow effects"
+            },
+            "customization": "Can be enabled/disabled individually"
+          }
+        },
+        "color_settings": {
+          "color_theme": {
+            "description": "Color theme",
+            "options": [
+              "Standard (Colorful)",
+              "Pastel (Soft tones)",
+              "Dark (Dark colors)",
+              "High Contrast (Clear)",
+              "Color blind friendly"
+            ],
+            "default": "Standard"
+          },
+          "brightness": {
+            "description": "Screen brightness",
+            "range": "50% - 150%",
+            "default": "100%",
+            "note": "Adjust for dark environment play"
+          },
+          "contrast": {
+            "description": "Contrast adjustment",
+            "range": "50% - 200%",
+            "default": "100%",
+            "benefit": "Clear distinction between bubbles and background"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["display", "visual", "resolution", "effects"]
+    },
+    {
+      "id": "performance_settings",
+      "title": "Performance Settings",
+      "description": "Optimization for game speed and stability",
+      "content": {
+        "frame_rate": {
+          "target_fps": {
+            "description": "Target frame rate",
+            "options": ["30 FPS", "60 FPS", "120 FPS", "Unlimited"],
+            "default": "60 FPS",
+            "recommendation": "60 FPS optimal for standard displays"
+          },
+          "vsync": {
+            "description": "Vertical sync",
+            "options": ["Off", "On", "Adaptive"],
+            "default": "Adaptive",
+            "benefits": "Prevents screen tearing, stabilizes frame rate"
+          },
+          "frame_skip": {
+            "description": "Frame skipping",
+            "options": ["Off", "Light", "Aggressive"],
+            "default": "Light",
+            "usage": "Improves performance on low-end devices"
+          }
+        },
+        "memory_management": {
+          "texture_quality": {
+            "description": "Texture quality",
+            "options": ["Low", "Medium", "High", "Maximum"],
+            "default": "High",
+            "memory_usage": "Higher quality increases VRAM usage"
+          },
+          "memory_cleanup": {
+            "description": "Memory cleanup",
+            "frequency": ["None", "Light", "Standard", "Aggressive"],
+            "default": "Standard",
+            "effect": "Periodically releases unused memory"
+          },
+          "preload_assets": {
+            "description": "Asset preloading",
+            "options": ["Minimal", "Standard", "All"],
+            "default": "Standard",
+            "tradeoff": "Loading time vs in-game comfort"
+          }
+        },
+        "cpu_optimization": {
+          "background_processing": {
+            "description": "Background processing",
+            "options": ["Minimal", "Standard", "Complete"],
+            "default": "Standard",
+            "includes": [
+              "Statistics calculation",
+              "AI processing",
+              "Network communication",
+              "File saving"
+            ]
+          },
+          "multithreading": {
+            "description": "Multithreading",
+            "options": ["Single", "Dual", "Multi", "Auto"],
+            "default": "Auto",
+            "benefit": "Efficient utilization of multiple CPU cores"
+          }
+        },
+        "battery_optimization": {
+          "power_saving": {
+            "description": "Power saving mode",
+            "activation": "Auto-enabled based on battery level",
+            "adjustments": [
+              "Limit frame rate to 30 FPS",
+              "Reduce particle effects",
+              "Minimize background processing",
+              "Auto-adjust screen brightness"
+            ]
+          },
+          "thermal_management": {
+            "description": "Thermal management",
+            "monitoring": "CPU/GPU temperature monitoring",
+            "throttling": "Auto performance limiting on overheating",
+            "alert": "High temperature warning and cooldown recommendation"
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["performance", "FPS", "optimization", "memory"]
+    },
+    {
+      "id": "gameplay_settings",
+      "title": "Gameplay Settings",
+      "description": "Settings to customize game experience",
+      "content": {
+        "difficulty_settings": {
+          "game_speed": {
+            "description": "Game speed",
+            "range": "50% - 150%",
+            "default": "100%",
+            "effect": "Affects bubble spawn frequency and movement speed"
+          },
+          "bubble_density": {
+            "description": "Bubble density",
+            "options": ["Sparse", "Standard", "Dense", "Ultra dense"],
+            "default": "Standard",
+            "impact": "Maximum number of bubbles displayed simultaneously"
+          },
+          "special_bubble_rate": {
+            "description": "Special bubble appearance rate",
+            "range": "0% - 200%",
+            "default": "100%",
+            "note": "0% completely disables special bubbles"
+          }
+        },
+        "assistance_settings": {
+          "auto_pause": {
+            "description": "Auto pause",
+            "triggers": [
+              "When window loses focus",
+              "No operation for certain time",
+              "Low battery",
+              "Incoming call (mobile)"
+            ],
+            "customization": "Each trigger can be configured individually"
+          },
+          "hint_system": {
+            "description": "Hint system",
+            "types": [
+              "Highlight next bubble to process",
+              "Warning for dangerous situations",
+              "Special bubble effect explanations",
+              "Strategic advice"
+            ],
+            "frequency": ["Off", "Rare", "Standard", "Frequent"]
+          },
+          "difficulty_adjustment": {
+            "description": "Dynamic difficulty adjustment",
+            "modes": [
+              "Fixed (Maintain selected difficulty)",
+              "Adaptive (Adjust based on player skill)",
+              "Learning (Optimize from play history)"
+            ],
+            "default": "Adaptive"
+          }
+        },
+        "scoring_preferences": {
+          "score_display": {
+            "description": "Score display options",
+            "elements": [
+              "Current score",
+              "Combo counter",
+              "Score increment animation",
+              "Best score comparison",
+              "Real-time ranking"
+            ]
+          },
+          "achievement_notifications": {
+            "description": "Achievement notifications",
+            "styles": ["Popup", "Banner", "Sound only", "Off"],
+            "default": "Popup",
+            "timing": "Immediate / End of game / Next startup"
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["gameplay", "difficulty", "assistance", "customization"]
+    },
+    {
+      "id": "data_privacy_settings",
+      "title": "Data and Privacy Settings",
+      "description": "Personal data management and privacy protection",
+      "content": {
+        "data_storage": {
+          "local_storage": {
+            "description": "Local data storage",
+            "stored_data": [
+              "Game progress",
+              "Settings information",
+              "Statistics data",
+              "Achievement records",
+              "High scores"
+            ],
+            "management": "Data can be viewed, exported, and deleted"
+          },
+          "cloud_sync": {
+            "description": "Cloud sync (future implementation)",
+            "benefits": [
+              "Data sync across multiple devices",
+              "Data backup",
+              "Data migration when changing devices"
+            ],
+            "privacy": "Only encrypted data transmitted"
+          }
+        },
+        "analytics_settings": {
+          "usage_analytics": {
+            "description": "Usage analytics",
+            "collected_data": [
+              "Play time",
+              "Game progress",
+              "Feature usage frequency",
+              "Performance metrics"
+            ],
+            "purpose": "For game improvement and bug fixes",
+            "opt_out": "Can be disabled at any time"
+          },
+          "error_reporting": {
+            "description": "Error reporting",
+            "automatic": "Auto-send on crash",
+            "manual": "Manual bug report submission",
+            "anonymization": "No personal information sent"
+          }
+        },
+        "privacy_controls": {
+          "data_minimization": {
+            "description": "Data minimization",
+            "principle": "Collect only minimum necessary data",
+            "user_control": "Individual selection of collection items"
+          },
+          "data_retention": {
+            "description": "Data retention period",
+            "local_data": "Retained until user deletion",
+            "analytics_data": "Anonymized data for maximum 1 year",
+            "user_rights": "Right to request data deletion"
+          },
+          "third_party_services": {
+            "description": "Third party services",
+            "used_services": "Currently not using any",
+            "future_integration": "Advance notification for integrations",
+            "opt_in_basis": "All opt-in based"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 200,
+      "tags": ["data", "privacy", "settings", "management"]
+    }
+  ],
+  "settings_optimization_guide": {
+    "device_specific_recommendations": {
+      "high_end_pc": {
+        "display": "Ultra quality, 60+ FPS",
+        "audio": "48kHz, large buffer",
+        "effects": "All effects enabled"
+      },
+      "standard_pc": {
+        "display": "High quality, 60 FPS",
+        "audio": "44kHz, medium buffer",
+        "effects": "Standard effects"
+      },
+      "low_end_pc": {
+        "display": "Medium quality, 30 FPS",
+        "audio": "22kHz, small buffer",
+        "effects": "Light effects only"
+      },
+      "mobile_device": {
+        "display": "Low quality, 30 FPS",
+        "audio": "22kHz, power saving mode",
+        "effects": "Minimal effects"
+      }
+    },
+    "troubleshooting_settings": {
+      "performance_issues": [
+        "Limit frame rate to 30 FPS",
+        "Set particle effects to 'Low'",
+        "Change animation quality to 'Simple'",
+        "Set memory cleanup to 'Aggressive'"
+      ],
+      "audio_problems": [
+        "Change audio buffer to 'Large'",
+        "Lower sample rate",
+        "Stop audio from other apps",
+        "Update audio drivers"
+      ],
+      "display_issues": [
+        "Lower resolution",
+        "Check browser hardware acceleration",
+        "Try fullscreen mode",
+        "Reset zoom to 100%"
+      ]
+    }
+  },
+  "backup_and_restore": {
+    "creating_backups": {
+      "automatic": "Auto backup on game exit",
+      "manual": "Settings → Data Management → Create Backup",
+      "scheduled": "Auto backup at specified intervals"
+    },
+    "restoring_data": {
+      "from_backup": "Restore from backup file",
+      "selective_restore": "Restore only specific data",
+      "merge_option": "Merge with existing data"
+    },
+    "export_import": {
+      "formats": ["JSON", "CSV", "Plain text"],
+      "use_cases": [
+        "Migration to other devices",
+        "Data analysis",
+        "Long-term storage"
+      ]
+    }
+  }
+}

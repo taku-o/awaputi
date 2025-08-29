@@ -1,0 +1,287 @@
+{
+  "category": "bubbles",
+  "title": "泡の種類ガイド",
+  "description": "awaputiに登場する全ての泡タイプの詳細説明",
+  "language": "ja",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "normal_bubbles",
+      "title": "通常泡",
+      "description": "基本的な泡の種類",
+      "content": {
+        "normal": {
+          "name": "通常泡",
+          "appearance": "半透明な球体",
+          "behavior": "一定時間後に自然破裂",
+          "score": 15,
+          "hp_damage": 10,
+          "strategy": "基本的な得点源。コンボの起点として活用。"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 60,
+      "tags": ["通常", "基本", "標準"]
+    },
+    {
+      "id": "hardened_bubbles",
+      "title": "硬化泡",
+      "description": "複数回のクリックが必要な頑丈な泡",
+      "content": {
+        "stone": {
+          "name": "石泡",
+          "appearance": "灰色の石のような外観",
+          "behavior": "2回のクリックで破裂",
+          "score": 30,
+          "hp_damage": 15,
+          "strategy": "時間に余裕がある時に処理。高得点が期待できる。",
+          "visual_cues": "1回目のクリックでひびが入る"
+        },
+        "iron": {
+          "name": "鉄泡",
+          "appearance": "金属的な光沢のある外観",
+          "behavior": "3回のクリックで破裂",
+          "score": 45,
+          "hp_damage": 20,
+          "strategy": "高得点だが時間がかかる。画面に余裕がある時に狙う。",
+          "visual_cues": "クリック回数に応じてひびが深くなる"
+        },
+        "diamond": {
+          "name": "ダイヤモンド泡",
+          "appearance": "透明で輝く宝石のような外観",
+          "behavior": "4回のクリックで破裂",
+          "score": 60,
+          "hp_damage": 25,
+          "strategy": "最高得点の硬化泡。余裕がある時の大きな得点源。",
+          "special_note": "レア出現。見つけたら優先的に狙う価値あり。"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["硬化", "複数クリック", "高得点"]
+    },
+    {
+      "id": "beneficial_bubbles",
+      "title": "有益泡",
+      "description": "プレイヤーに有利な効果をもたらす泡",
+      "content": {
+        "rainbow": {
+          "name": "虹色泡",
+          "appearance": "虹色に光る美しい泡",
+          "behavior": "1回のクリックで破裂",
+          "score": 50,
+          "special_effect": "ボーナスタイム発動（10秒間スコア2倍）",
+          "strategy": "高得点泡が多い時に使用すると効果的。",
+          "timing": "効果時間中は積極的に泡を割る"
+        },
+        "pink": {
+          "name": "ピンク泡（回復泡）",
+          "appearance": "柔らかいピンク色の泡",
+          "behavior": "1回のクリックで破裂",
+          "score": 25,
+          "special_effect": "HP回復（20ポイント）",
+          "strategy": "HPが低い時に最優先で狙う。",
+          "bonus_note": "HP満タン時でも回復量分のボーナススコア"
+        },
+        "clock": {
+          "name": "時計泡",
+          "appearance": "時計の文字盤が見える泡",
+          "behavior": "1回のクリックで破裂",
+          "score": 30,
+          "special_effect": "時間停止（5秒間）",
+          "strategy": "画面が混雑した時の整理用。戦略を立て直す時間を確保。",
+          "usage_tip": "効果中に危険な泡や高得点泡を狙う"
+        },
+        "golden": {
+          "name": "金色泡",
+          "appearance": "金色に輝く豪華な泡",
+          "behavior": "1回のクリックで破裂",
+          "score": 75,
+          "special_effect": "通常泡の5倍スコア",
+          "strategy": "最優先ターゲット。コンボ中に割れば更なる高得点。",
+          "rarity": "レア出現。見つけたら即座に処理"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["有益", "ボーナス", "回復", "高得点"]
+    },
+    {
+      "id": "hazardous_bubbles",
+      "title": "危険泡",
+      "description": "注意が必要な有害な効果を持つ泡",
+      "content": {
+        "poison": {
+          "name": "毒泡",
+          "appearance": "紫色のオーラを放つ不気味な泡",
+          "behavior": "1回のクリックで破裂",
+          "score": 40,
+          "hp_damage": 30,
+          "special_effect": "割った時にもHPダメージ",
+          "strategy": "高得点だがリスクあり。HP十分な時のみ狙う。",
+          "warning": "HP低下時は避けるかドラッグで移動"
+        },
+        "electric": {
+          "name": "電気泡",
+          "appearance": "電気が走る青白い泡",
+          "behavior": "1回のクリックで破裂",
+          "score": 35,
+          "special_effect": "画面震動（3秒間）",
+          "strategy": "割るタイミングを慎重に選ぶ。震動中の操作は困難。",
+          "tactical_use": "敵の多い時は最後に処理"
+        },
+        "spiky": {
+          "name": "トゲ泡",
+          "appearance": "表面にトゲが生えた危険な泡",
+          "behavior": "破裂時に周囲にダメージ",
+          "score": 25,
+          "special_effect": "周囲の泡にも連鎖ダメージ",
+          "strategy": "周囲の泡配置を考慮して処理。連鎖を狙える。",
+          "range": "周囲半径50ピクセル内"
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 210,
+      "tags": ["危険", "ダメージ", "リスク", "慎重"]
+    },
+    {
+      "id": "special_effect_bubbles",
+      "title": "特殊効果泡",
+      "description": "ユニークな効果を持つ特殊な泡",
+      "content": {
+        "frozen": {
+          "name": "氷泡",
+          "appearance": "氷の結晶が見える青い泡",
+          "behavior": "1回のクリックで破裂",
+          "score": 35,
+          "special_effect": "周囲の泡の動きを遅くする（8秒間）",
+          "strategy": "時間稼ぎや戦略立案のタイミング作り。",
+          "area_effect": "周囲半径100ピクセル内"
+        },
+        "magnetic": {
+          "name": "磁石泡",
+          "appearance": "金属的で磁力線が見える泡",
+          "behavior": "1回のクリックで破裂",
+          "score": 30,
+          "special_effect": "周囲の泡を引き寄せる（5秒間）",
+          "strategy": "泡を集めてコンボ準備。密集させてから一気に処理。",
+          "tactical_advantage": "散らばった泡の整理に最適"
+        },
+        "explosive": {
+          "name": "爆発泡",
+          "appearance": "赤い危険マークが点滅する泡",
+          "behavior": "1回のクリックで爆発",
+          "score": 45,
+          "special_effect": "周囲の泡も一緒に破壊",
+          "strategy": "危険な泡が密集した時の一括処理。大連鎖も可能。",
+          "explosion_radius": "周囲半径80ピクセル内",
+          "chain_reaction": "他の爆発泡も誘爆する"
+        },
+        "phantom": {
+          "name": "幻影泡",
+          "appearance": "半透明で時々消える幻想的な泡",
+          "behavior": "間欠的に可視性が変化",
+          "score": 55,
+          "special_effect": "見えている時だけクリック可能",
+          "strategy": "タイミングを見計らってクリック。高得点価値あり。",
+          "visibility_cycle": "2秒見える → 1秒消える のサイクル"
+        },
+        "multiplier": {
+          "name": "倍率泡",
+          "appearance": "「×2」「×3」などの数字が表示される泡",
+          "behavior": "1回のクリックで破裂",
+          "score": "表示倍率 × 20",
+          "special_effect": "次に割る泡のスコアを倍率分増加",
+          "strategy": "高得点泡の直前に割る。コンボと組み合わせで大得点。",
+          "multiplier_types": "×2, ×3, ×5 の3種類が存在"
+        },
+        "escaping": {
+          "name": "逃走泡",
+          "appearance": "素早く動き回る機敏な泡",
+          "behavior": "マウスカーソルから逃げる",
+          "score": 50,
+          "special_effect": "追いかけられると逃げる動作",
+          "strategy": "壁際に追い込む、または別方向からの接近。",
+          "escape_speed": "通常泡の3倍の移動速度"
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 360,
+      "tags": ["特殊効果", "戦略", "高度", "ユニーク"]
+    },
+    {
+      "id": "boss_bubbles",
+      "title": "ボス泡",
+      "description": "特別に強力で大型な泡",
+      "content": {
+        "boss": {
+          "name": "ボス泡",
+          "appearance": "他の泡の2倍の大きさ、威圧的な外観",
+          "behavior": "複数回のクリック（5-8回）で破裂",
+          "score": 100,
+          "hp_damage": 50,
+          "special_effect": "破裂時に画面全体に特殊効果",
+          "strategy": "最高得点だが処理に時間がかかる。他の泡を片付けてから集中。",
+          "health_display": "HPバーで残り体力を表示",
+          "variants": [
+            "レッドボス: 爆発効果",
+            "ブルーボス: 氷結効果", 
+            "イエローボス: 電撃効果",
+            "パープルボス: 毒霧効果"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 120,
+      "tags": ["ボス", "大型", "高得点", "複数攻撃"]
+    }
+  ],
+  "bubble_identification_guide": {
+    "color_coding": {
+      "beneficial": ["虹色", "ピンク", "金色", "青（時計）"],
+      "neutral": ["透明（通常）", "灰色（石）", "銀色（鉄）", "白（ダイヤ）"],
+      "hazardous": ["紫（毒）", "青白（電気）", "赤（トゲ・爆発）"],
+      "special": ["半透明（幻影）", "磁力線（磁石）", "数字（倍率）"]
+    },
+    "size_categories": {
+      "small": "通常サイズ（30-35px）",
+      "medium": "中型（40-45px）",
+      "large": "大型・ボス（60-70px）"
+    },
+    "animation_patterns": {
+      "static": "通常泡、硬化泡",
+      "pulsing": "危険泡、特殊効果泡",
+      "moving": "逃走泡、磁石泡効果中",
+      "flickering": "幻影泡、電気泡"
+    }
+  },
+  "strategic_combinations": [
+    {
+      "combo": "虹色泡 + 金色泡",
+      "effect": "ボーナスタイム中の高得点獲得",
+      "score_potential": "最大150点（ボーナス込み）"
+    },
+    {
+      "combo": "磁石泡 + 爆発泡",
+      "effect": "泡を集めてから一括処理",
+      "score_potential": "連鎖によるコンボ大幅増加"
+    },
+    {
+      "combo": "時計泡 + 複数ボス泡",
+      "effect": "時間停止中にボス泡処理",
+      "score_potential": "安全にボス攻略可能"
+    },
+    {
+      "combo": "倍率泡 + ボス泡",
+      "effect": "ボス撃破スコアを倍増",
+      "score_potential": "最大500点の超高得点"
+    }
+  ],
+  "mastery_progression": {
+    "beginner": ["通常泡、硬化泡の基本処理"],
+    "intermediate": ["有益泡の効果的活用、危険泡の安全処理"],
+    "advanced": ["特殊効果泡の戦略的使用、コンビネーション活用"],
+    "expert": ["ボス泡攻略、複雑な連鎖設計、完璧なタイミング制御"]
+  }
+}

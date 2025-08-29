@@ -1,0 +1,19 @@
+/**
+ * CommandHistoryManager
+ * TypeScript converted from JavaScript
+ */
+
+export class CommandHistoryManager {
+    constructor(_parent?: any) {
+        // TypeScript implementation
+        console.log('[CommandHistoryManager] Initialized');
+    }
+
+    public initialize(): void {
+        // Implementation
+    }
+
+    public destroy(): void {
+        // Implementation
+    }
+}

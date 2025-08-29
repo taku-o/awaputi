@@ -1,0 +1,382 @@
+{
+  "category": "controls",
+  "title": "操作指南",
+  "description": "awaputi的操作方法和鍵盤快捷鍵",
+  "language": "zh-TW",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "mouse_controls",
+      "title": "滑鼠操作",
+      "description": "使用滑鼠的基本操作",
+      "content": {
+        "left_click": {
+          "action": "點擊泡泡將其戳破",
+          "description": "最基本的操作。左鍵點擊泡泡將其戳破。",
+          "tips": [
+            "調整滑鼠敏感度以精確點擊",
+            "連續點擊瞄準連擊",
+            "硬化泡泡需要多次點擊"
+          ]
+        },
+        "drag_action": {
+          "action": "拖曳泡泡來移動它們",
+          "description": "可以透過拖曳將泡泡移動到安全位置。",
+          "how_to": [
+            "按住滑鼠按鍵在泡泡上",
+            "按住按鍵移動滑鼠",
+            "在目標位置放開滑鼠按鍵"
+          ],
+          "strategy": [
+            "將危險泡泡移動到畫面邊緣",
+            "將有益泡泡保存在安全位置",
+            "為連擊準備聚集泡泡"
+          ]
+        },
+        "right_click": {
+          "action": "未使用",
+          "description": "右鍵點擊在awaputi中沒有特殊功能。",
+          "note": "如果意外出現右鍵選單，請用Esc鍵關閉。"
+        },
+        "mouse_wheel": {
+          "action": "縮放（僅調試模式）",
+          "description": "調試模式啟動時滑鼠滾輪可以縮放。",
+          "usage": "先用Ctrl+Shift+D啟動調試模式"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 120,
+      "tags": ["滑鼠", "點擊", "拖曳", "基本操作"]
+    },
+    {
+      "id": "keyboard_shortcuts",
+      "title": "鍵盤快捷鍵",
+      "description": "有效遊戲的鍵盤操作",
+      "content": {
+        "game_controls": {
+          "esc": {
+            "action": "開啟/關閉選單",
+            "description": "遊戲中返回主選單，或關閉目前選單。",
+            "context": "所有場景皆可使用"
+          },
+          "space": {
+            "action": "暫停遊戲",
+            "description": "遊戲過程中切換暫停/繼續。",
+            "context": "僅遊戲中可使用"
+          },
+          "p": {
+            "action": "暫停",
+            "description": "與空白鍵相同，暫停遊戲。",
+            "context": "僅遊戲中可使用"
+          },
+          "r": {
+            "action": "恢復遊戲",
+            "description": "從暫停狀態恢復遊戲。",
+            "context": "僅暫停時可使用"
+          }
+        },
+        "help_and_info": {
+          "h": {
+            "action": "顯示說明",
+            "description": "顯示情境說明。",
+            "context": "所有場景皆可使用"
+          },
+          "f1": {
+            "action": "快速說明",
+            "description": "顯示目前畫面的簡要操作指南。",
+            "context": "所有場景皆可使用"
+          },
+          "i": {
+            "action": "使用者資訊畫面",
+            "description": "開啟使用者資訊、統計和成就畫面。",
+            "context": "選單畫面中可使用"
+          }
+        },
+        "display_controls": {
+          "f": {
+            "action": "切換全螢幕",
+            "description": "在全螢幕和視窗模式間切換。",
+            "note": "某些瀏覽器可能無法使用"
+          },
+          "ctrl_shift_d": {
+            "action": "切換調試模式",
+            "description": "顯示/隱藏開發者調試資訊。",
+            "features": [
+              "FPS顯示",
+              "記憶體使用情況",
+              "泡泡詳細資訊",
+              "碰撞視覺化"
+            ]
+          }
+        },
+        "audio_controls": {
+          "m": {
+            "action": "音樂靜音切換",
+            "description": "開啟/關閉背景音樂。",
+            "note": "音效在設定中另外調整"
+          },
+          "ctrl_m": {
+            "action": "所有音效靜音",
+            "description": "同時靜音/取消靜音背景音樂和音效。",
+            "shortcut": "緊急停止音效時很有用"
+          }
+        },
+        "navigation": {
+          "tab": {
+            "action": "移動焦點",
+            "description": "在選單項目間移動焦點。",
+            "context": "選單畫面中使用"
+          },
+          "shift_tab": {
+            "action": "向後移動焦點",
+            "description": "移動焦點到上一個選單項目。",
+            "context": "選單畫面中使用"
+          },
+          "enter": {
+            "action": "確認/選擇",
+            "description": "選擇有焦點的項目。",
+            "context": "選單畫面中使用"
+          },
+          "arrow_keys": {
+            "action": "選單導覽",
+            "description": "用方向鍵導覽選單項目。",
+            "details": {
+              "up_down": "上下移動選單項目",
+              "left_right": "切換分頁、增減數值"
+            }
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["鍵盤", "快捷鍵", "效率", "導覽"]
+    },
+    {
+      "id": "advanced_techniques",
+      "title": "進階技巧",
+      "description": "有效遊戲的高級操作技巧",
+      "content": {
+        "mouse_techniques": {
+          "rapid_clicking": {
+            "name": "快速點擊",
+            "description": "快速點擊連續泡泡建立連擊的技巧",
+            "tips": [
+              "保持手腕穩定，僅用手指快速點擊",
+              "維持一致的節奏",
+              "適時休息避免疲勞"
+            ],
+            "practice": "在普通泡泡密集分布時練習"
+          },
+          "precision_dragging": {
+            "name": "精密拖曳",
+            "description": "將泡泡移動到精確位置的技巧",
+            "techniques": [
+              "進行微調時做小幅移動",
+              "清楚想像目標位置",
+              "活用畫面邊緣和角落進行配置"
+            ],
+            "applications": [
+              "將危險泡泡移動到安全區域",
+              "調整特殊泡泡效果範圍",
+              "為連擊聚集泡泡"
+            ]
+          },
+          "multi_target_selection": {
+            "name": "多目標處理",
+            "description": "有效處理多個泡泡的程序",
+            "strategy": [
+              "事先規劃處理順序",
+              "最小化滑鼠移動距離",
+              "考慮連鎖反應決定順序"
+            ]
+          }
+        },
+        "keyboard_mastery": {
+          "hotkey_combinations": {
+            "name": "快捷鍵組合",
+            "combinations": [
+              "H → I：從說明快速切換到資訊畫面",
+              "Esc → Space：從選單返回遊戲",
+              "Ctrl+Shift+D → F：調試模式下全螢幕"
+            ]
+          },
+          "context_switching": {
+            "name": "情境切換",
+            "description": "根據畫面選擇最佳鍵盤操作",
+            "guidelines": [
+              "遊戲中：經常使用Space/P暫停",
+              "選單中：方向鍵和Enter快速導覽",
+              "設定中：Tab鍵跳過項目"
+            ]
+          }
+        },
+        "hybrid_techniques": {
+          "mouse_keyboard_combo": {
+            "name": "滑鼠-鍵盤組合",
+            "description": "同時使用滑鼠和鍵盤的高效操作",
+            "examples": [
+              "滑鼠遊戲＋H鍵快速查看說明",
+              "拖曳中Space暫停思考策略",
+              "點擊序列中M鍵調整音樂"
+            ]
+          },
+          "situational_adaptation": {
+            "name": "狀況適應",
+            "description": "根據遊戲狀況改變操作方法",
+            "scenarios": [
+              "高密度時：主要使用拖曳整理",
+              "低密度時：精密點擊獲得高分",
+              "緊急時：快捷鍵立即暫停"
+            ]
+          }
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 240,
+      "tags": ["進階", "技巧", "效率", "精通"]
+    },
+    {
+      "id": "accessibility_options",
+      "title": "無障礙選項",
+      "description": "確保各種玩家都能舒適遊戲的設定",
+      "content": {
+        "visual_assistance": {
+          "high_contrast": {
+            "description": "高對比模式改善可見性",
+            "activation": "設定 → 無障礙 → 高對比",
+            "effects": "強化泡泡邊框、改善背景對比"
+          },
+          "text_scaling": {
+            "description": "調整UI文字大小",
+            "options": ["小（90%）", "標準（100%）", "大（120%）", "超大（150%）"],
+            "note": "適用於選單文字和分數顯示"
+          },
+          "color_blind_support": {
+            "description": "色覺障礙者的考慮",
+            "features": [
+              "增加顏色以外的識別要素（形狀、圖案）",
+              "替代色盤選項",
+              "文字標籤顯示選項"
+            ]
+          }
+        },
+        "motor_assistance": {
+          "click_hold_duration": {
+            "description": "調整點擊識別時間",
+            "range": "50毫秒到500毫秒",
+            "benefit": "照顧難以快速點擊的使用者"
+          },
+          "drag_sensitivity": {
+            "description": "調整拖曳操作敏感度",
+            "options": ["低敏感度", "標準", "高敏感度"],
+            "recommendation": "手部顫抖者建議低敏感度"
+          },
+          "pause_assistance": {
+            "description": "自動暫停功能",
+            "trigger": "一定時間無操作時自動暫停",
+            "timing": "可選擇：5秒、10秒、30秒"
+          }
+        },
+        "cognitive_assistance": {
+          "simplified_ui": {
+            "description": "UI簡化選項",
+            "features": [
+              "去除不必要的裝飾",
+              "僅顯示重要資訊",
+              "使用清楚易懂的圖示"
+            ]
+          },
+          "tutorial_replay": {
+            "description": "重複教學播放",
+            "access": "說明選單隨時可存取",
+            "benefit": "可無限次重複確認操作方法"
+          },
+          "context_help": {
+            "description": "情境說明顯示",
+            "activation": "F1鍵或？按鍵",
+            "content": "顯示目前狀況的最佳建議"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["無障礙", "設定", "輔助", "通用"]
+    }
+  ],
+  "quick_reference_card": {
+    "essential_shortcuts": {
+      "Esc": "選單",
+      "Space/P": "暫停",
+      "H": "說明",
+      "F": "全螢幕",
+      "M": "音樂靜音"
+    },
+    "mouse_actions": {
+      "左鍵點擊": "戳破泡泡",
+      "拖曳": "移動泡泡",
+      "滾輪": "縮放（調試模式）"
+    },
+    "emergency_controls": {
+      "Ctrl+M": "停止所有音效",
+      "Esc": "立即存取選單",
+      "Space": "緊急暫停"
+    }
+  },
+  "troubleshooting": {
+    "common_issues": [
+      {
+        "problem": "點擊沒有反應",
+        "causes": [
+          "滑鼠敏感度過低",
+          "瀏覽器縮放設定",
+          "其他應用程式干擾"
+        ],
+        "solutions": [
+          "檢查滑鼠設定",
+          "瀏覽器縮放設為100%",
+          "關閉其他應用程式"
+        ]
+      },
+      {
+        "problem": "拖曳操作無法正常運作",
+        "causes": [
+          "拖曳距離太短",
+          "太早放開滑鼠按鍵",
+          "敏感度設定不當"
+        ],
+        "solutions": [
+          "確保充分的拖曳距離",
+          "確實拖曳到目標位置",
+          "在設定中調整拖曳敏感度"
+        ]
+      },
+      {
+        "problem": "鍵盤快捷鍵無效",
+        "causes": [
+          "其他應用程式佔用按鍵",
+          "瀏覽器設定",
+          "語言輸入問題"
+        ],
+        "solutions": [
+          "將焦點對準遊戲",
+          "F5重新載入頁面",
+          "關閉中文輸入法"
+        ]
+      }
+    ]
+  },
+  "customization_guide": {
+    "personal_optimization": [
+      "根據慣用手調整滑鼠設定",
+      "配合遊戲風格變更按鍵綁定",
+      "配合螢幕解析度調整UI比例",
+      "配合反應速度設定敏感度"
+    ],
+    "performance_tuning": [
+      "維持高幀率的設定",
+      "最小化輸入延遲的設定",
+      "降低CPU負荷的顯示設定"
+    ]
+  }
+}
